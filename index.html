@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -40,11 +41,48 @@
             border-radius: 8px;
             border: 1px solid rgba(99, 102, 241, 0.3);
         }
+        /* Styling for repeating decimals with overline */
+        .repeating-decimal {
+            direction: ltr;
+            unicode-bidi: embed;
+            display: inline-block;
+            font-family: 'Cairo', sans-serif;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        .repeating-bar {
+            text-decoration: overline;
+        }
+        /* Styling for horizontal math fractions */
+        .math-frac {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            font-size: 0.9em;
+            padding: 0 4px;
+            direction: ltr;
+            unicode-bidi: embed;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            margin: 0 2px;
+        }
+        .math-frac-num {
+            border-bottom: 1.5px solid currentColor;
+            padding: 0 4px;
+            line-height: 1.2;
+        }
+        .math-frac-den {
+            padding: 0 4px;
+            line-height: 1.2;
+        }
     </style>
 </head>
 <body class="text-white flex flex-col items-center justify-center p-4">
 
-    <!-- شاشة اختيار الدرس (الواجهة الرئيسية) -->
     <div id="home-screen" class="w-full max-w-2xl text-center">
         <header class="mb-8">
             <div class="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 px-4 py-1.5 rounded-full text-indigo-300 text-sm mb-3 font-semibold shadow-inner">
@@ -57,7 +95,7 @@
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- أيقونة لعبة تقدير الجذور التربيعية -->
+            <!-- Square Roots Estimation Game Card -->
             <div onclick="startGame('roots')" class="glass-card rounded-3xl p-6 glow-effect cursor-pointer hover:border-amber-400/60 transition-all duration-300 transform hover:-translate-y-2 group">
                 <div class="w-20 h-20 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-3xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-square-root-variable"></i>
@@ -70,13 +108,13 @@
                 </span>
             </div>
 
-            <!-- أيقونة لعبة الأعداد الحقيقية -->
+            <!-- Real Numbers Game Card -->
             <div onclick="startGame('real-numbers')" class="glass-card rounded-3xl p-6 glow-effect cursor-pointer hover:border-cyan-400/60 transition-all duration-300 transform hover:-translate-y-2 group">
                 <div class="w-20 h-20 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-3xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
                     <i class="fa-solid fa-atom"></i>
                 </div>
                 <h2 class="text-xl font-bold text-cyan-300 mb-2">مجموعة الأعداد الحقيقية</h2>
-                <p class="text-xs text-slate-300 mb-4">صنف الأعداد إلى طبيعية، كحية، صحيحة، نسبية، وغير نسبية.</p>
+                <p class="text-xs text-slate-300 mb-4">صنف الأعداد إلى طبيعية، كلية، صحيحة، نسبية، وغير نسبية.</p>
                 <span class="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-300 text-xs font-bold px-4 py-2 rounded-xl border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
                     <span>ابدأ التحدي</span>
                     <i class="fa-solid fa-arrow-left"></i>
@@ -85,7 +123,6 @@
         </div>
     </div>
 
-    <!-- حاوية اللعبة العامة (تظهر عند اختيار أحد الأيقونتين) -->
     <div id="game-container" class="hidden w-full max-w-xl">
         <button onclick="backToHome()" class="mb-4 inline-flex items-center gap-2 text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl border border-white/20 transition-colors">
             <i class="fa-solid fa-arrow-right"></i>
@@ -104,7 +141,7 @@
 
         <main class="glass-card rounded-3xl p-6 md:p-8 glow-effect relative overflow-hidden shadow-2xl">
             
-            <!-- شريط الحالة العلوي: حالة الخزنة والوقت -->
+            <!-- Vault Status Bar -->
             <div class="flex items-center justify-between bg-black/30 rounded-2xl p-4 mb-6 border border-white/10">
                 <div class="flex items-center gap-3">
                     <div id="vault-icon-container" class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-xl shadow-lg">
@@ -121,7 +158,7 @@
                 </div>
             </div>
 
-            <!-- عرض خانات الخزنة (٤ أرقام) -->
+            <!-- Vault Digits Slots (4 Digits) -->
             <div class="mb-8">
                 <div class="text-center text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3">شفرة الخزنة (الأرقام الأربعة)</div>
                 <div class="grid grid-cols-4 gap-3 md:gap-4">
@@ -132,6 +169,7 @@
                 </div>
             </div>
 
+            <!-- Quiz & Questions Section -->
             <div id="quiz-section">
                 <div class="flex items-center justify-between mb-4">
                     <span id="question-counter" class="text-xs font-bold bg-indigo-600/30 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">السؤال ١ من ٤</span>
@@ -143,20 +181,20 @@
                     <p class="text-xs text-indigo-300">اختر الإجابة الصحيحة لفك هذا الرقم من الشفرة:</p>
                 </div>
 
-                <!-- الخيارات -->
+                <!-- Multiple Choice Options Container -->
                 <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
 
-                <!-- صندوق التغذية الراجعة -->
+                <!-- Feedback Message Box -->
                 <div id="feedback-box" class="hidden p-4 rounded-xl text-sm font-semibold text-center mb-4 transition-all duration-300"></div>
 
-                <!-- زر التالي -->
+                <!-- Next Question Button -->
                 <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
                     <span>السؤال التالي</span>
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
             </div>
 
-            <!-- شاشة النهاية والفوز -->
+            <!-- Game Over & Victory Screen -->
             <div id="game-over-screen" class="hidden text-center py-6">
                 <div id="result-icon-bg" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 shadow-xl">
                     <i id="result-icon" class="fa-solid fa-trophy"></i>
@@ -192,6 +230,7 @@
     </div>
 
     <script>
+        // Convert western numbers to Eastern Arabic numerals
         function toArabicDigits(str) {
             if (str === null || str === undefined) return '';
             const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -200,7 +239,7 @@
             });
         }
 
-        // بيانات أسئلة تقدير الجذور التربيعية
+        // Square Roots Estimation Questions Dataset
         const rootsQuestions = [
             {
                 question: "ما هو التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'><span class='text-cyan-300 font-bold text-lg'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>١٧</span></span></span> ؟",
@@ -248,7 +287,7 @@
             }
         ];
 
-        // بيانات أسئلة درس الأعداد الحقيقية
+        // Real Numbers Questions Dataset
         const realNumbersQuestions = [
             {
                 question: "أي من الأعداد الآتية يُعتبر <strong>عدداً غير نسبي</strong>؟",
@@ -256,7 +295,7 @@
                     { text: "أ) ٠,٢٥", correct: false },
                     { text: "ب) <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٩</span></span></span>", correct: false },
                     { text: "ج) <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>١١</span></span></span>", correct: true },
-                    { text: "د) ٤-/٣", correct: false }
+                    { text: "د) <span class='math-frac text-cyan-300 font-bold'><span class='math-frac-num'>٤-</span><span class='math-frac-den'>٣</span></span>", correct: false }
                 ],
                 digit: "٧",
                 explanation: "العدد ١١ ليس مربعاً كاملاً، وبالتالي جذره التربيعي عدد غير منتهي وغير دوري، فهو عدد غير نسبي."
@@ -284,7 +323,7 @@
                 explanation: "مجموعة الأعداد الكلية (٠، ١، ٢، ...) محتواة بالكامل داخل مجموعة الأعداد الصحيحة."
             },
             {
-                question: "الكسر العشري الدوري ٠,٦٣... (الـ ٦٣ عليها خط دوري) ينتمي إلى:",
+                question: "الكسر العشري الدوري <span class='repeating-decimal text-cyan-300 font-bold'>٠,٦<span class='repeating-bar'>٣</span></span> ينتمي إلى:",
                 options: [
                     { text: "أ) الأعداد غير النسبية", correct: false },
                     { text: "ب) الأعداد النسبية", correct: true },
@@ -305,6 +344,7 @@
         let timerInterval = null;
         let isAnswerLocked = false;
 
+        // Start specific game session
         function startGame(mode) {
             activeGameMode = mode;
             document.getElementById('home-screen').classList.add('hidden');
@@ -325,12 +365,14 @@
             restartCurrentGame();
         }
 
+        // Return to home menu
         function backToHome() {
             clearInterval(timerInterval);
             document.getElementById('game-container').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
         }
 
+        // Timer countdown function
         function startTimer() {
             clearInterval(timerInterval);
             timerSeconds = 180;
@@ -348,6 +390,7 @@
             }, 1000);
         }
 
+        // Load current question onto DOM
         function loadQuestion() {
             isAnswerLocked = false;
             let q = currentQuestionsList[currentQuestionIndex];
@@ -375,6 +418,7 @@
             });
         }
 
+        // Handle option selection
         function selectOption(isCorrect, selectedBtn) {
             if (isAnswerLocked) return;
             isAnswerLocked = true;
@@ -423,6 +467,7 @@
             }
         }
 
+        // Proceed to next question
         function nextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < currentQuestionsList.length) {
@@ -430,6 +475,7 @@
             }
         }
 
+        // Finish game and show results screen
         function endGame(isVictory) {
             document.getElementById('quiz-section').classList.add('hidden');
             let gameOverScreen = document.getElementById('game-over-screen');
@@ -468,6 +514,7 @@
             }
         }
 
+        // Restart current game session
         function restartCurrentGame() {
             currentQuestionIndex = 0;
             unlockedDigits = ["؟", "؟", "؟", "؟"];
