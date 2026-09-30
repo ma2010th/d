@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألعاب الرياضيات التفاعلية - فك شفرة الخزنة</title>
+    <title>رياضيات الصف الثاني متوسط - الألعاب التفاعلية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,217 +11,326 @@
     <style>
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%);
+            background: linear-gradient(135deg, #FEF08A 0%, #FEFCE8 45%, #F8FAFC 100%);
             min-height: 100vh;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(234, 179, 8, 0.4);
+            box-shadow: 0 12px 35px -5px rgba(15, 23, 42, 0.08);
         }
         .glow-effect {
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 30px rgba(234, 179, 8, 0.35);
         }
         @keyframes pulse-slow {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.04); }
         }
         .animate-pulse-slow {
             animation: pulse-slow 3s infinite ease-in-out;
         }
+        /* Mathematical formatting: Radicals */
         .math-radical {
             display: inline-flex;
             align-items: center;
             font-family: 'Cairo', sans-serif;
             direction: ltr;
             unicode-bidi: embed;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(254, 240, 138, 0.45);
             padding: 2px 10px;
             border-radius: 8px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(202, 138, 4, 0.4);
+            color: #0F172A;
+            font-weight: 700;
         }
-        /* Styling for repeating decimals with overline */
+        /* Mathematical formatting: Repeating decimals with overline */
         .repeating-decimal {
             direction: ltr;
             unicode-bidi: embed;
             display: inline-block;
             font-family: 'Cairo', sans-serif;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 2px 8px;
-            border-radius: 6px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(254, 240, 138, 0.45);
+            padding: 2px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(202, 138, 4, 0.4);
+            color: #0F172A;
+            font-weight: 700;
         }
         .repeating-bar {
             text-decoration: overline;
+            text-decoration-color: #CA8A04;
+            text-decoration-thickness: 3px;
         }
-        /* Styling for horizontal math fractions */
+        /* Mathematical formatting: Horizontal fractions */
         .math-frac {
             display: inline-flex;
             flex-direction: column;
             vertical-align: middle;
             text-align: center;
-            font-size: 0.9em;
-            padding: 0 4px;
+            font-size: 0.95em;
+            padding: 2px 8px;
             direction: ltr;
             unicode-bidi: embed;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 6px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            margin: 0 2px;
+            background: rgba(254, 240, 138, 0.45);
+            border-radius: 8px;
+            border: 1px solid rgba(202, 138, 4, 0.4);
+            margin: 0 3px;
+            color: #0F172A;
         }
         .math-frac-num {
-            border-bottom: 1.5px solid currentColor;
-            padding: 0 4px;
-            line-height: 1.2;
+            border-bottom: 2.5px solid #0F172A;
+            padding: 0 4px 2px 4px;
+            line-height: 1.1;
+            font-weight: 900;
         }
         .math-frac-den {
-            padding: 0 4px;
-            line-height: 1.2;
+            padding: 2px 4px 0 4px;
+            line-height: 1.1;
+            font-weight: 900;
+        }
+        .rocket-game-bg {
+            background: radial-gradient(circle at center, #1E3A8A 0%, #0F172A 100%);
+        }
+        .football-pitch {
+            background: linear-gradient(to bottom, #15803D 0%, #166534 100%);
         }
     </style>
 </head>
-<body class="text-white flex flex-col items-center justify-center p-4">
+<body class="text-slate-900 flex flex-col items-center justify-start pt-1 sm:pt-2 pb-6 px-3 sm:px-6">
 
-    <div id="home-screen" class="w-full max-w-2xl text-center">
-        <header class="mb-8">
-            <div class="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 px-4 py-1.5 rounded-full text-indigo-300 text-sm mb-3 font-semibold shadow-inner">
-                <i class="fa-solid fa-brain"></i> الألعاب التعليمية التفاعلية
-            </div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-3 bg-gradient-to-r from-amber-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">
-                تحدي فك شفرة الخزنة السرية
-            </h1>
-            <p class="text-indigo-200 text-sm md:text-base">اختر الدرس وابدأ التحدي لاستخراج أرقام الشفرة وفتح الخزنة!</p>
-        </header>
+    <header class="w-full max-w-5xl text-center mb-3">
+        <h1 class="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-1 text-blue-950">
+            رياضيات الصف الثاني متوسط
+        </h1>
+        <p class="text-yellow-600 text-xs sm:text-sm font-extrabold">إعداد الاستاذ: عبدالمحيي السلمي</p>
+    </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Square Roots Estimation Game Card -->
-            <div onclick="startGame('roots')" class="glass-card rounded-3xl p-6 glow-effect cursor-pointer hover:border-amber-400/60 transition-all duration-300 transform hover:-translate-y-2 group">
-                <div class="w-20 h-20 rounded-2xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-3xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-square-root-variable"></i>
+    <div id="home-screen" class="w-full max-w-5xl text-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto px-2">
+            
+            <!-- Lesson 1: Square Roots Estimation (Vault Game) -->
+            <div onclick="playSound('click'); startGame('roots')" class="glass-card rounded-3xl p-5 glow-effect cursor-pointer hover:border-blue-950 transition-all duration-300 transform hover:-translate-y-1.5 group text-right flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-14 h-14 rounded-2xl bg-yellow-400 border-2 border-yellow-500 flex items-center justify-center text-blue-950 text-2xl shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-square-root-variable"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-black text-yellow-500 bg-blue-950 px-3 py-1.5 rounded-xl border border-yellow-400">
+                            <i class="fa-solid fa-key"></i> تحدي فك شفرة الخزنة السرية
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-black text-blue-950 mb-1.5">تقدير الجذور التربيعية</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-4 font-medium leading-relaxed">تدرب على إيجاد تقدير الجذور التربيعية لأقرب عدد كلي لفتح الخزنة السرية.</p>
                 </div>
-                <h2 class="text-xl font-bold text-amber-300 mb-2">تقدير الجذور التربيعية</h2>
-                <p class="text-xs text-slate-300 mb-4">تدرب على إيجاد تقدير الجذور التربيعية لأقرب عدد كلي.</p>
-                <span class="inline-flex items-center gap-2 bg-amber-500/20 text-amber-300 text-xs font-bold px-4 py-2 rounded-xl border border-amber-500/30 group-hover:bg-amber-500 group-hover:text-slate-950 transition-colors">
-                    <span>ابدأ التحدي</span>
-                    <i class="fa-solid fa-arrow-left"></i>
-                </span>
+                <div class="flex items-center justify-end pt-3 border-t border-slate-200">
+                    <span class="inline-flex items-center gap-2 bg-blue-950 text-yellow-400 text-xs font-bold px-4 py-2.5 rounded-xl group-hover:bg-yellow-400 group-hover:text-blue-950 transition-colors shadow-md">
+                        <span>ابدأ اللعبة</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                </div>
             </div>
 
-            <!-- Real Numbers Game Card -->
-            <div onclick="startGame('real-numbers')" class="glass-card rounded-3xl p-6 glow-effect cursor-pointer hover:border-cyan-400/60 transition-all duration-300 transform hover:-translate-y-2 group">
-                <div class="w-20 h-20 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-3xl mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform">
-                    <i class="fa-solid fa-atom"></i>
+            <!-- Lesson 2: Real Numbers (Vault Game) -->
+            <div onclick="playSound('click'); startGame('real-numbers')" class="glass-card rounded-3xl p-5 glow-effect cursor-pointer hover:border-blue-950 transition-all duration-300 transform hover:-translate-y-1.5 group text-right flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-950 border-2 border-blue-900 flex items-center justify-center text-yellow-400 text-2xl shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-atom"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-black text-yellow-500 bg-blue-950 px-3 py-1.5 rounded-xl border border-yellow-400">
+                            <i class="fa-solid fa-key"></i> تحدي فك شفرة الخزنة السرية
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-black text-blue-950 mb-1.5">مجموعة الأعداد الحقيقية</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-4 font-medium leading-relaxed">صنف الأعداد إلى طبيعية، كلية، صحيحة، نسبية، وغير نسبية لفك الخزنة.</p>
                 </div>
-                <h2 class="text-xl font-bold text-cyan-300 mb-2">مجموعة الأعداد الحقيقية</h2>
-                <p class="text-xs text-slate-300 mb-4">صنف الأعداد إلى طبيعية، كلية، صحيحة، نسبية، وغير نسبية.</p>
-                <span class="inline-flex items-center gap-2 bg-cyan-500/20 text-cyan-300 text-xs font-bold px-4 py-2 rounded-xl border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
-                    <span>ابدأ التحدي</span>
-                    <i class="fa-solid fa-arrow-left"></i>
-                </span>
+                <div class="flex items-center justify-end pt-3 border-t border-slate-200">
+                    <span class="inline-flex items-center gap-2 bg-blue-950 text-yellow-400 text-xs font-bold px-4 py-2.5 rounded-xl group-hover:bg-yellow-400 group-hover:text-blue-950 transition-colors shadow-md">
+                        <span>ابدأ اللعبة</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                </div>
             </div>
+
+            <!-- Lesson 3: Multiplying Rational Numbers (Rocket Launch Game) -->
+            <div onclick="playSound('click'); startGame('multiply-rationals')" class="glass-card rounded-3xl p-5 glow-effect cursor-pointer hover:border-blue-950 transition-all duration-300 transform hover:-translate-y-1.5 group text-right flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-14 h-14 rounded-2xl bg-yellow-400 border-2 border-yellow-500 flex items-center justify-center text-blue-950 text-2xl shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-rocket"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-black text-yellow-500 bg-blue-950 px-3 py-1.5 rounded-xl border border-yellow-400">
+                            <i class="fa-solid fa-rocket"></i> لعبة إطلاق الصاروخ الفضائي
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-black text-blue-950 mb-1.5">ضرب الأعداد النسبية</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-4 font-medium leading-relaxed">أجب عن أسئلة ضرب الكسور والأعداد النسبية لملء خزان الوقود وإطلاق الصاروخ للفضاء!</p>
+                </div>
+                <div class="flex items-center justify-end pt-3 border-t border-slate-200">
+                    <span class="inline-flex items-center gap-2 bg-blue-950 text-yellow-400 text-xs font-bold px-4 py-2.5 rounded-xl group-hover:bg-yellow-400 group-hover:text-blue-950 transition-colors shadow-md">
+                        <span>ابدأ اللعبة</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Lesson 4: Adding Rational Numbers (Football Penalty Game) -->
+            <div onclick="playSound('click'); startGame('add-rationals')" class="glass-card rounded-3xl p-5 glow-effect cursor-pointer hover:border-blue-950 transition-all duration-300 transform hover:-translate-y-1.5 group text-right flex flex-col justify-between">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-950 border-2 border-blue-900 flex items-center justify-center text-yellow-400 text-2xl shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-futbol"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-1.5 text-xs font-black text-yellow-500 bg-blue-950 px-3 py-1.5 rounded-xl border border-yellow-400">
+                            <i class="fa-solid fa-futbol"></i> لعبة تحدي ضربة الجزاء الرياضية
+                        </span>
+                    </div>
+                    <h2 class="text-xl font-black text-blue-950 mb-1.5">جمع الأعداد النسبية</h2>
+                    <p class="text-xs sm:text-sm text-slate-600 mb-4 font-medium leading-relaxed">سجل الأهداف في مرمى الخصم عبر الإجابة الصحيحة على أسئلة جمع وطرح الأعداد النسبية.</p>
+                </div>
+                <div class="flex items-center justify-end pt-3 border-t border-slate-200">
+                    <span class="inline-flex items-center gap-2 bg-blue-950 text-yellow-400 text-xs font-bold px-4 py-2.5 rounded-xl group-hover:bg-yellow-400 group-hover:text-blue-950 transition-colors shadow-md">
+                        <span>ابدأ اللعبة</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <div id="game-container" class="hidden w-full max-w-xl">
-        <button onclick="backToHome()" class="mb-4 inline-flex items-center gap-2 text-xs font-bold bg-white/10 hover:bg-white/20 px-4 py-2 rounded-xl border border-white/20 transition-colors">
+    <div id="game-container" class="hidden w-full max-w-2xl mx-auto">
+        <button onclick="playSound('click'); backToHome()" class="mb-2.5 inline-flex items-center gap-2 text-xs font-bold bg-white hover:bg-yellow-100 text-blue-950 px-4 py-2 rounded-xl border-2 border-yellow-400 shadow-sm transition-colors">
             <i class="fa-solid fa-arrow-right"></i>
-            <span>العودة لقائمة الألعاب</span>
+            <span>العودة لقائمة الدروس</span>
         </button>
 
-        <header class="text-center mb-6">
-            <div id="game-badge" class="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/30 px-4 py-1.5 rounded-full text-indigo-300 text-sm mb-3 font-semibold shadow-inner">
+        <div class="text-center mb-3">
+            <div id="game-badge" class="inline-flex items-center gap-2 bg-yellow-400 border-2 border-yellow-500 px-4 py-1.5 rounded-full text-blue-950 text-xs sm:text-sm mb-1.5 font-black shadow-sm">
                 <i class="fa-solid fa-brain"></i> تحدي الرياضيات التفاعلي
             </div>
-            <h1 id="game-title" class="text-2xl md:text-4xl font-black tracking-tight mb-2 bg-gradient-to-r from-amber-300 via-indigo-200 to-cyan-300 bg-clip-text text-transparent">
-                فك شفرة الخزنة السرية
-            </h1>
-            <p id="game-subtitle" class="text-indigo-200 text-xs md:text-sm">أجب بدقة لاستخراج الأرقام الأربعة وفتح الخزنة!</p>
-        </header>
+            <h2 id="game-title" class="text-xl sm:text-2xl font-black tracking-tight mb-1 text-blue-950">
+                عنوان اللعبة
+            </h2>
+            <p id="game-subtitle" class="text-slate-600 text-xs sm:text-sm font-semibold">تعليمات اللعبة هنا...</p>
+        </div>
 
-        <main class="glass-card rounded-3xl p-6 md:p-8 glow-effect relative overflow-hidden shadow-2xl">
+        <main class="glass-card rounded-3xl p-4 sm:p-6 glow-effect relative overflow-hidden shadow-xl border-2 border-yellow-400/60">
             
-            <!-- Vault Status Bar -->
-            <div class="flex items-center justify-between bg-black/30 rounded-2xl p-4 mb-6 border border-white/10">
-                <div class="flex items-center gap-3">
-                    <div id="vault-icon-container" class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 text-xl shadow-lg">
+            <!-- GAME 1 & 2: VAULT HEADER -->
+            <div id="vault-status-panel" class="hidden flex-col sm:flex-row items-center justify-between bg-blue-950 text-white rounded-2xl p-3 mb-4 border border-yellow-400/40 gap-3">
+                <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start">
+                    <div id="vault-icon-container" class="w-12 h-12 rounded-xl bg-yellow-400 border border-yellow-500 flex items-center justify-center text-blue-950 text-xl shadow-lg">
                         <i id="vault-lock-icon" class="fa-solid fa-lock"></i>
                     </div>
                     <div>
-                        <div class="text-xs text-slate-400 font-medium">حالة الخزنة</div>
-                        <div id="vault-status-text" class="text-sm md:text-base font-bold text-amber-400">مغلقة - بانتظار الشفرة</div>
+                        <div class="text-xs text-yellow-300 font-medium">حالة الخزنة</div>
+                        <div id="vault-status-text" class="text-sm font-bold text-yellow-400">مغلقة - بانتظار الشفرة</div>
                     </div>
                 </div>
-                <div class="text-center bg-indigo-950/60 px-4 py-2 rounded-xl border border-indigo-500/30">
-                    <div class="text-xs text-indigo-300">الوقـت المتبقي</div>
-                    <div id="timer-display" class="text-lg md:text-xl font-black text-cyan-300 font-mono">٠٣:٠٠</div>
+                <div class="text-center bg-blue-900 px-4 py-1.5 rounded-xl border border-blue-800 w-full sm:w-auto">
+                    <div class="text-xs text-yellow-300">الوقت المتبقي</div>
+                    <div id="timer-display" class="text-base sm:text-lg font-black text-yellow-400 font-mono">٠٣:٠٠</div>
                 </div>
             </div>
 
-            <!-- Vault Digits Slots (4 Digits) -->
-            <div class="mb-8">
-                <div class="text-center text-xs font-semibold text-indigo-200 uppercase tracking-wider mb-3">شفرة الخزنة (الأرقام الأربعة)</div>
-                <div class="grid grid-cols-4 gap-3 md:gap-4">
-                    <div id="digit-box-0" class="h-16 md:h-20 bg-slate-900/80 border-2 border-indigo-500/40 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-slate-500 shadow-inner transition-all duration-300">؟</div>
-                    <div id="digit-box-1" class="h-16 md:h-20 bg-slate-900/80 border-2 border-indigo-500/40 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-slate-500 shadow-inner transition-all duration-300">؟</div>
-                    <div id="digit-box-2" class="h-16 md:h-20 bg-slate-900/80 border-2 border-indigo-500/40 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-slate-500 shadow-inner transition-all duration-300">؟</div>
-                    <div id="digit-box-3" class="h-16 md:h-20 bg-slate-900/80 border-2 border-indigo-500/40 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-slate-500 shadow-inner transition-all duration-300">؟</div>
+            <!-- VAULT DIGITS SLOTS -->
+            <div id="vault-digits-panel" class="hidden mb-5">
+                <div class="text-center text-xs font-black text-blue-950 uppercase tracking-wider mb-2">شفرة الخزنة (الأرقام الأربعة)</div>
+                <div class="grid grid-cols-4 gap-2.5 max-w-sm mx-auto">
+                    <div id="digit-box-0" class="h-14 sm:h-16 bg-slate-100 border-2 border-yellow-500/60 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-slate-400 shadow-inner">؟</div>
+                    <div id="digit-box-1" class="h-14 sm:h-16 bg-slate-100 border-2 border-yellow-500/60 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-slate-400 shadow-inner">؟</div>
+                    <div id="digit-box-2" class="h-14 sm:h-16 bg-slate-100 border-2 border-yellow-500/60 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-slate-400 shadow-inner">؟</div>
+                    <div id="digit-box-3" class="h-14 sm:h-16 bg-slate-100 border-2 border-yellow-500/60 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-slate-400 shadow-inner">؟</div>
                 </div>
             </div>
 
-            <!-- Quiz & Questions Section -->
+            <!-- GAME 3: ROCKET LAUNCH VISUAL PANEL -->
+            <div id="rocket-status-panel" class="hidden rocket-game-bg text-white rounded-2xl p-4 mb-4 border border-yellow-400/50 text-center relative overflow-hidden shadow-inner">
+                <div class="flex justify-between items-center mb-2 px-2">
+                    <span class="text-xs text-yellow-300 font-bold"><i class="fa-solid fa-battery-three-quarters ml-1"></i> طاقة الصاروخ: <span id="rocket-fuel-text" class="text-yellow-400">٠٪</span></span>
+                    <span class="text-xs text-yellow-300 font-bold">المحطة: <span id="rocket-stage-text">١ / ٤</span></span>
+                </div>
+                <div class="py-2 flex flex-col items-center justify-center">
+                    <div id="rocket-icon" class="text-4xl text-yellow-400 transition-all duration-500 transform translate-y-1">
+                        <i class="fa-solid fa-rocket animate-pulse-slow"></i>
+                    </div>
+                    <div class="w-full bg-slate-800 h-3 rounded-full mt-2.5 overflow-hidden border border-yellow-500/40 max-w-xs">
+                        <div id="rocket-fuel-bar" class="bg-yellow-400 h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME 4: FOOTBALL GOAL VISUAL PANEL -->
+            <div id="football-status-panel" class="hidden football-pitch text-white rounded-2xl p-3.5 mb-4 border border-yellow-400/50 text-center relative overflow-hidden shadow-inner">
+                <div class="flex justify-between items-center mb-2 px-2">
+                    <span class="text-xs text-yellow-200 font-bold"><i class="fa-solid fa-futbol ml-1"></i> الأهداف المسجلة: <span id="football-score-text" class="text-yellow-400">٠ / ٤</span></span>
+                    <span class="text-xs text-yellow-200 font-bold">ضربة الجزاء: <span id="football-shot-text">١</span></span>
+                </div>
+                <div class="py-1 flex items-center justify-center">
+                    <div class="border-2 border-white/80 border-b-0 w-60 h-16 rounded-t-xl flex items-center justify-center relative bg-emerald-950/40">
+                        <div class="absolute inset-x-0 bottom-0 border-b border-white/60"></div>
+                        <span id="goal-status-msg" class="text-xs font-bold text-yellow-300">سدد الكرة بتحديد الإجابة الصحيحة!</span>
+                        <div id="ball-indicator" class="absolute bottom-1 right-8 text-white text-lg transition-all duration-500">
+                            <i class="fa-solid fa-futbol text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="quiz-section">
-                <div class="flex items-center justify-between mb-4">
-                    <span id="question-counter" class="text-xs font-bold bg-indigo-600/30 text-indigo-300 px-3 py-1 rounded-full border border-indigo-500/30">السؤال ١ من ٤</span>
-                    <span class="text-xs text-amber-300 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20 font-semibold"><i class="fa-solid fa-key text-[10px] ml-1"></i> الرقم المطلوب: <span id="target-digit-label" class="font-bold">؟</span></span>
+                <div class="flex items-center justify-between mb-3">
+                    <span id="question-counter" class="text-xs font-bold bg-blue-950 text-yellow-300 px-3 py-1.5 rounded-full border border-yellow-500/40">السؤال ١ من ٤</span>
+                    <span id="question-type-badge" class="text-xs text-blue-950 bg-yellow-400 px-3 py-1.5 rounded-full border border-yellow-500 font-black"><i class="fa-solid fa-circle-question text-[10px] ml-1"></i> اختيار من متعدد</span>
                 </div>
 
-                <div class="bg-indigo-950/40 border border-indigo-500/20 p-5 rounded-2xl mb-6 shadow-md">
-                    <h2 id="question-text" class="text-base md:text-lg font-bold text-slate-100 leading-relaxed mb-1">جاري تحميل السؤال...</h2>
-                    <p class="text-xs text-indigo-300">اختر الإجابة الصحيحة لفك هذا الرقم من الشفرة:</p>
+                <div class="bg-blue-50 border-2 border-blue-200 p-4 sm:p-5 rounded-2xl mb-4 shadow-sm">
+                    <h2 id="question-text" class="text-base sm:text-lg font-bold text-blue-950 leading-relaxed mb-1">جاري تحميل السؤال...</h2>
+                    <p class="text-xs text-slate-600 font-semibold">اختر الإجابة الصحيحة:</p>
                 </div>
 
-                <!-- Multiple Choice Options Container -->
-                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6"></div>
+                <!-- OPTIONS CONTAINER -->
+                <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4"></div>
 
-                <!-- Feedback Message Box -->
-                <div id="feedback-box" class="hidden p-4 rounded-xl text-sm font-semibold text-center mb-4 transition-all duration-300"></div>
+                <!-- FEEDBACK MESSAGE BOX -->
+                <div id="feedback-box" class="hidden p-3 rounded-xl text-sm font-semibold text-center mb-3 transition-all duration-300"></div>
 
-                <!-- Next Question Button -->
-                <button id="next-btn" onclick="nextQuestion()" class="hidden w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                <!-- NEXT QUESTION BUTTON -->
+                <button id="next-btn" onclick="playSound('click'); nextQuestion()" class="hidden w-full bg-blue-950 hover:bg-blue-900 text-yellow-400 font-black py-3 px-6 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 border-2 border-yellow-400">
                     <span>السؤال التالي</span>
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
             </div>
 
-            <!-- Game Over & Victory Screen -->
-            <div id="game-over-screen" class="hidden text-center py-6">
-                <div id="result-icon-bg" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 shadow-xl">
+            <div id="game-over-screen" class="hidden text-center py-3">
+                <div id="result-icon-bg" class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-3 shadow-xl bg-yellow-400 border-2 border-yellow-500 text-blue-950 animate-pulse-slow">
                     <i id="result-icon" class="fa-solid fa-trophy"></i>
                 </div>
-                <h2 id="result-title" class="text-2xl md:text-3xl font-black mb-2">تهانينا! فتحت الخزنة</h2>
-                <p id="result-desc" class="text-slate-300 text-sm md:text-base mb-6">لقد نجحت في اجتياز الأسئلة بدقة وفك الشفرة بالكامل في الوقت المناسب.</p>
+                <h2 id="result-title" class="text-2xl sm:text-3xl font-black mb-2 text-blue-950">تهانينا! حققت الإنجاز</h2>
+                <p id="result-desc" class="text-slate-600 text-sm sm:text-base mb-4 font-semibold">لقد نجحت في اجتياز كافة الأسئلة بنجاح تام.</p>
                 
-                <div class="bg-black/30 p-4 rounded-2xl border border-white/10 mb-6 flex justify-around">
+                <div class="bg-blue-50 p-3.5 rounded-2xl border-2 border-blue-200 mb-4 flex justify-around">
                     <div>
-                        <div class="text-xs text-slate-400">الوقت المستغرق</div>
-                        <div id="final-time" class="text-lg font-bold text-cyan-300 font-mono">٠٠:٠٠</div>
+                        <div class="text-xs text-slate-500 font-bold">الوقت المستغرق</div>
+                        <div id="final-time" class="text-base sm:text-lg font-black text-blue-950 font-mono">٠٠:٠٠</div>
                     </div>
-                    <div class="border-r border-white/10"></div>
+                    <div class="border-r border-blue-200"></div>
                     <div>
-                        <div class="text-xs text-slate-400">النتيجة النهائية</div>
-                        <div id="final-score" class="text-lg font-bold text-emerald-400">٤ / ٤</div>
+                        <div class="text-xs text-slate-500 font-bold">النتيجة النهائية</div>
+                        <div id="final-score" class="text-base sm:text-lg font-black text-emerald-600">٤ / ٤</div>
                     </div>
                 </div>
 
-                <div class="flex gap-3">
-                    <button onclick="restartCurrentGame()" class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2">
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button onclick="playSound('click'); restartCurrentGame()" class="flex-1 bg-blue-950 hover:bg-blue-900 text-yellow-400 font-black py-3 px-4 rounded-xl shadow-lg transition-all duration-300 flex items-center justify-center gap-2 border-2 border-yellow-400">
                         <i class="fa-solid fa-rotate-right"></i>
                         <span>إعادة اللعب</span>
                     </button>
-                    <button onclick="backToHome()" class="bg-white/10 hover:bg-white/20 text-white font-bold py-3.5 px-4 rounded-xl border border-white/20 transition-all duration-300 flex items-center justify-center gap-2">
+                    <button onclick="playSound('click'); backToHome()" class="bg-yellow-400 hover:bg-yellow-500 text-blue-950 font-black py-3 px-4 rounded-xl border-2 border-yellow-500 transition-all duration-300 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-house"></i>
-                        <span>القائمة</span>
+                        <span>القائمة الرئيسية</span>
                     </button>
                 </div>
             </div>
@@ -230,7 +339,96 @@
     </div>
 
     <script>
-        // Convert western numbers to Eastern Arabic numerals
+        // Web Audio API Synthesizer for sound effects
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playSound(type) {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, now);
+                    osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'correct') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(554.37, now + 0.08);
+                    osc.frequency.setValueAtTime(659.25, now + 0.16);
+                    osc.frequency.setValueAtTime(880, now + 0.24);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, now);
+                    osc.frequency.setValueAtTime(130, now + 0.15);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+                    osc.start(now);
+                    osc.stop(now + 0.35);
+                } else if (type === 'unlock') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.setValueAtTime(659.25, now + 0.1);
+                    osc.frequency.setValueAtTime(783.99, now + 0.2);
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3);
+                    gain.gain.setValueAtTime(0.25, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                } else if (type === 'rocket') {
+                    const bufferSize = ctx.sampleRate * 0.5;
+                    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        data[i] = Math.random() * 2 - 1;
+                    }
+                    const noise = ctx.createBufferSource();
+                    noise.buffer = buffer;
+                    const filter = ctx.createBiquadFilter();
+                    filter.type = 'lowpass';
+                    filter.frequency.setValueAtTime(800, now);
+                    filter.frequency.linearRampToValueAtTime(100, now + 0.5);
+                    noise.connect(filter);
+                    filter.connect(gain);
+                    gain.gain.setValueAtTime(0.3, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                    noise.start(now);
+                    noise.stop(now + 0.5);
+                } else if (type === 'goal') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(300, now);
+                    osc.frequency.exponentialRampToValueAtTime(600, now + 0.2);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                    osc.start(now);
+                    osc.stop(now + 0.3);
+                }
+            } catch(e) {
+                // Audio context policy fallback
+            }
+        }
+
         function toArabicDigits(str) {
             if (str === null || str === undefined) return '';
             const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
@@ -239,10 +437,11 @@
             });
         }
 
-        // Square Roots Estimation Questions Dataset
+        // --- LESSON 1: SQUARE ROOTS ESTIMATION (Vault Game) ---
         const rootsQuestions = [
             {
-                question: "ما هو التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'><span class='text-cyan-300 font-bold text-lg'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>١٧</span></span></span> ؟",
+                type: "mcq",
+                question: "ما هو التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>١٧</span></span> ؟",
                 options: [
                     { text: "أ) ٣", correct: false },
                     { text: "ب) ٤", correct: true },
@@ -253,7 +452,8 @@
                 explanation: "بما أن ١٧ يقع بين المربعين الكاملين ١٦ (جذره ٤) و ٢٥ (جذره ٥)، وبما أن ١٧ قريب جداً من ١٦، فإن تقديره لأقرب عدد كلي هو ٤."
             },
             {
-                question: "أوجد التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'><span class='text-cyan-300 font-bold text-lg'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٤٢</span></span></span> :",
+                type: "mcq",
+                question: "أوجد التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>٤٢</span></span> :",
                 options: [
                     { text: "أ) ٥", correct: false },
                     { text: "ب) ٦", correct: true },
@@ -264,18 +464,18 @@
                 explanation: "العدد ٤٢ يقع بين المربعين ٣٦ (جذره ٦) و ٤٩ (جذره ٧). وبما أن ٤٢ أقرب إلى ٣٦، فتقديرها لأقرب عدد كلي هو ٦."
             },
             {
-                question: "ما هو التقدير الأصح لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'><span class='text-cyan-300 font-bold text-lg'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٨٠</span></span></span> ؟",
+                type: "tf",
+                question: "<strong>صح أو خطأ:</strong> تقدير <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>٨٠</span></span> لأقرب عدد كلي يساوي ٩.",
                 options: [
-                    { text: "أ) ٧", correct: false },
-                    { text: "ب) ٨", correct: false },
-                    { text: "ج) ٩", correct: true },
-                    { text: "د) ١٠", correct: false }
+                    { text: "صحيح", correct: true },
+                    { text: "خطأ", correct: false }
                 ],
                 digit: "٨",
-                explanation: "العدد ٨٠ يقع بين المربعين ٦٤ (جذره ٨) و ٨١ (جذره ٩). وبما أن ٨٠ قريب جداً من ٨١، فتقديرها لأقرب عدد كلي هو ٩."
+                explanation: "العدد ٨٠ يقع بين ٦٤ و ٨١، وهو قريب جداً من ٨١ (جذره ٩)، لذا العبارة صحيحة."
             },
             {
-                question: "ما هو التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'><span class='text-cyan-300 font-bold text-lg'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>١٠</span></span></span> ؟",
+                type: "mcq",
+                question: "ما هو التقدير لأقرب عدد كلي لقيمة الجذر التربيعي: <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>١٠</span></span> ؟",
                 options: [
                     { text: "أ) ٢", correct: false },
                     { text: "ب) ٣", correct: true },
@@ -283,35 +483,36 @@
                     { text: "د) ٥", correct: false }
                 ],
                 digit: "٣",
-                explanation: "العدد ١٠ يقع بين المربعين ٩ (جذره ٣) و ١٦ (جذره ٤). وبما أن ١٠ أقرب بكثير إلى ٩، فتقديرها لأقرب عدد كلي هو ٣."
+                explanation: "العدد ١٠ يقع بين ٩ (جذره ٣) و ١٦ (جذره ٤)، وبما أنه أقرب إلى ٩ فتقديره ٣."
             }
         ];
 
-        // Real Numbers Questions Dataset
+        // --- LESSON 2: REAL NUMBERS (Vault Game) ---
         const realNumbersQuestions = [
             {
+                type: "mcq",
                 question: "أي من الأعداد الآتية يُعتبر <strong>عدداً غير نسبي</strong>؟",
                 options: [
                     { text: "أ) ٠,٢٥", correct: false },
-                    { text: "ب) <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٩</span></span></span>", correct: false },
-                    { text: "ج) <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>١١</span></span></span>", correct: true },
-                    { text: "د) <span class='math-frac text-cyan-300 font-bold'><span class='math-frac-num'>٤-</span><span class='math-frac-den'>٣</span></span>", correct: false }
+                    { text: "ب) <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>٩</span></span>", correct: false },
+                    { text: "ج) <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>١١</span></span>", correct: true },
+                    { text: "د) <span class='math-frac'><span class='math-frac-num'>٤-</span><span class='math-frac-den'>٣</span></span>", correct: false }
                 ],
                 digit: "٧",
-                explanation: "العدد ١١ ليس مربعاً كاملاً، وبالتالي جذره التربيعي عدد غير منتهي وغير دوري، فهو عدد غير نسبي."
+                explanation: "العدد ١١ ليس مربعاً كاملاً، وبالتالي جذره التربيعي عدد غير منتهي وغير دوري (غير نسبي)."
             },
             {
-                question: "ما هو تصنيف العدد <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٢٥</span></span></span> ضمن المجموعات العددية؟",
+                type: "tf",
+                question: "<strong>صح أو خطأ:</strong> العدد <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>٢٥</span></span> يُعتبر عدداً طبيعياً وكلياً وصحيحاً ونسبيناً وحقيقياً.",
                 options: [
-                    { text: "أ) غير نسبي فقط", correct: false },
-                    { text: "ب) طبيعي، كلي، صحيح، نسبي، وحقيقي", correct: true },
-                    { text: "ج) صحيح ونسبي فقط", correct: false },
-                    { text: "د) كلي وغير نسبي", correct: false }
+                    { text: "صحيح", correct: true },
+                    { text: "خطأ", correct: false }
                 ],
                 digit: "٢",
-                explanation: "بما أن <span class='math-radical'><span class='text-cyan-300 font-bold'>&#8730;<span style='border-top: 1px solid currentColor; padding-left: 3px;'>٢٥</span></span></span> يساوي ٥، فهو ينتمي لجميع المجموعات: الطبيعية، الكلية، الصحيحة، النسبية، والحقيقية."
+                explanation: "لأن <span class='math-radical'>&#8730;<span style='border-top: 2px solid currentColor; padding-left: 3px;'>٢٥</span></span> = ٥، وهو ينتمي لجميع هذه المجموعات."
             },
             {
+                type: "mcq",
                 question: "أي العبارات التالية صحيحة دائماً بالنسبة للأعداد الحقيقية؟",
                 options: [
                     { text: "أ) كل عدد نسبي هو عدد صحيح", correct: false },
@@ -320,10 +521,11 @@
                     { text: "د) كل عدد غير نسبي هو عدد كلي", correct: false }
                 ],
                 digit: "٥",
-                explanation: "مجموعة الأعداد الكلية (٠، ١، ٢، ...) محتواة بالكامل داخل مجموعة الأعداد الصحيحة."
+                explanation: "مجموعة الأعداد الكلية (٠، ١، ٢، ...) محتواة بالكامل داخل الأعداد الصحيحة."
             },
             {
-                question: "الكسر العشري الدوري <span class='repeating-decimal text-cyan-300 font-bold'>٠,٦<span class='repeating-bar'>٣</span></span> ينتمي إلى:",
+                type: "mcq",
+                question: "الكسر العشري الدوري <span class='repeating-decimal'>٠,٦<span class='repeating-bar'>٣</span></span> ينتمي إلى:",
                 options: [
                     { text: "أ) الأعداد غير النسبية", correct: false },
                     { text: "ب) الأعداد النسبية", correct: true },
@@ -331,7 +533,99 @@
                     { text: "د) الأعداد غير الحقيقية", correct: false }
                 ],
                 digit: "٩",
-                explanation: "الكسور العشرية المنتهية أو الدورية يمكن كتابتها على صورة بسط ومقام (أ/ب)، ولذلك فهي أعداد نسبية."
+                explanation: "الكسور العشرية الدورية يمكن كتابتها على صورة بسط ومقام، ولذلك فهي أعداد نسبية."
+            }
+        ];
+
+        // --- LESSON 3: MULTIPLYING RATIONAL NUMBERS (Rocket Game) ---
+        const multiplyRationalsQuestions = [
+            {
+                type: "mcq",
+                question: "أوجد ناتج ضرب العددين النسبيين: <span class='math-frac'><span class='math-frac-num'>٢</span><span class='math-frac-den'>٣</span></span> × <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٤</span></span> في أبسط صورة:",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٢</span></span>", correct: true },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٥</span><span class='math-frac-den'>٧</span></span>", correct: false },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>٦</span><span class='math-frac-den'>١٢</span></span>", correct: false },
+                    { text: "د) <span class='math-frac'><span class='math-frac-num'>٥</span><span class='math-frac-den'>١٢</span></span>", correct: false }
+                ],
+                explanation: "بضرب البسطين (٢ × ٣ = ٦) والمقامين (٣ × ٤ = ١٢)، ثم التبسيط بالقسمة على ٦ يصبح الناتج <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٢</span></span>."
+            },
+            {
+                type: "tf",
+                question: "<strong>صح أو خطأ:</strong> حاصل ضرب عدد نسبي موجب في عدد نسبي سالب هو عدد نسبي موجب.",
+                options: [
+                    { text: "صحيح", correct: false },
+                    { text: "خطأ", correct: true }
+                ],
+                explanation: "خطأ، لأن ضرب عدد موجب في عدد سالب ينتج عنه عدد نسبي سالب دائماً."
+            },
+            {
+                type: "mcq",
+                question: "أوجد ناتج: (<span class='math-frac'><span class='math-frac-num'>٣-</span><span class='math-frac-den'>٤</span></span>) × (<span class='math-frac'><span class='math-frac-num'>٨</span><span class='math-frac-den'>٩-</span></span>) :",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>٢</span><span class='math-frac-den'>٣</span></span>", correct: true },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٢-</span><span class='math-frac-den'>٣</span></span>", correct: false },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>٢٤</span><span class='math-frac-den'>٣٦</span></span>", correct: false },
+                    { text: "د) <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٣</span></span>", correct: false }
+                ],
+                explanation: "السالب × السالب = موجب. وبعد الاختصار المتبادل يصبح الناتج <span class='math-frac'><span class='math-frac-num'>٢</span><span class='math-frac-den'>٣</span></span>."
+            },
+            {
+                type: "mcq",
+                question: "ما هو النظير الضربي (مقلوب) للعدد <span class='math-frac'><span class='math-frac-num'>٥</span><span class='math-frac-den'>٧</span></span> ؟",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>٥-</span><span class='math-frac-den'>٧</span></span>", correct: false },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٧</span><span class='math-frac-den'>٥</span></span>", correct: true },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>٧-</span><span class='math-frac-den'>٥</span></span>", correct: false },
+                    { text: "د) ١", correct: false }
+                ],
+                explanation: "النظير الضربي لأي عدد نسبي يتم الحصول عليه بتبديل البسط والمقام، فيصبح <span class='math-frac'><span class='math-frac-num'>٧</span><span class='math-frac-den'>٥</span></span>."
+            }
+        ];
+
+        // --- LESSON 4: ADDING RATIONAL NUMBERS (Football Penalty Game) ---
+        const addRationalsQuestions = [
+            {
+                type: "mcq",
+                question: "أوجد ناتج الجمع: <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٤</span></span> + <span class='math-frac'><span class='math-frac-num'>٢</span><span class='math-frac-den'>٤</span></span> :",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٤</span></span>", correct: true },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٨</span></span>", correct: false },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٢</span></span>", correct: false },
+                    { text: "د) ١", correct: false }
+                ],
+                explanation: "بما أن المقامين متساويان (٤)، نجمع البسطين (١ + ٢ = ٣) فيكون الناتج <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٤</span></span>."
+            },
+            {
+                type: "tf",
+                question: "<strong>صح أو خطأ:</strong> لجمع عددين نسبيين مقسومان على مقامين مختلفين، يجب توحيد المقامين أولاً قبل عملية الجمع.",
+                options: [
+                    { text: "صحيح", correct: true },
+                    { text: "خطأ", correct: false }
+                ],
+                explanation: "صحيح تماماً، توحيد المقامات هو الخطوة الأساسية لجمع أو طرح الكسور ذات المقامات المختلفة."
+            },
+            {
+                type: "mcq",
+                question: "أوجد ناتج: <span class='math-frac'><span class='math-frac-num'>٢</span><span class='math-frac-den'>٣</span></span> + <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٦</span></span> :",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٩</span></span>", correct: false },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٥</span><span class='math-frac-den'>٦</span></span>", correct: true },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٢</span></span>", correct: false },
+                    { text: "د) <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٦</span></span>", correct: false }
+                ],
+                explanation: "نوحد المقامات إلى ٦، فنضرب البسط والمقام للكسر الأول في ٢ ليصبح <span class='math-frac'><span class='math-frac-num'>٤</span><span class='math-frac-den'>٦</span></span>، ثم نجمع <span class='math-frac'><span class='math-frac-num'>٤</span><span class='math-frac-den'>٦</span></span> + <span class='math-frac'><span class='math-frac-num'>١</span><span class='math-frac-den'>٦</span></span> = <span class='math-frac'><span class='math-frac-num'>٥</span><span class='math-frac-den'>٦</span></span>."
+            },
+            {
+                type: "mcq",
+                question: "ما هو المعكوس الجمعي (النظير الجمعي) للعدد <span class='math-frac'><span class='math-frac-num'>٣-</span><span class='math-frac-den'>٥</span></span> ؟",
+                options: [
+                    { text: "أ) <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٥</span></span>", correct: true },
+                    { text: "ب) <span class='math-frac'><span class='math-frac-num'>٥-</span><span class='math-frac-den'>٣</span></span>", correct: false },
+                    { text: "ج) <span class='math-frac'><span class='math-frac-num'>٣-</span><span class='math-frac-den'>٥</span></span>", correct: false },
+                    { text: "د) صفر", correct: false }
+                ],
+                explanation: "المعكوس الجمعي هو تغيير إشارة العدد فقط، فالعدد <span class='math-frac'><span class='math-frac-num'>٣-</span><span class='math-frac-den'>٥</span></span> معكوسه الجمعي هو <span class='math-frac'><span class='math-frac-num'>٣</span><span class='math-frac-den'>٥</span></span>."
             }
         ];
 
@@ -339,40 +633,60 @@
         let currentQuestionsList = rootsQuestions;
         let currentQuestionIndex = 0;
         let unlockedDigits = ["؟", "؟", "؟", "؟"];
+        let rocketFuel = 0;
+        let footballGoals = 0;
         let score = 0;
         let timerSeconds = 180;
         let timerInterval = null;
         let isAnswerLocked = false;
 
-        // Start specific game session
         function startGame(mode) {
             activeGameMode = mode;
             document.getElementById('home-screen').classList.add('hidden');
             document.getElementById('game-container').classList.remove('hidden');
 
+            document.getElementById('vault-status-panel').classList.add('hidden');
+            document.getElementById('vault-digits-panel').classList.add('hidden');
+            document.getElementById('rocket-status-panel').classList.add('hidden');
+            document.getElementById('football-status-panel').classList.add('hidden');
+
             if (mode === 'roots') {
                 currentQuestionsList = rootsQuestions;
                 document.getElementById('game-badge').innerHTML = `<i class="fa-solid fa-square-root-variable"></i> درس تقدير الجذور التربيعية`;
-                document.getElementById('game-title').innerText = "فك شفرة الجذور التربيعية";
+                document.getElementById('game-title').innerText = "تحدي فك شفرة الخزنة السرية";
                 document.getElementById('game-subtitle').innerText = "أجب بدقة عن أسئلة تقدير الجذور لأقرب عدد كلي لفتح الخزنة!";
-            } else {
+                document.getElementById('vault-status-panel').classList.remove('hidden');
+                document.getElementById('vault-digits-panel').classList.remove('hidden');
+            } else if (mode === 'real-numbers') {
                 currentQuestionsList = realNumbersQuestions;
                 document.getElementById('game-badge').innerHTML = `<i class="fa-solid fa-atom"></i> درس مجموعات الأعداد الحقيقية`;
-                document.getElementById('game-title').innerText = "فك شفرة الأعداد الحقيقية";
+                document.getElementById('game-title').innerText = "تحدي فك شفرة الخزنة السرية";
                 document.getElementById('game-subtitle').innerText = "أجب بدقة عن أسئلة تصنيف الأعداد الحقيقية والنسبية لفتح الخزنة!";
+                document.getElementById('vault-status-panel').classList.remove('hidden');
+                document.getElementById('vault-digits-panel').classList.remove('hidden');
+            } else if (mode === 'multiply-rationals') {
+                currentQuestionsList = multiplyRationalsQuestions;
+                document.getElementById('game-badge').innerHTML = `<i class="fa-solid fa-rocket"></i> درس ضرب الأعداد النسبية`;
+                document.getElementById('game-title').innerText = "لعبة إطلاق الصاروخ الفضائي";
+                document.getElementById('game-subtitle').innerText = "أجب عن الأسئلة لملء خزان الوقود وإطلاق الصاروخ بنجاح!";
+                document.getElementById('rocket-status-panel').classList.remove('hidden');
+            } else if (mode === 'add-rationals') {
+                currentQuestionsList = addRationalsQuestions;
+                document.getElementById('game-badge').innerHTML = `<i class="fa-solid fa-futbol"></i> درس جمع الأعداد النسبية`;
+                document.getElementById('game-title').innerText = "لعبة تحدي ضربة الجزاء الرياضية";
+                document.getElementById('game-subtitle').innerText = "سجل الأهداف في المرمى عبر الإجابة الصحيحة على أسئلة الجمع!";
+                document.getElementById('football-status-panel').classList.remove('hidden');
             }
 
             restartCurrentGame();
         }
 
-        // Return to home menu
         function backToHome() {
             clearInterval(timerInterval);
             document.getElementById('game-container').classList.add('hidden');
             document.getElementById('home-screen').classList.remove('hidden');
         }
 
-        // Timer countdown function
         function startTimer() {
             clearInterval(timerInterval);
             timerSeconds = 180;
@@ -381,16 +695,17 @@
                 let mins = Math.floor(timerSeconds / 60);
                 let secs = timerSeconds % 60;
                 let formattedTime = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-                document.getElementById('timer-display').innerText = toArabicDigits(formattedTime);
+                let timerDisp = document.getElementById('timer-display');
+                if (timerDisp) timerDisp.innerText = toArabicDigits(formattedTime);
                 
                 if (timerSeconds <= 0) {
                     clearInterval(timerInterval);
+                    playSound('wrong');
                     endGame(false);
                 }
             }, 1000);
         }
 
-        // Load current question onto DOM
         function loadQuestion() {
             isAnswerLocked = false;
             let q = currentQuestionsList[currentQuestionIndex];
@@ -398,7 +713,14 @@
             let currentQArabic = toArabicDigits(currentQuestionIndex + 1);
             let totalQArabic = toArabicDigits(currentQuestionsList.length);
             document.getElementById('question-counter').innerText = `السؤال ${currentQArabic} من ${totalQArabic}`;
-            document.getElementById('target-digit-label').innerText = `الخانة رقم ${currentQArabic}`;
+            
+            let typeBadge = document.getElementById('question-type-badge');
+            if (q.type === 'tf') {
+                typeBadge.innerHTML = `<i class="fa-solid fa-check-to-slot text-[10px] ml-1"></i> صح وخطأ`;
+            } else {
+                typeBadge.innerHTML = `<i class="fa-solid fa-circle-question text-[10px] ml-1"></i> اختيار من متعدد`;
+            }
+
             document.getElementById('question-text').innerHTML = q.question;
             
             let feedbackBox = document.getElementById('feedback-box');
@@ -411,14 +733,21 @@
             const optionLetters = ['أ', 'ب', 'ج', 'د'];
             q.options.forEach((opt, idx) => {
                 let btn = document.createElement('button');
-                btn.className = "w-full text-right bg-indigo-950/50 hover:bg-indigo-900/70 border border-indigo-500/30 hover:border-indigo-400 p-4 rounded-xl text-sm md:text-base font-semibold transition-all duration-200 flex items-center justify-between group shadow-sm";
-                btn.innerHTML = `<span>${opt.text}</span> <span class="w-6 h-6 rounded-full bg-indigo-900/60 border border-indigo-400/30 flex items-center justify-center text-xs text-indigo-300 group-hover:bg-indigo-600 group-hover:text-white transition-colors">${optionLetters[idx]}</span>`;
+                btn.className = "w-full text-right bg-white hover:bg-yellow-50 border-2 border-slate-200 hover:border-yellow-500 p-3 rounded-xl text-sm sm:text-base font-bold transition-all duration-200 flex items-center justify-between group shadow-sm text-blue-950";
+                
+                let labelSymbol = q.type === 'tf' ? (idx === 0 ? '✓' : '✗') : optionLetters[idx];
+                btn.innerHTML = `<span>${opt.text}</span> <span class="w-6 h-6 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-xs text-blue-950 group-hover:bg-yellow-400 group-hover:border-yellow-500 transition-colors font-black">${labelSymbol}</span>`;
                 btn.onclick = () => selectOption(opt.correct, btn);
                 optionsContainer.appendChild(btn);
             });
+
+            if (activeGameMode === 'multiply-rationals') {
+                document.getElementById('rocket-stage-text').innerText = `${toArabicDigits(currentQuestionIndex + 1)} / ٤`;
+            } else if (activeGameMode === 'add-rationals') {
+                document.getElementById('football-shot-text').innerText = toArabicDigits(currentQuestionIndex + 1);
+            }
         }
 
-        // Handle option selection
         function selectOption(isCorrect, selectedBtn) {
             if (isAnswerLocked) return;
             isAnswerLocked = true;
@@ -435,39 +764,83 @@
 
             if (isCorrect) {
                 score++;
-                selectedBtn.className = "w-full text-right bg-emerald-600/30 border-2 border-emerald-500 p-4 rounded-xl text-sm md:text-base font-semibold flex items-center justify-between shadow-md text-emerald-200";
+                selectedBtn.className = "w-full text-right bg-emerald-50 border-2 border-emerald-500 p-3 rounded-xl text-sm sm:text-base font-bold flex items-center justify-between shadow-md text-emerald-900";
                 
-                feedbackBox.className = "p-4 rounded-xl text-sm font-semibold text-center mb-4 bg-emerald-950/80 border border-emerald-500/40 text-emerald-300";
-                feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 ml-2"></i> إجابة صحيحة! تم استخراج الرقم <span class="text-amber-300 font-black text-base">(${q.digit})</span> بنجاح. <br><span class="text-xs text-emerald-200 mt-1 block font-normal">${q.explanation}</span>`;
+                feedbackBox.className = "p-3 rounded-xl text-sm font-semibold text-center mb-3 bg-emerald-50 border-2 border-emerald-300 text-emerald-800";
+                
+                if (activeGameMode === 'roots' || activeGameMode === 'real-numbers') {
+                    playSound('correct');
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 ml-2"></i> إجابة صحيحة! تم استخراج الرقم <span class="text-blue-950 font-black text-base">(${q.digit})</span> بنجاح. <br><span class="text-xs text-emerald-700 mt-1 block font-semibold">${q.explanation}</span>`;
 
-                let digitVal = q.digit;
-                unlockedDigits[currentQuestionIndex] = digitVal;
-                let digitBox = document.getElementById(`digit-box-${currentQuestionIndex}`);
-                digitBox.innerText = digitVal;
-                digitBox.className = "h-16 md:h-20 bg-amber-500/20 border-2 border-amber-400 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-amber-300 shadow-lg animate-pulse-slow";
+                    let digitVal = q.digit;
+                    unlockedDigits[currentQuestionIndex] = digitVal;
+                    let digitBox = document.getElementById(`digit-box-${currentQuestionIndex}`);
+                    digitBox.innerText = digitVal;
+                    digitBox.className = "h-14 sm:h-16 bg-yellow-400 border-2 border-yellow-500 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-blue-950 shadow-lg animate-pulse-slow";
+                } else if (activeGameMode === 'multiply-rationals') {
+                    playSound('rocket');
+                    rocketFuel += 25;
+                    document.getElementById('rocket-fuel-text').innerText = `${toArabicDigits(rocketFuel)}٪`;
+                    
+                    let rocketFuelBar = document.getElementById('rocket-fuel-bar');
+                    if (rocketFuelBar) {
+                        rocketFuelBar.style.width = rocketFuel + '%';
+                    }
+                    
+                    let rocketIcon = document.getElementById('rocket-icon');
+                    if (rocketIcon) {
+                        rocketIcon.className = "text-5xl text-yellow-400 transform -translate-y-2 transition-all duration-500";
+                    }
+                    
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-rocket text-emerald-600 ml-2"></i> إجابة صحيحة! اكتسب الصاروخ طاقة إضافية بنجاح. <br><span class="text-xs text-emerald-700 mt-1 block font-semibold">${q.explanation}</span>`;
+                } else if (activeGameMode === 'add-rationals') {
+                    playSound('goal');
+                    footballGoals++;
+                    document.getElementById('football-score-text').innerText = `${toArabicDigits(footballGoals)} / ٤`;
+                    document.getElementById('goal-status-msg').innerText = "هدف رائع في الشباك! ⚽";
+                    let ballInd = document.getElementById('ball-indicator');
+                    if (ballInd) {
+                        ballInd.style.transform = "translateX(-110px) translateY(-15px) scale(1.2)";
+                    }
+                    
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-futbol text-emerald-600 ml-2"></i> جوووول! إجابة صحيحة وسجلت هدفاً في المرمى. <br><span class="text-xs text-emerald-700 mt-1 block font-semibold">${q.explanation}</span>`;
+                }
 
                 if (currentQuestionIndex < currentQuestionsList.length - 1) {
                     document.getElementById('next-btn').classList.remove('hidden');
                 } else {
                     clearInterval(timerInterval);
-                    setTimeout(() => { endGame(true); }, 1500);
+                    setTimeout(() => { 
+                        if (activeGameMode === 'roots' || activeGameMode === 'real-numbers') {
+                            playSound('unlock');
+                        }
+                        endGame(true); 
+                    }, 1200);
                 }
             } else {
-                selectedBtn.className = "w-full text-right bg-rose-600/30 border-2 border-rose-500 p-4 rounded-xl text-sm md:text-base font-semibold flex items-center justify-between shadow-md text-rose-200";
+                playSound('wrong');
+                selectedBtn.className = "w-full text-right bg-rose-50 border-2 border-rose-500 p-3 rounded-xl text-sm sm:text-base font-bold flex items-center justify-between shadow-md text-rose-900";
                 
-                feedbackBox.className = "p-4 rounded-xl text-sm font-semibold text-center mb-4 bg-rose-950/80 border border-rose-500/40 text-rose-300";
-                feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 ml-2"></i> إجابة خاطئة! حاول التركيز في المرة القادمة. <br><span class="text-xs text-rose-200 mt-1 block font-normal">${q.explanation}</span>`;
+                feedbackBox.className = "p-3 rounded-xl text-sm font-semibold text-center mb-3 bg-rose-50 border-2 border-rose-300 text-rose-800";
+                
+                if (activeGameMode === 'roots' || activeGameMode === 'real-numbers') {
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 ml-2"></i> إجابة خاطئة! بقيت الخزنة مقفلة لهذه الخانة. <br><span class="text-xs text-rose-700 mt-1 block font-semibold">${q.explanation}</span>`;
+                } else if (activeGameMode === 'multiply-rationals') {
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 ml-2"></i> إجابة خاطئة! لم تكتسب طاقة لهذا السؤال. <br><span class="text-xs text-rose-700 mt-1 block font-semibold">${q.explanation}</span>`;
+                } else if (activeGameMode === 'add-rationals') {
+                    document.getElementById('goal-status-msg').innerText = "أخطأت المرمى! تصدى الحارس للكرة.";
+                    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 ml-2"></i> إجابة خاطئة! تصدى الحارس للكرة. <br><span class="text-xs text-rose-700 mt-1 block font-semibold">${q.explanation}</span>`;
+                }
 
                 if (currentQuestionIndex < currentQuestionsList.length - 1) {
                     document.getElementById('next-btn').classList.remove('hidden');
                 } else {
                     clearInterval(timerInterval);
-                    setTimeout(() => { endGame(false); }, 1500);
+                    setTimeout(() => { endGame(false); }, 1200);
                 }
             }
         }
 
-        // Proceed to next question
         function nextQuestion() {
             currentQuestionIndex++;
             if (currentQuestionIndex < currentQuestionsList.length) {
@@ -475,7 +848,6 @@
             }
         }
 
-        // Finish game and show results screen
         function endGame(isVictory) {
             document.getElementById('quiz-section').classList.add('hidden');
             let gameOverScreen = document.getElementById('game-over-screen');
@@ -494,43 +866,64 @@
             document.getElementById('final-score').innerText = `${toArabicDigits(score)} / ٤`;
 
             if (isVictory || score >= 3) {
-                resultIconBg.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 shadow-xl bg-amber-500/20 border border-amber-400/50 text-amber-400 animate-pulse-slow";
-                resultIcon.className = "fa-solid fa-unlock-keyhole";
-                resultTitle.innerText = "مبروك! تم فتح الخزنة بنجاح 🎉";
-                resultDesc.innerText = `أظهرت مهارة رائعة في الاستيعاب واستخراج أرقام الشفرة السرية (${unlockedDigits.join('')}).`;
+                resultIconBg.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-3 shadow-xl bg-yellow-400 border-2 border-yellow-500 text-blue-950 animate-pulse-slow";
                 
-                document.getElementById('vault-icon-container').className = "w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-xl shadow-lg";
-                document.getElementById('vault-lock-icon').className = "fa-solid fa-unlock";
-                document.getElementById('vault-status-text').innerText = "تم فتح الخزنة بنجاح!";
-                document.getElementById('vault-status-text').className = "text-sm md:text-base font-bold text-emerald-400";
+                if (activeGameMode === 'roots' || activeGameMode === 'real-numbers') {
+                    resultIcon.className = "fa-solid fa-unlock-keyhole";
+                    resultTitle.innerText = "مبروك! تم فتح الخزنة بنجاح 🎉";
+                    resultDesc.innerText = `أظهرت مهارة رائعة واستخرجت أرقام الشفرة السرية (${unlockedDigits.join('')}).`;
+                    document.getElementById('vault-icon-container').className = "w-12 h-12 rounded-xl bg-emerald-500 border border-emerald-600 flex items-center justify-center text-white text-xl shadow-lg";
+                    document.getElementById('vault-lock-icon').className = "fa-solid fa-unlock";
+                    document.getElementById('vault-status-text').innerText = "تم فتح الخزنة بنجاح!";
+                } else if (activeGameMode === 'multiply-rationals') {
+                    resultIcon.className = "fa-solid fa-space-shuttle";
+                    resultTitle.innerText = "إطلاق ناجح! انطلق الصاروخ للفضاء 🚀";
+                    resultDesc.innerText = "اكتمل خزان الوقود بنجاح تام بفضل إجاباتك الرياضية الممتازة.";
+                } else if (activeGameMode === 'add-rationals') {
+                    resultIcon.className = "fa-solid fa-award";
+                    resultTitle.innerText = "فوز مذهل! حققت كأس البطولات 🏆";
+                    resultDesc.innerText = `سجلت ${toArabicDigits(footballGoals)} أهداف متتالية في مرمى الخصم ببراعة.`;
+                }
             } else {
-                resultIconBg.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 shadow-xl bg-rose-500/20 border border-rose-400/50 text-rose-400";
-                resultIcon.className = "fa-solid fa-lock";
-                resultTitle.innerText = "انتهت المحاولة! بقيت الخزنة مغلقة";
-                resultDesc.innerText = "لم تتوصل لجميع أرقام الشفرة هذه المرة. راجع المفاهيم الرياضية وحاول مجدداً!";
-                
-                document.getElementById('vault-status-text').innerText = "الخزنة لا زالت مغلقة";
-                document.getElementById('vault-status-text').className = "text-sm md:text-base font-bold text-rose-400";
+                resultIconBg.className = "w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-3 shadow-xl bg-rose-100 border-2 border-rose-400 text-rose-600";
+                resultIcon.className = "fa-solid fa-triangle-exclamation";
+                resultTitle.innerText = "انتهت المحاولة! حاول مجدداً";
+                resultDesc.innerText = "لم تكتمل المتطلبات هذه المرة. راجع المفاهيم الرياضية وأعد المحاولة!";
             }
         }
 
-        // Restart current game session
         function restartCurrentGame() {
             currentQuestionIndex = 0;
             unlockedDigits = ["؟", "؟", "؟", "؟"];
+            rocketFuel = 0;
+            footballGoals = 0;
             score = 0;
             isAnswerLocked = false;
 
             for (let i = 0; i < 4; i++) {
                 let box = document.getElementById(`digit-box-${i}`);
-                box.innerText = "؟";
-                box.className = "h-16 md:h-20 bg-slate-900/80 border-2 border-indigo-500/40 rounded-2xl flex items-center justify-center text-2xl md:text-3xl font-black text-slate-500 shadow-inner transition-all duration-300";
+                if (box) {
+                    box.innerText = "؟";
+                    box.className = "h-14 sm:h-16 bg-slate-100 border-2 border-yellow-500/60 rounded-2xl flex items-center justify-center text-xl sm:text-2xl font-black text-slate-400 shadow-inner";
+                }
             }
 
-            document.getElementById('vault-icon-container').className = "w-12 h-12 rounded-xl bg-amber-500/25 border border-amber-400/40 flex items-center justify-center text-amber-400 text-xl shadow-lg";
-            document.getElementById('vault-lock-icon').className = "fa-solid fa-lock";
-            document.getElementById('vault-status-text').innerText = "مغلقة - بانتظار الشفرة";
-            document.getElementById('vault-status-text').className = "text-sm md:text-base font-bold text-amber-400";
+            let rocketBar = document.getElementById('rocket-fuel-bar');
+            if (rocketBar) rocketBar.style.width = '0%';
+            let rocketFuelTxt = document.getElementById('rocket-fuel-text');
+            if (rocketFuelTxt) rocketFuelTxt.innerText = '٠٪';
+
+            let ballInd = document.getElementById('ball-indicator');
+            if (ballInd) ballInd.style.transform = 'none';
+            let goalMsg = document.getElementById('goal-status-msg');
+            if (goalMsg) goalMsg.innerText = 'سدد الكرة بتحديد الإجابة الصحيحة!';
+
+            let vaultContainer = document.getElementById('vault-icon-container');
+            if (vaultContainer) {
+                vaultContainer.className = "w-12 h-12 rounded-xl bg-yellow-400 border border-yellow-500 flex items-center justify-center text-blue-950 text-xl shadow-lg";
+                document.getElementById('vault-lock-icon').className = "fa-solid fa-lock";
+                document.getElementById('vault-status-text').innerText = "مغلقة - بانتظار الشفرة";
+            }
 
             document.getElementById('quiz-section').classList.remove('hidden');
             document.getElementById('game-over-screen').classList.add('hidden');
