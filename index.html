@@ -11,7 +11,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- تهيئة الألوان والتنسيقات الجديدة العصريّة -->
+    <!-- تهيئة الألوان والتنسيقات العصريّة -->
     <script>
         tailwind.config = {
             theme: {
@@ -23,9 +23,9 @@
                         nassr: {
                             yellow: '#F59E0B',        /* أصفر ذهبي مشرق */
                             yellowHover: '#D97706',   /* ذهبي دافئ عند التمرير */
-                            blue: '#1E3A8A',          /* أزرق ملكي أنيق للمكونات الرئيسية */
-                            blueDark: '#0F172A',      /* أزرق داكن فخم للرأس والنصوص */
-                            blueLight: '#3B82F6',     /* أزرق فاتح للتفاعلات */
+                            blue: '#1E3A8A',          /* أزرق ملكي أنيق */
+                            blueDark: '#0F172A',      /* أزرق داكن فخم */
+                            blueLight: '#3B82F6',     /* أزرق فاتح */
                             gold: '#D97706'           /* درجة الذهبي للحدود */
                         }
                     }
@@ -160,37 +160,69 @@
         <section id="view-home" class="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
             <div class="lg:col-span-5 bg-white/95 backdrop-blur-md p-5 sm:p-7 rounded-3xl shadow-2xl border-2 border-nassr-yellow flex flex-col justify-between">
                 <div>
-                    <div class="text-center mb-5">
-                        <div class="inline-block p-4 bg-gradient-to-br from-nassr-blue to-nassr-blueLight text-nassr-yellow rounded-3xl mb-2 text-4xl shadow-xl shadow-nassr-blue/30 border-2 border-nassr-yellow">
+                    <div class="text-center mb-4">
+                        <div class="inline-block p-3.5 bg-gradient-to-br from-nassr-blue to-nassr-blueLight text-nassr-yellow rounded-3xl mb-2 text-3xl shadow-xl shadow-nassr-blue/30 border-2 border-nassr-yellow">
                             <i class="fa-solid fa-graduation-cap"></i>
                         </div>
-                        <h2 class="text-xl sm:text-2xl font-black text-nassr-blue">بوابة المتسابق والمفكر</h2>
-                        <p class="text-gray-600 text-xs sm:text-sm font-bold mt-1">سجل بياناتك لدخول عالم التحديات الرياضية</p>
+                        <h2 class="text-xl font-black text-nassr-blue">بوابة المفكر المبدع</h2>
+                        <p class="text-gray-600 text-xs font-bold mt-1">اختر طريقة الدخول للبدء في التحدي</p>
                     </div>
 
-                    <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                    <!-- أزرار التنقل بين التسجيل الجديد ودخول بالرقم التعريفي -->
+                    <div class="grid grid-cols-2 gap-2 p-1.5 bg-gray-100 rounded-2xl mb-5 text-xs font-bold">
+                        <button id="tab-btn-register" onclick="playSound('click'); switchAuthTab('register')" class="py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span>تسجيل جديد</span>
+                        </button>
+                        <button id="tab-btn-login" onclick="playSound('click'); switchAuthTab('login')" class="py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <span>دخول سريع</span>
+                        </button>
+                    </div>
+
+                    <!-- نموذج التسجيل لأول مرة -->
+                    <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">اسم المتسابق الثلاثي</label>
+                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">اسم المفكر المبدع</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
                                     <i class="fa-solid fa-user text-sm"></i>
                                 </span>
-                                <input type="text" id="contestant-name" required placeholder="مثال: خالد بن عبد العزيز" 
+                                <input type="text" id="reg-name" required placeholder="مثال: عبد العزيز السلمي" 
                                     class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">الرقم التعريفي الفريد</label>
+                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">اختر رقمك التعريفي الخاص (من اختيارك)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
+                                    <i class="fa-solid fa-key text-sm"></i>
+                                </span>
+                                <input type="text" id="reg-id" required placeholder="مثال: 5544 أو رقم السجل" 
+                                    class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
+                            </div>
+                            <p class="text-[11px] text-gray-500 font-bold mt-1">احفظ هذا الرقم جيداً لتستطيع الدخول به في أي وقت لاحقاً.</p>
+                        </div>
+                        <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm border-2 border-nassr-gold">
+                            <span>إنشاء الحساب والانطلاق</span>
+                            <i class="fa-solid fa-rocket text-base"></i>
+                        </button>
+                    </form>
+
+                    <!-- نموذج الدخول السريع بالرقم التعريفي -->
+                    <form id="login-form" onsubmit="handleQuickLogin(event)" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">أدخل رقمك التعريفي الخاص</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
                                     <i class="fa-solid fa-id-card text-sm"></i>
                                 </span>
-                                <input type="text" id="contestant-id" required placeholder="مثال: ١٢٣٤٥" 
+                                <input type="text" id="login-id" required placeholder="أدخل الرقم الذي اخترته عند التسجيل" 
                                     class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
                             </div>
                         </div>
-                        <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black py-3.5 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm sm:text-base border-2 border-nassr-gold">
-                            <span>انطلق إلى تحديات الألعاب</span>
+                        <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm border-2 border-nassr-yellow">
+                            <span>دخول إلى حسابي</span>
                             <i class="fa-solid fa-arrow-left text-base"></i>
                         </button>
                     </form>
@@ -216,7 +248,7 @@
                             </div>
                             <div>
                                 <h3 class="text-lg sm:text-xl font-black text-nassr-yellow">لوحة الصدارة العامة</h3>
-                                <p class="text-gray-200 text-xs font-semibold">مجموع النقاط الإجمالية في جميع الدروس</p>
+                                <p class="text-gray-200 text-xs font-semibold">تظهر أسماء المفكرين المبدعين ونقاطهم الإجمالية</p>
                             </div>
                         </div>
                         <div class="flex gap-2">
@@ -234,8 +266,7 @@
                             <thead>
                                 <tr class="bg-nassr-blueLight text-nassr-yellow font-black border-b border-nassr-yellow/30">
                                     <th class="p-3">الترتيب</th>
-                                    <th class="p-3">اسم الطالب</th>
-                                    <th class="p-3">الرقم التعريفي</th>
+                                    <th class="p-3">اسم المفكر المبدع</th>
                                     <th class="p-3">الدروس المكتملة</th>
                                     <th class="p-3">مجموع النقاط</th>
                                     <th id="admin-actions-header" class="p-3 hidden text-center">إجراءات</th>
@@ -332,7 +363,7 @@
                 </div>
 
                 <div class="space-y-3 py-1">
-                    <p class="text-sm sm:text-base font-bold text-gray-700">تشهد المبادرة بأن المتسابق البطل:</p>
+                    <p class="text-sm sm:text-base font-bold text-gray-700">تشهد المبادرة بأن المفكر المبدع:</p>
                     <div>
                         <span id="print-name" class="text-xl sm:text-2xl font-black text-nassr-blue border-b-4 border-nassr-yellow inline-block px-6 py-1"></span>
                     </div>
@@ -431,7 +462,7 @@
     <div id="printable-all-results" class="hidden">
         <div class="p-8 text-center">
             <h1 class="text-2xl font-black mb-1">مبادرة الرياضيات - الصف الثاني متوسط</h1>
-            <h2 class="text-lg font-bold text-gray-700 mb-2">كشف درجات ونتائج جميع المتسابقين الإجمالية</h2>
+            <h2 class="text-lg font-bold text-gray-700 mb-2">كشف درجات ونتائج جميع المفكرين المبدعين الإجمالية</h2>
             <p class="text-xs text-gray-600 font-bold mb-1">إعداد الأستاذ السلمي</p>
             <p class="text-xs text-gray-500 mb-6">تاريخ الاستخراج: <span id="print-all-date"></span></p>
 
@@ -439,8 +470,7 @@
                 <thead>
                     <tr class="bg-gray-100">
                         <th class="border border-gray-300 p-2">#</th>
-                        <th class="border border-gray-300 p-2">اسم المتسابق</th>
-                        <th class="border border-gray-300 p-2">الرقم التعريفي</th>
+                        <th class="border border-gray-300 p-2">اسم المفكر المبدع</th>
                         <th class="border border-gray-300 p-2">الدروس المكتملة</th>
                         <th class="border border-gray-300 p-2">مجموع الدرجات الكلية</th>
                     </tr>
@@ -483,7 +513,6 @@
                 const now = audioCtx.currentTime;
 
                 if (type === 'click') {
-                    // صوت نقرة زر خفيف
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(600, now);
                     osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
@@ -492,7 +521,6 @@
                     osc.start(now);
                     osc.stop(now + 0.05);
                 } else if (type === 'success') {
-                    // صوت نجاح وفوز تفاعلي (نغمة صاعدة مبهجة)
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(440, now);
                     osc.frequency.setValueAtTime(554.37, now + 0.1);
@@ -503,7 +531,6 @@
                     osc.start(now);
                     osc.stop(now + 0.5);
                 } else if (type === 'error') {
-                    // صوت خطأ تنبيهي خفيف
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(220, now);
                     osc.frequency.setValueAtTime(160, now + 0.15);
@@ -512,9 +539,7 @@
                     osc.start(now);
                     osc.stop(now + 0.3);
                 }
-            } catch(e) {
-                // تجنب أي أخطاء في المتصفحات التي تقيد التشغيل التلقائي قبل التفاعل
-            }
+            } catch(e) {}
         }
 
         function toArabicDigits(num) {
@@ -850,10 +875,30 @@
             localStorage.setItem('math_users_scores', JSON.stringify(data));
         }
 
+        function switchAuthTab(tab) {
+            const regBtn = document.getElementById('tab-btn-register');
+            const loginBtn = document.getElementById('tab-btn-login');
+            const regForm = document.getElementById('register-form');
+            const loginForm = document.getElementById('login-form');
+
+            if(tab === 'register') {
+                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
+                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+            } else {
+                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
+                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+            }
+        }
+
         function goHome() {
             currentUser = null;
             activeLessonKey = null;
             document.getElementById('nav-user-info').classList.add('hidden');
+            document.getElementById('register-form').reset();
             document.getElementById('login-form').reset();
             document.getElementById('view-home').classList.remove('hidden');
             document.getElementById('view-lessons').classList.add('hidden');
@@ -862,20 +907,57 @@
             renderLeaderboard();
         }
 
-        function handleLogin(e) {
+        // تسجيل مفكر جديد لأول مرة
+        function handleRegister(e) {
             e.preventDefault();
-            const name = document.getElementById('contestant-name').value.trim();
-            const id = document.getElementById('contestant-id').value.trim();
+            const name = document.getElementById('reg-name').value.trim();
+            const id = document.getElementById('reg-id').value.trim();
+
             if(!name || !id) return;
 
+            const scores = getUsersScores();
+            
+            // التأكد إذا كان الرقم التعريفي مأخوذاً مسبقاً
+            if(scores[id]) {
+                showMsg("الرقم التعريفي مستخدم", "هذا الرقم التعريفي مسجل مسبقاً لمفكر آخر، يرجى اختيار رقم آخر أو استخدام الدخول السريع.", "error");
+                return;
+            }
+
+            // إنشاء الحساب الجديد
+            scores[id] = { name: name, id: id, lessons: {} };
+            saveUsersScores(scores);
+
             currentUser = { name, id };
-            document.getElementById('display-username').textContent = name;
+            loginUserSuccess();
+        }
+
+        // دخول سريع بالرقم التعريفي فقط
+        function handleQuickLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('login-id').value.trim();
+
+            if(!id) return;
+
+            const scores = getUsersScores();
+
+            if(!scores[id]) {
+                showMsg("رقم تعريفي غير موجود", "لم نجد حساباً بهذا الرقم التعريفي. يرجى التأكد من الرقم أو إنشاء حساب جديد من تبويب (تسجيل جديد).", "error");
+                return;
+            }
+
+            currentUser = { name: scores[id].name, id: id };
+            loginUserSuccess();
+        }
+
+        function loginUserSuccess() {
+            document.getElementById('display-username').textContent = currentUser.name;
             document.getElementById('nav-user-info').classList.remove('hidden');
-            document.getElementById('welcome-name').textContent = name;
+            document.getElementById('welcome-name').textContent = currentUser.name;
 
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-lessons').classList.remove('hidden');
             renderLessons();
+            renderLeaderboard();
         }
 
         function logout() {
@@ -910,7 +992,6 @@
                 usersList.push({
                     keyId: key,
                     name: u.name,
-                    id: u.id,
                     totalScore: totalScore,
                     completedCount: completedCount
                 });
@@ -918,10 +999,10 @@
 
             usersList.sort((a, b) => b.totalScore - a.totalScore);
 
-            const colCount = isAdmin ? 6 : 5;
+            const colCount = isAdmin ? 5 : 4;
 
             if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${colCount}" class="p-6 text-center text-gray-300 font-bold">لا توجد نتائج مسجلة حتى الآن. انطلق وكن أول المتصدرين!</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="${colCount}" class="p-6 text-center text-gray-300 font-bold">لا توجد نتائج مسجلة حتى الآن. كن أول المفكرين المبدعين المتصدرين!</td></tr>`;
                 return;
             }
 
@@ -933,7 +1014,7 @@
 
                 let deleteBtnHtml = isAdmin 
                     ? `<td class="p-3 text-center">
-                        <button onclick="playSound('click'); deleteContestant('${user.keyId}', '${user.name}')" class="bg-red-500/20 hover:bg-red-600 text-red-300 hover:text-white p-1.5 rounded-lg transition border border-red-500/30 text-xs active:scale-95" title="حذف المتسابق">
+                        <button onclick="playSound('click'); deleteContestant('${user.keyId}', '${user.name}')" class="bg-red-500/20 hover:bg-red-600 text-red-300 hover:text-white p-1.5 rounded-lg transition border border-red-500/30 text-xs active:scale-95" title="حذف المفكر">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                       </td>` 
@@ -942,8 +1023,7 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-white/5 transition">
                         <td class="p-3 text-nassr-yellow font-black">${rankBadge}</td>
-                        <td class="p-3">${user.name}</td>
-                        <td class="p-3 font-mono text-gray-300">${toArabicDigits(user.id)}</td>
+                        <td class="p-3 text-sm font-black text-white">${user.name}</td>
                         <td class="p-3"><span class="px-2.5 py-1 bg-white/10 rounded-full text-xs">${toArabicDigits(user.completedCount)} / ٧</span></td>
                         <td class="p-3 text-nassr-yellow font-black text-base">${toArabicDigits(user.totalScore)}</td>
                         ${deleteBtnHtml}
@@ -954,21 +1034,21 @@
 
         function deleteContestant(userId, userName) {
             if(!isAdmin) return;
-            if(confirm(`هل أنت تأكد من حذف المتسابق (${userName}) بشكل نهائي من اللوحة؟`)) {
+            if(confirm(`هل أنت تأكد من حذف المفكر (${userName}) بشكل نهائي من اللوحة؟`)) {
                 const scores = getUsersScores();
                 delete scores[userId];
                 saveUsersScores(scores);
                 renderLeaderboard();
-                showMsg("تم الحذف بنجاح", `تم حذف المتسابق ${userName} من الكشف.`, "success");
+                showMsg("تم الحذف بنجاح", `تم حذف المفكر المبدع ${userName} من الكشف.`, "success");
             }
         }
 
         function clearAllScores() {
             if(!isAdmin) return;
-            if(confirm("تنبيه: هل أنت متأكد من مسح جميع نتائج المتسابقين وإعادة تصفير الجدول بالكامل؟")) {
+            if(confirm("تنبيه: هل أنت متأكد من مسح جميع نتائج المفكرين وإعادة تصفير الجدول بالكامل؟")) {
                 localStorage.removeItem('math_users_scores');
                 renderLeaderboard();
-                showMsg("تم المسح الكامل", "تم مسح كشف جميع المتسابقين بنجاح.", "success");
+                showMsg("تم المسح الكامل", "تم مسح كشف جميع المفكرين بنجاح.", "success");
             }
         }
 
@@ -1087,9 +1167,9 @@
             if(isCorrect) {
                 currentScore++;
                 document.getElementById('quiz-score-badge').textContent = `النتيجة: ${toArabicDigits(currentScore)}`;
-                playSound('success'); // تشغيل صوت النجاح
+                playSound('success');
             } else {
-                playSound('error'); // تشغيل صوت الخطأ والتنبيه
+                playSound('error');
             }
 
             q.options.forEach((_, i) => {
@@ -1247,7 +1327,6 @@
                 }
                 usersList.push({
                     name: u.name,
-                    id: u.id,
                     totalScore: totalScore,
                     completedCount: completedCount
                 });
@@ -1256,14 +1335,13 @@
             usersList.sort((a, b) => b.totalScore - a.totalScore);
 
             if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center">لا توجد بيانات مسجلة.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center">لا توجد بيانات مسجلة.</td></tr>`;
             } else {
                 usersList.forEach((user, idx) => {
                     tbody.innerHTML += `
                         <tr>
                             <td class="border border-gray-300 p-2 text-center">${toArabicDigits(idx + 1)}</td>
-                            <td class="border border-gray-300 p-2">${user.name}</td>
-                            <td class="border border-gray-300 p-2 font-mono">${toArabicDigits(user.id)}</td>
+                            <td class="border border-gray-300 p-2 font-bold">${user.name}</td>
                             <td class="border border-gray-300 p-2 text-center">${toArabicDigits(user.completedCount)} / ٧</td>
                             <td class="border border-gray-300 p-2 text-center font-bold">${toArabicDigits(user.totalScore)}</td>
                         </tr>
