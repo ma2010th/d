@@ -11,6 +11,10 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Firebase SDK (Google Cloud Database) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <!-- تهيئة الألوان والتنسيقات العصريّة -->
     <script>
         tailwind.config = {
@@ -467,8 +471,24 @@
         <p class="font-bold text-emerald-700 mt-0.5 text-xs">إعداد الأستاذ عبدالمحيي السلمي</p>
     </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT LOGIC & FIREBASE CLOUD SYNC -->
     <script>
+        // ضع بيانات مشروعك في فايربيس هنا بدلاً من القيم الافتراضية
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // تهيئة فايربيس
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.firestore();
+
         const TEACHER_ADMIN_ID = "12344321";
         let isAdmin = false;
         let currentUser = null;
@@ -477,122 +497,266 @@
         let currentScore = 0;
         let selectedOptionIndex = null;
         let isAnswerSubmitted = false;
+        let allUsersCache = {};
 
-        // قاعدة بيانات الدروس والأسئلة (قابلة للتعديل من المعلم)
+        // قاعدة بيانات الدروس والأسئلة الشاملة
         let lessonsData = {
             "lesson-1": {
+                title: "الأعداد النسبية",
+                icon: "fa-divide",
+                color: "from-blue-600 to-indigo-700",
+                questions: [
+                    {
+                        title: "أي من الأعداد الآتية يعتبر عدداً نسبياً؟",
+                        options: ["<span class=\"sqrt\"><span>٧</span></span>", "<span class=\"fraction\"><span>٣</span><span>٤</span></span>", "العدد π", "جذر ١٠"],
+                        correct: 1,
+                        explanation: "العدد النسبي هو الذي يمكن كتابته على صورة كسر أ/ب حيث ب لا تساوي صفراً."
+                    },
+                    {
+                        title: "اكتب العدد الكسري ٢ ١/٢ على صورة كسر عشري:",
+                        options: ["٢٫٥", "٢٫٢٥", "٢٫١", "٢٫٧٥"],
+                        correct: 0,
+                        explanation: "نصف الواحد يساوي ٠٫٥، إذن العدد هو ٢٫٥."
+                    },
+                    {
+                        title: "اكتب الكسر العشري ٠٫٦ على صورة كسر أعتادي في أبسط صورة:",
+                        options: ["<span class=\"fraction\"><span>١</span><span>٢</span></span>", "<span class=\"fraction\"><span>٣</span><span>٥</span></span>", "<span class=\"fraction\"><span>٢</span><span>٣</span></span>", "<span class=\"fraction\"><span>١</span><span>٣</span></span>"],
+                        correct: 1,
+                        explanation: "٠٫٦ = ٦/١٠، وبالقسمة على ٢ يُصبح ٣/٥."
+                    },
+                    {
+                        title: "العدد ٤- كمكتبة كسرية يساوي:",
+                        options: ["<span class=\"fraction\"><span>٤-</span><span>١</span></span>", "<span class=\"fraction\"><span>١</span><span>٤</span></span>", "<span class=\"fraction\"><span>٨</span><span>٢-</span></span>", "أ و ج صحيحتان"],
+                        correct: 3,
+                        explanation: "أي عدد صحيح مقامه ١، ويمكن كتابته بأشكال مكافئة عديدة."
+                    },
+                    {
+                        title: "ما هو المعكوس الجمعي للعدد -٣/٥؟",
+                        options: ["٣/٥-", "٣/٥", "٥/٣", "٥/٣-"],
+                        correct: 1,
+                        explanation: "المعكوس الجمعي يعكس إشارة العدد، ومعكوس -٣/٥ هو ٣/٥."
+                    }
+                ]
+            },
+            "lesson-2": {
+                title: "مقارنة الأعداد النسبية وترتيبها",
+                icon: "fa-scale-balanced",
+                color: "from-sky-600 to-blue-800",
+                questions: [
+                    {
+                        title: "قارن بين العددين: ٠٫٧٥ و ٣/٤",
+                        options: ["٠٫٧٥ أكبر", "٣/٤ أكبر", "متساويان", "لا يمكن المقارنة"],
+                        correct: 2,
+                        explanation: "الكسر الاعتيادي ٣/٤ يكافئ تماماً الكسر العشري ٠٫٧٥."
+                    },
+                    {
+                        title: "أي الإشارات التالية صحيحة للمقارنة بين -٢/٣ و -١/٢؟",
+                        options: [">", "<", "=", "لا شيء"],
+                        correct: 1,
+                        explanation: "في الأعداد السالبة، العدد الأقرب للصفر هو الأكبر، إذن -١/٢ أكبر من -٢/٣."
+                    },
+                    {
+                        title: "رتب الأعداد التالية تصاعدياً: ٠٫٥، ١/٣، ٠٫٢",
+                        options: ["١/٣، ٠٫٢، ٠٫٥", "٠٫٢، ١/٣، ٠٫٥", "٠٫٥، ٠٫٢، ١/٣", "١/٣، ٠٫٥، ٠٫٢"],
+                        correct: 1,
+                        explanation: "٠٫٢ = ٠٫٢، ١/٣ ≈ ٠٫٣٣، ٠٫٥ = ٠٫٥، إذن الترتيب التصاعدي هو ٠٫٢، ١/٣، ٠٫٥."
+                    },
+                    {
+                        title: "أي الأعداد التالية أكبر من ٠٫٦؟",
+                        options: ["٠٫٥٨", "٢/٣", "٤/٧", "٠٫٥٩"],
+                        correct: 1,
+                        explanation: "٢/٣ يعادل تقريباً ٠٫٦٦٧ وهو أكبر من ٠٫٦."
+                    },
+                    {
+                        title: "الرمز المناسب لمقارنة -٥ و -٢ هو:",
+                        options: [">", "<", "=", "أكبر أو يساوي"],
+                        correct: 1,
+                        explanation: "-٥ أصغر من -٢ لأنها تقع إلى اليسار منها على خط الاعداد."
+                    }
+                ]
+            },
+            "lesson-3": {
+                title: "ضرب الأعداد النسبية وقسمتها",
+                icon: "fa-xmark",
+                color: "from-emerald-600 to-teal-700",
+                questions: [
+                    {
+                        title: "أوجد ناتج ضرب: (<span class=\"fraction\"><span>١</span><span>٢</span></span>) × (<span class=\"fraction\"><span>٢</span><span>٣</span></span>)",
+                        options: ["<span class=\"fraction\"><span>١</span><span>٣</span></span>", "<span class=\"fraction\"><span>٣</span><span>٥</span></span>", "<span class=\"fraction\"><span>٣</span><span>٢</span></span>", "<span class=\"fraction\"><span>٢</span><span>٦</span></span>"],
+                        correct: 0,
+                        explanation: "نضرب البسط في البسط والمقام في المقام: (١×٢)/(٢×٣) = ٢/٦ = ١/٣."
+                    },
+                    {
+                        title: "ما ناتج قسمة: (<span class=\"fraction\"><span>٣</span><span>٤</span></span>) ÷ (<span class=\"fraction\"><span>١</span><span>٢</span></span>)؟",
+                        options: ["<span class=\"fraction\"><span>٣</span><span>٨</span></span>", "<span class=\"fraction\"><span>٣</span><span>٢</span></span>", "<span class=\"fraction\"><span>٢</span><span>٣</span></span>", "٢"],
+                        correct: 1,
+                        explanation: "نضرب الكسر الأول في مقلوب الكسر الثاني: (٣/٤) × (٢/١) = ٦/٤ = ٣/٢."
+                    },
+                    {
+                        title: "حاصل ضرب عدد نسبي في مقلوبه يساوي دائماً:",
+                        options: ["صفر", "١", "نفس العدد", "١-"],
+                        correct: 1,
+                        explanation: "أي عدد في مقلوبه يساوي الواحد الصحيح (باستثناء الصفر)."
+                    },
+                    {
+                        title: "عند ضرب عددين نسبيين إشارتيهما مختلفتان، تكون إشارة الناتج:",
+                        options: ["موجبة", "سالبة", "صفر", "تعتمد على الأكبر"],
+                        correct: 1,
+                        explanation: "اختلاف الإشارات في الضرب والقسمة يعطي دائماً ناتجاً سالباً."
+                    },
+                    {
+                        title: "أوجد ناتج: (-٢٫٥) × ٢",
+                        options: ["٥", "٥-", "٠٫٥", "٤-"],
+                        correct: 1,
+                        explanation: "٢٫٥ × ٢ = ٥، وبما أن الإشارتان مختلفتان فالناتج -٥."
+                    }
+                ]
+            },
+            "lesson-4": {
+                title: "جمع الأعداد النسبية وطرحها",
+                icon: "fa-plus-minus",
+                color: "from-purple-600 to-indigo-800",
+                questions: [
+                    {
+                        title: "أوجد ناتج: <span class=\"fraction\"><span>٢</span><span>٧</span></span> + <span class=\"fraction\"><span>٣</span><span>٧</span></span>",
+                        options: ["<span class=\"fraction\"><span>٥</span><span>١٤</span></span>", "<span class=\"fraction\"><span>٥</span><span>٧</span></span>", "<span class=\"fraction\"><span>٦</span><span>٧</span></span>", "<span class=\"fraction\"><span>١</span><span>٧</span></span>"],
+                        correct: 1,
+                        explanation: "المقامات متشابهة، نجمع البسطين ونبقي المقام كما هو: (٢+٣)/٧ = ٥/٧."
+                    },
+                    {
+                        title: "أوجد ناتج: <span class=\"fraction\"><span>١</span><span>٢</span></span> + <span class=\"fraction\"><span>١</span><span>٤</span></span>",
+                        options: ["<span class=\"fraction\"><span>٢</span><span>٦</span></span>", "<span class=\"fraction\"><span>٣</span><span>٤</span></span>", "<span class=\"fraction\"><span>١</span><span>٦</span></span>", "<span class=\"fraction\"><span>٢</span><span>٢</span></span>"],
+                        correct: 1,
+                        explanation: "نوحد المقام إلى ٤: ١/٢ يصبح ٢/٤، إذن ٢/٤ + ١/٤ = ٣/٤."
+                    },
+                    {
+                        title: "اطرح: <span class=\"fraction\"><span>٥</span><span>٦</span></span> - <span class=\"fraction\"><span>١</span><span>٣</span></span>",
+                        options: ["<span class=\"fraction\"><span>٤</span><span>٣</span></span>", "<span class=\"fraction\"><span>١</span><span>٢</span></span>", "<span class=\"fraction\"><span>٤</span><span>٦</span></span>", "<span class=\"fraction\"><span>٢</span><span>٣</span></span>"],
+                        correct: 1,
+                        explanation: "نوحد المقام إلى ٦: ١/٣ تصبح ٢/٦، إذن ٥/٦ - ٢/٦ = ٣/٦ = ١/٢."
+                    },
+                    {
+                        title: "ناتج جمع عدد نسبي مع معكوسه الجمعي يساوي:",
+                        options: ["١", "صفر", "العدد نفسه", "٢"],
+                        correct: 1,
+                        explanation: "المعكوس الجمعي يلغي العدد ويعطي الناتج صفراً."
+                    },
+                    {
+                        title: "أوجد ناتج: (-٣٫٢) + ١٫٢",
+                        options: ["٢", "٢-", "٤٫٤", "٤٫٤-"],
+                        correct: 1,
+                        explanation: "بإطراح القيمتين وأخذ إشارة الأكبر: -٣٫٢ + ١٫٢ = -٢."
+                    }
+                ]
+            },
+            "lesson-5": {
+                title: "القوى والأسس والصيغة العلمية",
+                icon: "fa-atom",
+                color: "from-amber-600 to-red-700",
+                questions: [
+                    {
+                        title: 'قيمة العباراة الأسية <span class="power-expr"><span class="base">٢</span><span class="exponent">٣</span></span> هي:',
+                        options: ["٦", "٨", "٩", "٥"],
+                        correct: 1,
+                        explanation: "٢ × ٢ × ٢ = ٨."
+                    },
+                    {
+                        title: "اكتب العدد ٤٠٠٠ بالصيغة العلمية:",
+                        options: ["٤ × ١٠³", "٤٠ × ١٠²", "٠٫٤ × ١٠⁴", "٤ × ١٠²"],
+                        correct: 0,
+                        explanation: "الصيغة العلمية تكون على صورة أ × ١٠^ن حيث ١ ≤ أ < ١٠، إذن ٤ × ١٠³."
+                    },
+                    {
+                        title: "قيمة أي عدد مرفوع للأس صفر (عدا الصفر) تساوي:",
+                        options: ["صفر", "١", "نفس العدد", "١-"],
+                        correct: 1,
+                        explanation: "أي عدد أس صفر يساوي ١."
+                    },
+                    {
+                        title: "اكتب بالصيغة القياسية: ٥٫٢ × ١٠²",
+                        options: ["٥٢", "٥٢٠", "٥٢٠٠", "٠٫٠٥٢"],
+                        correct: 1,
+                        explanation: "نحريك الفاصلة خانتين يميناً لتصبح ٥٢٠."
+                    },
+                    {
+                        title: 'حاصل ضرب <span class="power-expr"><span class="base">١٠</span><span class="exponent">٢</span></span> × <span class="power-expr"><span class="base">١٠</span><span class="exponent">٣</span></span> يساوي:',
+                        options: ['<span class="power-expr"><span class="base">١٠</span><span class="exponent">٥</span></span>', '<span class="power-expr"><span class="base">١٠</span><span class="exponent">٦</span></span>', '<span class="power-expr"><span class="base">١٠٠</span><span class="exponent">٥</span></span>', '<span class="power-expr"><span class="base">٢٠</span><span class="exponent">٥</span></span>'],
+                        correct: 0,
+                        explanation: "عند ضرب القوى ذات الأساس المتشابه نجمع الأسس: ٢ + ٣ = ٥."
+                    }
+                ]
+            },
+            "lesson-6": {
                 title: "الجذور التربيعية والأعداد الحقيقية",
                 icon: "fa-square-root-variable",
                 color: "from-blue-600 to-indigo-700",
                 questions: [
                     {
-                        title: 'قيمة الجذور التربيعية الآتية <span class="sqrt"><span>٢٥</span></span> هي:',
-                        options: ["٤", "٥", "٦", "٢٥"],
+                        title: 'قيمة الجذر التربيعي <span class="sqrt"><span>٣٦</span></span> هي:',
+                        options: ["٥", "٦", "١٢", "١٨"],
                         correct: 1,
-                        explanation: "لأن ٥ × ٥ = ٢٥، إذن الجذر التربيعي للعدد ٢٥ يساوي ٥."
+                        explanation: "لأن ٦ × ٦ = ٣٦."
                     },
                     {
-                        title: 'أوجد قيمة الجذر التربيعي السالب <span class="sqrt"><span>٨١</span><span>-</span></span>:',
-                        options: ["٩", "٩-", "١٨-", "٨١-"],
+                        title: "أي الأعداد الآتية ينتمي لمجموعة الأعداد الحقيقية غير النسبية؟",
+                        options: ["<span class=\"sqrt\"><span>٩</span></span>", "<span class=\"sqrt\"><span>١٥</span></span>", "<span class=\"fraction\"><span>٢٢</span><span>٧</span></span>", "٣٫٥"],
                         correct: 1,
-                        explanation: "إشارة السالب خارج الجذر تعني الناتج السالب للجذر، وجذر ٨١ هو ٩، إذن الناتج هو ٩-."
+                        explanation: "العدد ١٥ ليس مربعاً كاملاً، فجذره عدد عشري غير منتهي وغير دوري."
                     },
                     {
-                        title: "أي من الأعداد الآتية يعتبر عددًا غير نسبي؟",
-                        options: [
-                            '<span class="fraction"><span>٢٢</span><span>٧</span></span>',
-                            '<span class="sqrt"><span>١٦</span></span>',
-                            '<span class="sqrt"><span>١٠</span></span>',
-                            "٣٫٧٥"
-                        ],
+                        title: "مجموعة الأعداد التي تتكون من الأعداد النسبية وغير النسبية هي:",
+                        options: ["الأعداد الصحيحة", "الأعداد الطبيعية", "الأعداد الحقيقية", "الأعداد الكلية"],
                         correct: 2,
-                        explanation: "العدد ١٠ ليس مربعاً كاملاً، وبالتالي جذره التربيعي عدد عشري غير منتهي وغير دوري (غير نسبي)."
+                        explanation: "مجموعة الأعداد الحقيقية تضم اتحاد الأعداد النسبية وغير النسبية."
                     },
                     {
-                        title: 'حل المعادلة التالية: <span class="power-expr"><span class="base">س</span><span class="exponent">٢</span></span> = ٤٩',
-                        options: ["س = ٧", "س = ٧±", "س = ٤٩", "س = ٢٤٫٥"],
+                        title: 'أوجد قيمة الجذر: <span class="sqrt"><span>١٢١</span><span>-</span></span>',
+                        options: ["١١", "١١-", "٢٢-", "غير معرّف"],
                         correct: 1,
-                        explanation: "بأخذ الجذر التربيعي للطرفين، نجد أن س تساوي ٧ أو ٧-."
+                        explanation: "الإشارة السالبة خارج الجذر، وجذر ١٢١ هو ١١، إذن الناتج -١١."
                     },
                     {
-                        title: "بأي مجموعة ينتمي العدد ٣٫١٤١٥٩...؟",
-                        options: ["الأعداد الطبيعية", "الأعداد الصحيحة", "الأعداد النسبية", "الأعداد غير النسبية"],
-                        correct: 3,
-                        explanation: "الأعداد العشرية التي تتواصل بلا نمط دوري هي أعداد غير نسبية."
+                        title: 'حل المعادلة: <span class="power-expr"><span class="base">س</span><span class="exponent">٢</span></span> = ٦٤',
+                        options: ["س = ٨", "س = ٨±", "س = ٣٢", "س = ٦٤"],
+                        correct: 1,
+                        explanation: "بأخذ الجذر التربيعي للطرفين نجد أن س تساوي ٨ أو -٨."
                     }
                 ]
             },
-            "lesson-2": {
-                title: "نظرية فيثاغورس",
-                icon: "fa-triangle-exclamation",
-                color: "from-amber-600 to-orange-700",
+            "lesson-7": {
+                title: "تقدير الجذور التربيعية",
+                icon: "fa-calculator",
+                color: "from-teal-600 to-emerald-800",
                 questions: [
                     {
-                        title: "في مثلث قائم الزاوية، إذا كان طولا الضلعين القائمين ٣ سم، ٤ سم، فما طول الوتر؟",
-                        options: ["٥ سم", "٧ سم", "١٢ سم", "٢٥ سم"],
+                        title: 'إلى أي عددين صحيحين يقع بينهما الجذر <span class="sqrt"><span>٢٠</span></span>؟',
+                        options: ["٣ و ٤", "٤ و ٥", "٥ و ٦", "٢ و ٣"],
+                        correct: 1,
+                        explanation: "العدد ٢٠ يقع بين المربعين الكاملين ١٦ (جذرها ٤) و ٢٥ (جذرها ٥)."
+                    },
+                    {
+                        title: 'قْدّر إلى أقرب عدد كلي: <span class="sqrt"><span>٤٧</span></span>',
+                        options: ["٦", "٧", "٨", "٩"],
+                        correct: 1,
+                        explanation: "٤٧ قريب جداً من المربع الكامل ٤٩، وجذره تقريبا ٧."
+                    },
+                    {
+                        title: 'قيمة <span class="sqrt"><span>٨</span></span> تقارب إلى:',
+                        options: ["٢٫٢", "٢٫٨", "٣٫٥", "١٫٧"],
+                        correct: 1,
+                        explanation: "لأن ٣² = ٩ وجذر ٨ قريب جداً من ٣ (حوالي ٢٫٨)."
+                    },
+                    {
+                        title: "التقدير الأنسب لـ جذر ١٠ هو:",
+                        options: ["٣٫١", "٣٫٨", "٢٫٥", "٤٫١"],
                         correct: 0,
-                        explanation: "حسب نظرية فيثاغورس: الوتر = √(٣² + ٤²) = √(٩ + ١٦) = √٢٥ = ٥ سم."
+                        explanation: "جذر ٩ يساوي ٣، وجذر ١٠ يزيد قليلاً عنه ليصبح ٣٫١ تقريباً."
                     },
                     {
-                        title: "أي الأطوال الآتية تمثل أضلاع مثلث قائم الزاوية؟",
-                        options: ["٢، ٣، ٤", "٥، ١٢، ١٣", "١، ٢، ٣", "٦، ٨، ١١"],
+                        title: "عند تقدير الجذور غير الكاملة، نبحث عادة عن:",
+                        options: ["أقرب عدد عشري", "أقرب مربعين كاملين", "نصف العدد", "مضاعفات العدد ١٠"],
                         correct: 1,
-                        explanation: "لأن ٥² + ١٢² = ٢٥ + ١٤٤ = ١٦٩، وهي تساوي ١٣²."
-                    },
-                    {
-                        title: "إذا كان طول الوتر ١٠ سم، وأحد ضلعيه ٦ سم، فما طول الضلع الآخر؟",
-                        options: ["٤ سم", "٨ سم", "١٦ سم", "١٤ سم"],
-                        correct: 1,
-                        explanation: "الضلع الآخر = √(١٠² - ٦²) = √(١٠٠ - ٣٦) = √٦٤ = ٨ سم."
-                    },
-                    {
-                        title: "تستخدم نظرية فيثاغورس حصراً في:",
-                        options: ["المثلث متطابق الأضلاع", "المثلث قائم الزاوية", "المثلث منفرج الزاوية", "المثلث مختلف الأضلاع"],
-                        correct: 1,
-                        explanation: "نظرية فيثاغورس تنطبق فقط على المثلثات قائمة الزاوية."
-                    },
-                    {
-                        title: "ما طول الوتر لمثلث قائم ضلعاه القائمان هما ٥ سم، ١٢ سم؟",
-                        options: ["١٣ سم", "١٧ سم", "١٠ سم", "١٥ سم"],
-                        correct: 0,
-                        explanation: "الوتر = √(٥² + ١٢²) = √(٢٥ + ١٤٤) = √١٦٩ = ١٣ سم."
-                    }
-                ]
-            },
-            "lesson-3": {
-                title: "استراتيجية حل المسألة (رسم شكل)",
-                icon: "fa-compass-drafting",
-                color: "from-emerald-600 to-teal-700",
-                questions: [
-                    {
-                        title: "رسم شكل توضيحي لمسألة رياضية يساهم في:",
-                        options: ["تعقيد الحل", "توضيح المعطيات والمطلوب", "إطالة وقت الحل بدون فائدة", "إخفاء الأرقام"],
-                        correct: 1,
-                        explanation: "الرسومات الهندسية والتخطيطية تساعد بشكل كبير في استيعاب معطيات المسألة والوصول للحل السريع."
-                    },
-                    {
-                        title: "إذا تحرك شخص ٤ كم شمالاً ثم ٣ كم شرقاً، فما بُعده عن نقطة البداية؟",
-                        options: ["٧ كم", "٥ كم", "١٢ كم", "١ كم"],
-                        correct: 1,
-                        explanation: "المسار يشكل مثلثاً قائماً ضلعي القائمة فيه ٤ و ٣، والبعد هو الوتر = ٥ كم."
-                    },
-                    {
-                        title: "خطوة 'تحقق' في استراتيجيات حل المسألة تعني:",
-                        options: ["مسح الإجابة", "التأكد من صحة الحل ومطابقته للمعطيات", "تغيير السؤال", "ترك الاختبار"],
-                        correct: 1,
-                        explanation: "التحقق يضمن خلو الحل من الأخطاء الحسابية والمنطقية."
-                    },
-                    {
-                        title: "رسم الأشكال في مسائل الهندسة والمسافات يعد من استراتيجيات:",
-                        options: ["التخمين والتحقق", "إنشاء جدول", "رسم شكل", "البحث عن نمط"],
-                        correct: 2,
-                        explanation: "استراتيجية رسم شكل هي الأنسب للمسائل المكانية والمسارات."
-                    },
-                    {
-                        title: "عندما تطلب المسألة تحديد أقصر مسافة بين نقطتين، فغالباً ما نبحث عن:",
-                        options: ["محيط المربع", "الوتر في مثلث قائم", "مساحة الدائرة", "حجم الاسطوانة"],
-                        correct: 1,
-                        explanation: "أقصر مسافة دائماً هي الخط المستقيم الممثل للوتر."
+                        explanation: "البحث عن أقرب مربعين كاملين هو الخطوة الأساسية لتقدير الجذور."
                     }
                 ]
             }
@@ -643,25 +807,30 @@
             }
         }
 
-        // تخزين البيانات واسترجاعها
-        function getUsersData() {
-            let data = localStorage.getItem('math_initiative_users_v3');
-            return data ? JSON.parse(data) : {};
-        }
-
-        function saveUsersData(data) {
-            localStorage.setItem('math_initiative_users_v3', JSON.stringify(data));
+        // الاستماع الفوري للبيانات من سحابة فايربيس
+        function initRealtimeSync() {
+            db.collection("users").onSnapshot((snapshot) => {
+                allUsersCache = {};
+                snapshot.forEach((doc) => {
+                    allUsersCache[doc.id] = doc.data();
+                });
+                renderLeaderboard();
+                if (currentUser && !currentUser.isTeacher && allUsersCache[currentUser.id]) {
+                    currentUser = allUsersCache[currentUser.id];
+                    localStorage.setItem('math_initiative_session', JSON.stringify(currentUser));
+                }
+            });
         }
 
         // تهيئة التطبيق عند التحميل
         window.onload = function() {
             checkActiveSession();
-            renderLeaderboard();
+            initRealtimeSync();
             renderLessonsList();
         };
 
         function checkActiveSession() {
-            let session = localStorage.getItem('math_initiative_current_user_v3');
+            let session = localStorage.getItem('math_initiative_session');
             if (session) {
                 currentUser = JSON.parse(session);
                 if (currentUser.id === TEACHER_ADMIN_ID) {
@@ -692,8 +861,8 @@
             }
         }
 
-        // تسجيل طالب جديد
-        function handleRegister(e) {
+        // تسجيل طالب جديد في السحابة
+        async function handleRegister(e) {
             e.preventDefault();
             const name = document.getElementById('reg-name').value.trim();
             const id = document.getElementById('reg-id').value.trim();
@@ -704,35 +873,40 @@
                 return;
             }
 
-            let users = getUsersData();
-            if (users[id]) {
-                showMsgModal("تنبيه", "هذا الرقم التعريفي مسجل مسبقاً لمفكر آخر. يجدر بك استخدام رقم مختلف أو الدخول السريع.", "fa-triangle-exclamation", "text-amber-500", "bg-amber-100");
-                return;
+            try {
+                let docRef = db.collection("users").doc(id);
+                let doc = await docRef.get();
+                if (doc.exists) {
+                    showMsgModal("تنبيه", "هذا الرقم التعريفي مسجل مسبقاً لمفكر آخر.", "fa-triangle-exclamation", "text-amber-500", "bg-amber-100");
+                    return;
+                }
+
+                let newUser = {
+                    name: name,
+                    id: id,
+                    scores: {},
+                    completedLessons: 0,
+                    totalPoints: 0
+                };
+
+                await docRef.set(newUser);
+                currentUser = newUser;
+                isAdmin = false;
+                localStorage.setItem('math_initiative_session', JSON.stringify(currentUser));
+
+                playSound('success');
+                enterLessonsView();
+            } catch (err) {
+                console.error(err);
+                showMsgModal("خطأ", "حدث خطأ أثناء الاتصال بالسحابة. تحقق من إعدادات فايربيس.", "fa-circle-xmark", "text-red-500", "bg-red-100");
             }
-
-            users[id] = {
-                name: name,
-                id: id,
-                scores: {},
-                completedLessons: 0,
-                totalPoints: 0
-            };
-
-            saveUsersData(users);
-            currentUser = users[id];
-            isAdmin = false;
-            localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
-
-            playSound('success');
-            enterLessonsView();
         }
 
-        // الدخول السريع بالرقم التعريفي (أو رقم المعلم)
-        function handleQuickLogin(e) {
+        // الدخول السريع (طالب أو معلم)
+        async function handleQuickLogin(e) {
             e.preventDefault();
             const id = document.getElementById('login-id').value.trim();
 
-            // فحص إذا كان المستخدم هو المعلم بالرقم 12344321
             if (id === TEACHER_ADMIN_ID) {
                 isAdmin = true;
                 currentUser = {
@@ -740,28 +914,33 @@
                     id: TEACHER_ADMIN_ID,
                     isTeacher: true
                 };
-                localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+                localStorage.setItem('math_initiative_session', JSON.stringify(currentUser));
                 playSound('success');
                 enterLessonsView();
                 return;
             }
 
-            let users = getUsersData();
-            if (!users[id]) {
-                showMsgModal("عذراً", "الرقم التعريفي غير مسجل. يرجى التحقق من الرقم أو التسجيل كجديد.", "fa-circle-xmark", "text-red-500", "bg-red-100");
-                return;
+            try {
+                let doc = await db.collection("users").doc(id).get();
+                if (!doc.exists) {
+                    showMsgModal("عذراً", "الرقم التعريفي غير مسجل بالسحابة. يرجى التسجيل كجديد.", "fa-circle-xmark", "text-red-500", "bg-red-100");
+                    return;
+                }
+
+                currentUser = doc.data();
+                isAdmin = false;
+                localStorage.setItem('math_initiative_session', JSON.stringify(currentUser));
+
+                playSound('success');
+                enterLessonsView();
+            } catch (err) {
+                console.error(err);
+                showMsgModal("خطأ", "تعذر تسجيل الدخول. تحقق من الاتصال بالإنترنت.", "fa-circle-xmark", "text-red-500", "bg-red-100");
             }
-
-            currentUser = users[id];
-            isAdmin = false;
-            localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
-
-            playSound('success');
-            enterLessonsView();
         }
 
         function logout() {
-            localStorage.removeItem('math_initiative_current_user_v3');
+            localStorage.removeItem('math_initiative_session');
             currentUser = null;
             isAdmin = false;
             document.getElementById('nav-user-info').classList.add('hidden');
@@ -974,29 +1153,37 @@
             }
         }
 
-        function finishQuiz() {
-            let users = getUsersData();
-            if (users[currentUser.id]) {
-                if (!users[currentUser.id].scores) users[currentUser.id].scores = {};
-                
-                let prevScore = users[currentUser.id].scores[activeLessonKey] !== undefined ? users[currentUser.id].scores[activeLessonKey] : -1;
-                if (currentScore > prevScore) {
-                    users[currentUser.id].scores[activeLessonKey] = currentScore;
+        async function finishQuiz() {
+            if (!currentUser || currentUser.isTeacher) return;
+
+            let userRef = db.collection("users").doc(currentUser.id);
+            try {
+                let doc = await userRef.get();
+                if (doc.exists) {
+                    let uData = doc.data();
+                    if (!uData.scores) uData.scores = {};
+
+                    let prevScore = uData.scores[activeLessonKey] !== undefined ? uData.scores[activeLessonKey] : -1;
+                    if (currentScore > prevScore) {
+                        uData.scores[activeLessonKey] = currentScore;
+                    }
+
+                    let totalPts = 0;
+                    let completedCount = 0;
+                    Object.keys(uData.scores).forEach(k => {
+                        totalPts += uData.scores[k];
+                        completedCount++;
+                    });
+
+                    uData.totalPoints = totalPts;
+                    uData.completedLessons = completedCount;
+
+                    await userRef.set(uData);
+                    currentUser = uData;
+                    localStorage.setItem('math_initiative_session', JSON.stringify(currentUser));
                 }
-
-                let totalPts = 0;
-                let completedCount = 0;
-                Object.keys(users[currentUser.id].scores).forEach(k => {
-                    totalPts += users[currentUser.id].scores[k];
-                    completedCount++;
-                });
-
-                users[currentUser.id].totalPoints = totalPts;
-                users[currentUser.id].completedLessons = completedCount;
-
-                saveUsersData(users);
-                currentUser = users[currentUser.id];
-                localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+            } catch (err) {
+                console.error(err);
             }
 
             document.getElementById('view-quiz').classList.add('hidden');
@@ -1011,15 +1198,14 @@
             document.getElementById('print-date').innerText = now.toLocaleDateString('ar-SA');
         }
 
-        // لوحة الصدارة العامة
+        // لوحة الصدارة العامة (تعمل تلقائياً بالتزامن الفوري)
         function renderLeaderboard() {
-            let users = getUsersData();
             let tbody = document.getElementById('leaderboard-body');
             tbody.innerHTML = '';
 
-            let sortedUsers = Object.values(users).sort((a, b) => b.totalPoints - a.totalPoints);
+            let sortedUsers = Object.values(allUsersCache).sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
+            const totalLessonsCount = Object.keys(lessonsData).length;
 
-            // تفعيل أزرار الإدارة إذا كان المعلم مسجلاً
             if (isAdmin) {
                 document.getElementById('clear-all-btn').classList.remove('hidden');
                 document.getElementById('admin-actions-header').classList.remove('hidden');
@@ -1060,7 +1246,7 @@
                 row.innerHTML = `
                     <td class="p-3">${rankBadge}</td>
                     <td class="p-3 font-black text-nassr-yellow">${u.name}</td>
-                    <td class="p-3">${u.completedLessons || 0} من ٣ دروس</td>
+                    <td class="p-3">${u.completedLessons || 0} من ${totalLessonsCount} دروس</td>
                     <td class="p-3"><span class="bg-nassr-yellow text-nassr-blue font-black px-2.5 py-1 rounded-lg text-xs">${u.totalPoints || 0} نقطة</span></td>
                     ${adminActionsCell}
                 `;
@@ -1068,22 +1254,22 @@
             });
         }
 
-        // وظائف الإدارة للمفكرين (حذف وتعديل)
-        function deleteUser(userId) {
+        // وظائف الإدارة السحابية للمعلم (حذف وتعديل)
+        async function deleteUser(userId) {
             if (!isAdmin) return;
-            if (confirm("هل أنت متأكد من رغبتك في حذف هذا المفكر وسجله بالكامل؟")) {
-                let users = getUsersData();
-                delete users[userId];
-                saveUsersData(users);
-                renderLeaderboard();
-                playSound('success');
+            if (confirm("هل أنت متأكد من رغبتك في حذف هذا المفكر من السحابة نهائياً؟")) {
+                try {
+                    await db.collection("users").doc(userId).delete();
+                    playSound('success');
+                } catch (err) {
+                    console.error(err);
+                }
             }
         }
 
-        function editUserScore(userId) {
+        async function editUserScore(userId) {
             if (!isAdmin) return;
-            let users = getUsersData();
-            let u = users[userId];
+            let u = allUsersCache[userId];
             if (!u) return;
 
             let newName = prompt("تعديل اسم المفكر المبدع:", u.name);
@@ -1096,22 +1282,32 @@
             if (newName.trim() !== "") u.name = newName.trim();
             if (!isNaN(newPts)) u.totalPoints = newPts;
 
-            users[userId] = u;
-            saveUsersData(users);
-            renderLeaderboard();
-            playSound('success');
-        }
-
-        function clearAllScores() {
-            if (!isAdmin) return;
-            if (confirm("تحذير: هل أنت متأكد من رغبتك في مسح كافة سجلات ودرجات الطلاب نهائياً؟")) {
-                localStorage.removeItem('math_initiative_users_v3');
-                renderLeaderboard();
+            try {
+                await db.collection("users").doc(userId).set(u);
                 playSound('success');
+            } catch (err) {
+                console.error(err);
             }
         }
 
-        // تعديل الأسئلة الحالية (للمعلم)
+        async function clearAllScores() {
+            if (!isAdmin) return;
+            if (confirm("تحذير: هل أنت متأكد من رغبتك في مسح كافة سجلات الطلاب من السحابة؟")) {
+                try {
+                    const snapshot = await db.collection("users").get();
+                    let batch = db.batch();
+                    snapshot.docs.forEach((doc) => {
+                        batch.delete(doc.ref);
+                    });
+                    await batch.commit();
+                    playSound('success');
+                } catch (err) {
+                    console.error(err);
+                }
+            }
+        }
+
+        // تعديل الأسئلة (للمعلم)
         function openEditModal() {
             const q = lessonsData[activeLessonKey].questions[currentQuestionIndex];
             document.getElementById('edit-q-title').value = q.title.replace(/<[^>]*>?/gm, '');
@@ -1176,11 +1372,11 @@
         }
 
         function printAllResults() {
-            let users = getUsersData();
             let tbody = document.getElementById('printable-all-tbody');
             tbody.innerHTML = '';
 
-            let sortedUsers = Object.values(users).sort((a, b) => b.totalPoints - a.totalPoints);
+            let sortedUsers = Object.values(allUsersCache).sort((a, b) => (b.totalPoints || 0) - (a.totalPoints || 0));
+            const totalLessonsCount = Object.keys(lessonsData).length;
 
             if (sortedUsers.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center">لا توجد بيانات مسجلة.</td></tr>`;
@@ -1190,7 +1386,7 @@
                     row.innerHTML = `
                         <td class="border border-gray-300 p-2 text-center">${index + 1}</td>
                         <td class="border border-gray-300 p-2 font-bold">${u.name}</td>
-                        <td class="border border-gray-300 p-2 text-center">${u.completedLessons || 0} / ٣ دروس</td>
+                        <td class="border border-gray-300 p-2 text-center">${u.completedLessons || 0} / ${totalLessonsCount} دروس</td>
                         <td class="border border-gray-300 p-2 text-center font-bold">${u.totalPoints || 0} نقطة</td>
                     `;
                     tbody.appendChild(row);
