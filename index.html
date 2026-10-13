@@ -217,9 +217,10 @@
                                 <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
                                     <i class="fa-solid fa-id-card text-sm"></i>
                                 </span>
-                                <input type="text" id="login-id" required placeholder="أدخل الرقم الذي اخترته عند التسجيل" 
+                                <input type="text" id="login-id" required placeholder="أدخل رقمك التعريفي أو رقم المعلم" 
                                     class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
                             </div>
+                            <p class="text-[11px] text-gray-500 font-bold mt-1">ملاحظة: دخول المعلم يتم بإدخال الرقم التعريفي (12344321).</p>
                         </div>
                         <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm border-2 border-nassr-yellow">
                             <span>دخول إلى حسابي</span>
@@ -229,11 +230,8 @@
                 </div>
 
                 <div class="mt-6 pt-4 border-t-2 border-yellow-100 flex gap-2 text-xs">
-                    <button onclick="playSound('click'); promptAdminLogin()" class="flex-1 bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black px-3 py-2.5 rounded-xl transition border border-nassr-yellow flex items-center justify-center gap-1.5 active:scale-95 shadow-md">
-                        <i class="fa-solid fa-user-gear"></i> دخول المسؤول
-                    </button>
-                    <button onclick="playSound('click'); openAdminDownload()" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-black px-3 py-2.5 rounded-xl transition border border-amber-300 flex items-center justify-center gap-1.5 active:scale-95" title="تصدير إلى Excel">
-                        <i class="fa-solid fa-file-excel text-base text-emerald-700"></i> Excel
+                    <button onclick="playSound('click'); openAdminDownload()" class="w-full bg-amber-100 hover:bg-amber-200 text-amber-900 font-black px-3 py-2.5 rounded-xl transition border border-amber-300 flex items-center justify-center gap-1.5 active:scale-95" title="تصدير إلى Excel">
+                        <i class="fa-solid fa-file-excel text-base text-emerald-700"></i> طباعة كشف الدرجات Excel
                     </button>
                 </div>
             </div>
@@ -269,7 +267,7 @@
                                     <th class="p-3">اسم المفكر المبدع</th>
                                     <th class="p-3">الدروس المكتملة</th>
                                     <th class="p-3">مجموع النقاط</th>
-                                    <th id="admin-actions-header" class="p-3 hidden text-center">إجراءات</th>
+                                    <th id="admin-actions-header" class="p-3 hidden text-center">إجراءات المعلم</th>
                                 </tr>
                             </thead>
                             <tbody id="leaderboard-body" class="divide-y divide-white/10 text-white font-bold">
@@ -289,7 +287,7 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <div id="admin-mode-indicator" class="hidden bg-nassr-yellow text-nassr-blue text-xs font-black px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-nassr-gold">
-                        <i class="fa-solid fa-user-shield"></i> وضع المسؤول
+                        <i class="fa-solid fa-user-shield"></i> لوحة تحكم المعلم
                     </div>
                     <button onclick="playSound('click'); goHome()" class="bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black text-xs px-3.5 py-2 rounded-xl transition border border-nassr-gold flex items-center gap-1.5 shadow-md active:scale-95">
                         <i class="fa-solid fa-house"></i> الرئيسية
@@ -401,24 +399,6 @@
 
     </main>
 
-    <!-- ADMIN PASSCODE MODAL -->
-    <div id="admin-passcode-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-            <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center text-xl mx-auto">
-                <i class="fa-solid fa-lock"></i>
-            </div>
-            <div>
-                <h3 class="text-base font-bold text-gray-800">تسجيل دخول المسؤول</h3>
-                <p class="text-xs text-gray-500 mt-1">أدخل الرقم السري للوصول للوحة الإدارة والتعديل</p>
-            </div>
-            <input type="password" id="admin-passcode-input" placeholder="الرقم السري" class="w-full text-center py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-base font-bold focus:outline-none focus:border-indigo-500" onkeyup="if(event.key==='Enter') verifyAdminPasscode()">
-            <div class="flex gap-2">
-                <button onclick="playSound('click'); verifyAdminPasscode()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs sm:text-sm transition">تأكيد</button>
-                <button onclick="playSound('click'); closeAdminPasscodeModal()" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2 rounded-xl text-xs sm:text-sm transition">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
     <!-- ADMIN QUESTION EDIT MODAL -->
     <div id="edit-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl text-right">
@@ -463,7 +443,7 @@
         <div class="p-8 text-center">
             <h1 class="text-2xl font-black mb-1">مبادرة الرياضيات - الصف الثاني متوسط</h1>
             <h2 class="text-lg font-bold text-gray-700 mb-2">كشف درجات ونتائج جميع المفكرين المبدعين الإجمالية</h2>
-            <p class="text-xs text-gray-600 font-bold mb-1">إعداد الأستاذ السلمي</p>
+            <p class="text-xs text-gray-600 font-bold mb-1">إعداد الأستاذ عبدالمحيي السلمي</p>
             <p class="text-xs text-gray-500 mb-6">تاريخ الاستخراج: <span id="print-all-date"></span></p>
 
             <table class="w-full border-collapse border border-gray-300 text-right text-xs">
@@ -484,12 +464,12 @@
     <!-- FOOTER -->
     <footer class="bg-white/80 backdrop-blur-md border-t border-gray-200/50 py-3 text-center text-xs text-gray-500 no-print mt-auto">
         <p class="font-bold text-gray-700">مبادرة الرياضيات - الصف الثاني متوسط © ٢٠٢٦</p>
-        <p class="font-bold text-emerald-700 mt-0.5 text-xs">إعداد الأستاذ السلمي</p>
+        <p class="font-bold text-emerald-700 mt-0.5 text-xs">إعداد الأستاذ عبدالمحيي السلمي</p>
     </footer>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        const ADMIN_PASSCODE = "1234321";
+        const TEACHER_ADMIN_ID = "12344321";
         let isAdmin = false;
         let currentUser = null;
         let activeLessonKey = null;
@@ -497,6 +477,126 @@
         let currentScore = 0;
         let selectedOptionIndex = null;
         let isAnswerSubmitted = false;
+
+        // قاعدة بيانات الدروس والأسئلة (قابلة للتعديل من المعلم)
+        let lessonsData = {
+            "lesson-1": {
+                title: "الجذور التربيعية والأعداد الحقيقية",
+                icon: "fa-square-root-variable",
+                color: "from-blue-600 to-indigo-700",
+                questions: [
+                    {
+                        title: 'قيمة الجذور التربيعية الآتية <span class="sqrt"><span>٢٥</span></span> هي:',
+                        options: ["٤", "٥", "٦", "٢٥"],
+                        correct: 1,
+                        explanation: "لأن ٥ × ٥ = ٢٥، إذن الجذر التربيعي للعدد ٢٥ يساوي ٥."
+                    },
+                    {
+                        title: 'أوجد قيمة الجذر التربيعي السالب <span class="sqrt"><span>٨١</span><span>-</span></span>:',
+                        options: ["٩", "٩-", "١٨-", "٨١-"],
+                        correct: 1,
+                        explanation: "إشارة السالب خارج الجذر تعني الناتج السالب للجذر، وجذر ٨١ هو ٩، إذن الناتج هو ٩-."
+                    },
+                    {
+                        title: "أي من الأعداد الآتية يعتبر عددًا غير نسبي؟",
+                        options: [
+                            '<span class="fraction"><span>٢٢</span><span>٧</span></span>',
+                            '<span class="sqrt"><span>١٦</span></span>',
+                            '<span class="sqrt"><span>١٠</span></span>',
+                            "٣٫٧٥"
+                        ],
+                        correct: 2,
+                        explanation: "العدد ١٠ ليس مربعاً كاملاً، وبالتالي جذره التربيعي عدد عشري غير منتهي وغير دوري (غير نسبي)."
+                    },
+                    {
+                        title: 'حل المعادلة التالية: <span class="power-expr"><span class="base">س</span><span class="exponent">٢</span></span> = ٤٩',
+                        options: ["س = ٧", "س = ٧±", "س = ٤٩", "س = ٢٤٫٥"],
+                        correct: 1,
+                        explanation: "بأخذ الجذر التربيعي للطرفين، نجد أن س تساوي ٧ أو ٧-."
+                    },
+                    {
+                        title: "بأي مجموعة ينتمي العدد ٣٫١٤١٥٩...؟",
+                        options: ["الأعداد الطبيعية", "الأعداد الصحيحة", "الأعداد النسبية", "الأعداد غير النسبية"],
+                        correct: 3,
+                        explanation: "الأعداد العشرية التي تتواصل بلا نمط دوري هي أعداد غير نسبية."
+                    }
+                ]
+            },
+            "lesson-2": {
+                title: "نظرية فيثاغورس",
+                icon: "fa-triangle-exclamation",
+                color: "from-amber-600 to-orange-700",
+                questions: [
+                    {
+                        title: "في مثلث قائم الزاوية، إذا كان طولا الضلعين القائمين ٣ سم، ٤ سم، فما طول الوتر؟",
+                        options: ["٥ سم", "٧ سم", "١٢ سم", "٢٥ سم"],
+                        correct: 0,
+                        explanation: "حسب نظرية فيثاغورس: الوتر = √(٣² + ٤²) = √(٩ + ١٦) = √٢٥ = ٥ سم."
+                    },
+                    {
+                        title: "أي الأطوال الآتية تمثل أضلاع مثلث قائم الزاوية؟",
+                        options: ["٢، ٣، ٤", "٥، ١٢، ١٣", "١، ٢، ٣", "٦، ٨، ١١"],
+                        correct: 1,
+                        explanation: "لأن ٥² + ١٢² = ٢٥ + ١٤٤ = ١٦٩، وهي تساوي ١٣²."
+                    },
+                    {
+                        title: "إذا كان طول الوتر ١٠ سم، وأحد ضلعيه ٦ سم، فما طول الضلع الآخر؟",
+                        options: ["٤ سم", "٨ سم", "١٦ سم", "١٤ سم"],
+                        correct: 1,
+                        explanation: "الضلع الآخر = √(١٠² - ٦²) = √(١٠٠ - ٣٦) = √٦٤ = ٨ سم."
+                    },
+                    {
+                        title: "تستخدم نظرية فيثاغورس حصراً في:",
+                        options: ["المثلث متطابق الأضلاع", "المثلث قائم الزاوية", "المثلث منفرج الزاوية", "المثلث مختلف الأضلاع"],
+                        correct: 1,
+                        explanation: "نظرية فيثاغورس تنطبق فقط على المثلثات قائمة الزاوية."
+                    },
+                    {
+                        title: "ما طول الوتر لمثلث قائم ضلعاه القائمان هما ٥ سم، ١٢ سم؟",
+                        options: ["١٣ سم", "١٧ سم", "١٠ سم", "١٥ سم"],
+                        correct: 0,
+                        explanation: "الوتر = √(٥² + ١٢²) = √(٢٥ + ١٤٤) = √١٦٩ = ١٣ سم."
+                    }
+                ]
+            },
+            "lesson-3": {
+                title: "استراتيجية حل المسألة (رسم شكل)",
+                icon: "fa-compass-drafting",
+                color: "from-emerald-600 to-teal-700",
+                questions: [
+                    {
+                        title: "رسم شكل توضيحي لمسألة رياضية يساهم في:",
+                        options: ["تعقيد الحل", "توضيح المعطيات والمطلوب", "إطالة وقت الحل بدون فائدة", "إخفاء الأرقام"],
+                        correct: 1,
+                        explanation: "الرسومات الهندسية والتخطيطية تساعد بشكل كبير في استيعاب معطيات المسألة والوصول للحل السريع."
+                    },
+                    {
+                        title: "إذا تحرك شخص ٤ كم شمالاً ثم ٣ كم شرقاً، فما بُعده عن نقطة البداية؟",
+                        options: ["٧ كم", "٥ كم", "١٢ كم", "١ كم"],
+                        correct: 1,
+                        explanation: "المسار يشكل مثلثاً قائماً ضلعي القائمة فيه ٤ و ٣، والبعد هو الوتر = ٥ كم."
+                    },
+                    {
+                        title: "خطوة 'تحقق' في استراتيجيات حل المسألة تعني:",
+                        options: ["مسح الإجابة", "التأكد من صحة الحل ومطابقته للمعطيات", "تغيير السؤال", "ترك الاختبار"],
+                        correct: 1,
+                        explanation: "التحقق يضمن خلو الحل من الأخطاء الحسابية والمنطقية."
+                    },
+                    {
+                        title: "رسم الأشكال في مسائل الهندسة والمسافات يعد من استراتيجيات:",
+                        options: ["التخمين والتحقق", "إنشاء جدول", "رسم شكل", "البحث عن نمط"],
+                        correct: 2,
+                        explanation: "استراتيجية رسم شكل هي الأنسب للمسائل المكانية والمسارات."
+                    },
+                    {
+                        title: "عندما تطلب المسألة تحديد أقصر مسافة بين نقطتين، فغالباً ما نبحث عن:",
+                        options: ["محيط المربع", "الوتر في مثلث قائم", "مساحة الدائرة", "حجم الاسطوانة"],
+                        correct: 1,
+                        explanation: "أقصر مسافة دائماً هي الخط المستقيم الممثل للوتر."
+                    }
+                ]
+            }
+        };
 
         // نظام المؤثرات الصوتية التفاعلية (Web Audio API)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -523,383 +623,156 @@
                 } else if (type === 'success') {
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(440, now);
-                    osc.frequency.setValueAtTime(554.37, now + 0.1);
-                    osc.frequency.setValueAtTime(659.25, now + 0.2);
-                    osc.frequency.setValueAtTime(880, now + 0.3);
-                    gainNode.gain.setValueAtTime(0.12, now);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-                    osc.start(now);
-                    osc.stop(now + 0.5);
-                } else if (type === 'error') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(220, now);
-                    osc.frequency.setValueAtTime(160, now + 0.15);
+                    osc.frequency.setValueAtTime(554.37, now + 0.08);
+                    osc.frequency.setValueAtTime(659.25, now + 0.16);
                     gainNode.gain.setValueAtTime(0.1, now);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
                     osc.start(now);
                     osc.stop(now + 0.3);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(160, now + 0.1);
+                    gainNode.gain.setValueAtTime(0.12, now);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.25);
                 }
-            } catch(e) {}
-        }
-
-        function toArabicDigits(num) {
-            if (num === null || num === undefined) return '';
-            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-            return String(num).replace(/[0-9]/g, function(w) {
-                return arabicNumbers[parseInt(w)];
-            });
-        }
-
-        function fmtFrac(num, den) {
-            return `<span class="fraction"><span>${toArabicDigits(num)}</span><span>${toArabicDigits(den)}</span></span>`;
-        }
-        function fmtSqrt(val) {
-            return `<span class="sqrt"><span>${toArabicDigits(val)}</span></span>`;
-        }
-        function fmtPower(base, exp) {
-            return `<span class="power-expr"><span class="base">${toArabicDigits(base)}</span><span class="exponent">${toArabicDigits(exp)}</span></span>`;
-        }
-
-        let lessonsData = {
-            lesson1: {
-                title: "الأعداد النسبية",
-                desc: "التعرف على الأعداد النسبية وكتابتها على صورة كسر اعتيادي أو عشري.",
-                icon: "fa-solid fa-divide",
-                color: "from-blue-600 to-indigo-600",
-                bgCard: "bg-gradient-to-br from-blue-50 to-indigo-50/50 border-blue-200",
-                bgLight: "bg-blue-50",
-                textColor: "text-blue-700",
-                borderColor: "border-blue-200",
-                questions: [
-                    {
-                        title: `أي الأعداد الآتية يعتبر عدداً نسبياً يمكن كتابته على صورة ${fmtFrac('أ', 'ب')} حيث ب ≠ ٠ ؟`,
-                        options: [`${fmtSqrt(2)}`, `${fmtFrac(3, 4)}`, "غير ذلك", "الجذور الصماء"],
-                        correct: 1,
-                        explanation: "العدد النسبي هو كل عدد يمكن كتابته على صورة كسر اعتيادي بسطه ومقامه أعداد صحيحة."
-                    },
-                    {
-                        title: `اكتب العدد الكسري ٥ ${fmtFrac(1, 2)} على صورة كسر اعتيادي (غير فعلي):`,
-                        options: [`${fmtFrac(11, 2)}`, `${fmtFrac(10, 2)}`, `${fmtFrac(7, 2)}`, `${fmtFrac(12, 2)}`],
-                        correct: 0,
-                        explanation: "(٥ × ٢ + ١) / ٢ = ١١ / ٢."
-                    },
-                    {
-                        title: "ما الصورة العشرية للعدد النسبي سالب ثلاثة أرباع:",
-                        options: ["-٠.٢٥", "-٠.٥٠", "-٠.٧٥", "-٠.٣٣"],
-                        correct: 2,
-                        explanation: "-٣ / ٤ تساوي سالب ٠.٧٥."
-                    },
-                    {
-                        title: `أي العبارات التالية صحيحة بالنسبة للعدد النسبي ${fmtFrac(-3, 5)} ؟`,
-                        options: ["عدد نسبي مقامه ٥", "عدد نسبي سالب وبسطه -٣", "جميع ما سبق صحيح", "ليس عدداً نسبياً"],
-                        correct: 2,
-                        explanation: "العدد النسبي يمكن أن يكون سالباً وله بسط ومقام صحيحان."
-                    },
-                    {
-                        title: "العدد العشري الدوري ٠.٣٣٣... يمكن كتابته على صورة الكسر الاعتيادي:",
-                        options: [`${fmtFrac(1, 3)}`, `${fmtFrac(1, 4)}`, `${fmtFrac(2, 3)}`, `${fmtFrac(3, 10)}`],
-                        correct: 0,
-                        explanation: "٠.٣٣٣... يعادل الكسر ١ / ٣."
-                    }
-                ]
-            },
-            lesson2: {
-                title: "مقارنة الأعداد النسبية",
-                desc: "مقارنة وترتيب الأعداد النسبية باستخدام توحيد المقامات أو خط الأعداد.",
-                icon: "fa-solid fa-scale-balanced",
-                color: "from-emerald-600 to-teal-600",
-                bgCard: "bg-gradient-to-br from-emerald-50 to-teal-50/50 border-emerald-200",
-                bgLight: "bg-emerald-50",
-                textColor: "text-emerald-700",
-                borderColor: "border-emerald-200",
-                questions: [
-                    {
-                        title: `أي العددين النسبيين أكبر: ${fmtFrac(1, 2)} أم ${fmtFrac(3, 4)} ؟`,
-                        options: [`${fmtFrac(1, 2)}`, `${fmtFrac(3, 4)}`, "متساويان", "لا يمكن المقارنة"],
-                        correct: 1,
-                        explanation: "بتوحيد المقامات: ١/٢ = ٢/٤، وهو أصغر من ٣/٤."
-                    },
-                    {
-                        title: "قارن بين العددين: -١.٥ و -١.٧٥ ، أيهما أكبر؟",
-                        options: ["-١.٥ أكبر", "-١.٧٥ أكبر", "متساويان", "لا يوجد إجابة"],
-                        correct: 0,
-                        explanation: "في الأعداد السالبة، القيمة المطلقة الأصغر هي العدد الأكبر (-١.٥ أقرب للصفر)."
-                    },
-                    {
-                        title: `ضع الرمز المناسب بين ${fmtFrac(2, 3)} و ${fmtFrac(4, 6)} :`,
-                        options: [">", "<", "=", "≠"],
-                        correct: 2,
-                        explanation: "الكسران متساويان لأن ٢/٣ بعد الاختصار أو المضاعفة يساوي ٤/٦."
-                    },
-                    {
-                        title: `ضع الرمز المناسب للعبارة المقارنة: ${fmtFrac(3, 5)} [ ... ] ${fmtFrac(1, 5)}`,
-                        options: [">", "<", "=", "≤"],
-                        correct: 0,
-                        explanation: "بما أن المقامات متساوية، فإن الكسر ذو البسط الأكبر 3 هو الأكبر: 3/5 > 1/5."
-                    },
-                    {
-                        title: `أي الكسور الآتية يقع بين ${fmtFrac(1, 4)} و ${fmtFrac(3, 4)} ؟`,
-                        options: [`${fmtFrac(1, 8)}`, `${fmtFrac(1, 2)}`, `${fmtFrac(7, 8)}`, "٠"],
-                        correct: 1,
-                        explanation: "النصف (٢/٤) يقع تماماً بين ١/٤ و ٣/٤."
-                    }
-                ]
-            },
-            lesson3: {
-                title: "جمع وطرح الأعداد النسبية ذات المقامات المتشابهة",
-                desc: "إجراء عمليات الجمع والطرح للأعداد النسبية عندما تكون المقامات متطابقة.",
-                icon: "fa-solid fa-plus-minus",
-                color: "from-purple-600 to-pink-600",
-                bgCard: "bg-gradient-to-br from-purple-50 to-pink-50/50 border-purple-200",
-                bgLight: "bg-purple-50",
-                textColor: "text-purple-700",
-                borderColor: "border-purple-200",
-                questions: [
-                    {
-                        title: `ناتج جمع: ${fmtFrac(2, 7)} + ${fmtFrac(3, 7)} في أبسط صورة هو:`,
-                        options: [`${fmtFrac(5, 7)}`, `${fmtFrac(5, 14)}`, `${fmtFrac(6, 7)}`, `${fmtFrac(1, 7)}`],
-                        correct: 0,
-                        explanation: "بما أن المقامات متشابهة نجمع البسوط: (٢+٣) / ٧ = ٥ / ٧."
-                    },
-                    {
-                        title: `ناتج طرح: ${fmtFrac(7, 9)} - ${fmtFrac(2, 9)} في أبسط صورة هو:`,
-                        options: [`${fmtFrac(5, 9)}`, `${fmtFrac(5, 18)}`, `${fmtFrac(9, 9)}`, `${fmtFrac(2, 9)}`],
-                        correct: 0,
-                        explanation: "نطرح البسوط ويبقى المقام نفسه: (٧-٢) / ٩ = ٥ / ٩."
-                    },
-                    {
-                        title: `احسب ناتج: ${fmtFrac(-3, 5)} + ${fmtFrac(1, 5)} :`,
-                        options: [`${fmtFrac(-2, 5)}`, `${fmtFrac(2, 5)}`, `${fmtFrac(-4, 5)}`, `${fmtFrac(4, 5)}`],
-                        correct: 0,
-                        explanation: "-٣ + ١ = -٢، والمقام هو ٥."
-                    },
-                    {
-                        title: `ناتج العملية: ${fmtFrac(5, 8)} - ${fmtFrac(5, 8)} يساوي:`,
-                        options: [`${fmtFrac(5, 8)}`, "١", "٠", `${fmtFrac(10, 8)}`],
-                        correct: 2,
-                        explanation: "أي عدد مطروحاً منه نفسه يساوي صفراً."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(4, 11)} + ${fmtFrac(6, 11)} في أبسط صورة:`,
-                        options: [`${fmtFrac(10, 11)}`, `${fmtFrac(10, 22)}`, "١", `${fmtFrac(2, 11)}`],
-                        correct: 0,
-                        explanation: "٤ + ٦ = ١٠ والمقام ١١."
-                    }
-                ]
-            },
-            lesson4: {
-                title: "جمع وطرح الأعداد النسبية ذات المقامات المختلفة",
-                desc: "توحيد المقامات ثم إجراء عمليتي الجمع والطرح بكفاءة.",
-                icon: "fa-solid fa-calculator",
-                color: "from-amber-600 to-orange-600",
-                bgCard: "bg-gradient-to-br from-amber-50 to-orange-50/50 border-amber-200",
-                bgLight: "bg-amber-50",
-                textColor: "text-amber-700",
-                borderColor: "border-amber-200",
-                questions: [
-                    {
-                        title: `احسب ناتج: ${fmtFrac(1, 2)} + ${fmtFrac(1, 4)} :`,
-                        options: [`${fmtFrac(3, 4)}`, `${fmtFrac(2, 6)}`, `${fmtFrac(1, 6)}`, `${fmtFrac(3, 8)}`],
-                        correct: 0,
-                        explanation: "نوحد المقامات بضرب ١/٢ في ٢ ليصبح ٢/٤، ثم نجمع ٢/٤ + ١/٤ = ٣/٤."
-                    },
-                    {
-                        title: `احسب ناتج: ${fmtFrac(2, 3)} - ${fmtFrac(1, 6)} :`,
-                        options: [`${fmtFrac(1, 2)}`, `${fmtFrac(1, 3)}`, `${fmtFrac(3, 6)}`, `${fmtFrac(5, 6)}`],
-                        correct: 0,
-                        explanation: "٢/٣ تساوي ٤/٦، وبطرح ١/٦ منها يصبح الناتج ٣/٦ أي ١/٢."
-                    },
-                    {
-                        title: `ناتج جمع: ${fmtFrac(1, 4)} + ${fmtFrac(2, 5)} هو:`,
-                        options: [`${fmtFrac(13, 20)}`, `${fmtFrac(3, 9)}`, `${fmtFrac(7, 20)}`, `${fmtFrac(3, 20)}`],
-                        correct: 0,
-                        explanation: "المقام المشترك الأصغر هو ٢٠: (٥/٢٠) + (٨/٢٠) = ١٣/٢٠."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(3, 4)} - ${fmtFrac(1, 2)} :`,
-                        options: [`${fmtFrac(1, 4)}`, `${fmtFrac(1, 2)}`, `${fmtFrac(2, 4)}`, `${fmtFrac(1, 8)}`],
-                        correct: 0,
-                        explanation: "٣/٤ - ٢/٤ = ١/٤."
-                    },
-                    {
-                        title: `ناتج: ${fmtFrac(1, 3)} + ${fmtFrac(1, 6)} في أبسط صورة:`,
-                        options: [`${fmtFrac(1, 2)}`, `${fmtFrac(2, 9)}`, `${fmtFrac(2, 3)}`, `${fmtFrac(1, 9)}`],
-                        correct: 0,
-                        explanation: "٢/٦ + ١/٦ = ٣/٦ وبعد تبسيطها تساوي ١/٢."
-                    }
-                ]
-            },
-            lesson5: {
-                title: "ضرب الأعداد النسبية",
-                desc: "قواعد ضرب الكسور وبسط في بسط ومقام في مقام مع تبسيط النواتج.",
-                icon: "fa-solid fa-xmark",
-                color: "from-red-600 to-rose-600",
-                bgCard: "bg-gradient-to-br from-red-50 to-rose-50/50 border-red-200",
-                bgLight: "bg-red-50",
-                textColor: "text-red-700",
-                borderColor: "border-red-200",
-                questions: [
-                    {
-                        title: `احسب ناتج الضرب: ${fmtFrac(2, 3)} × ${fmtFrac(3, 4)} :`,
-                        options: [`${fmtFrac(1, 2)}`, `${fmtFrac(6, 7)}`, `${fmtFrac(5, 7)}`, `${fmtFrac(1, 4)}`],
-                        correct: 0,
-                        explanation: "ضرب البسوط في البسوط والمقامات في المقامات واختصار الناتج: ٦/١٢ = ١/٢."
-                    },
-                    {
-                        title: `ناتج ضرب: ${fmtFrac(-1, 2)} × ${fmtFrac(4, 5)} :`,
-                        options: [`${fmtFrac(-2, 5)}`, `${fmtFrac(2, 5)}`, `${fmtFrac(-4, 10)}`, `${fmtFrac(5, 8)}`],
-                        correct: 0,
-                        explanation: "سالب في موجب بسالب: -٤ / ١٠ وبعد التبسيط -٢ / ٥."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(3, 5)} × ٥ :`,
-                        options: ["٣", "١٥", `${fmtFrac(3, 25)}`, `${fmtFrac(8, 5)}`],
-                        correct: 0,
-                        explanation: "العدد ٥ يعتبر ٥/١، وباختصار الـ ٥ مع الـ ٥ يبقى الناتج ٣."
-                    },
-                    {
-                        title: `ناتج ضرب: ${fmtFrac(2, 7)} × ${fmtFrac(7, 2)} :`,
-                        options: ["١", "٠", `${fmtFrac(14, 14)}`, "١٤"],
-                        correct: 0,
-                        explanation: "ضرب العدد في مقلوبه (معكوسه الضربي) يساوي ١."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(1, 4)} × ${fmtFrac(1, 3)} :`,
-                        options: [`${fmtFrac(1, 12)}`, `${fmtFrac(2, 7)}`, `${fmtFrac(1, 7)}`, `${fmtFrac(3, 4)}`],
-                        correct: 0,
-                        explanation: "١×١ = ١ و ٤×٣ = ١٢."
-                    }
-                ]
-            },
-            lesson6: {
-                title: "قسمة الأعداد النسبية",
-                desc: "استخدام مقلوب الكسر الثاني (اضرب في المقلوب) لإجراء القسمة.",
-                icon: "fa-solid fa-arrows-rotate",
-                color: "from-indigo-600 to-violet-600",
-                bgCard: "bg-gradient-to-br from-indigo-50 to-violet-50/50 border-indigo-200",
-                bgLight: "bg-indigo-50",
-                textColor: "text-indigo-700",
-                borderColor: "border-indigo-200",
-                questions: [
-                    {
-                        title: `احسب ناتج القسمة: ${fmtFrac(1, 2)} ÷ ${fmtFrac(1, 4)} :`,
-                        options: ["٢", "١", `${fmtFrac(1, 8)}`, "٤"],
-                        correct: 0,
-                        explanation: "نحول القسمة إلى ضرب في المقلوب: ١/٢ × ٤/١ = ٤/٢ = ٢."
-                    },
-                    {
-                        title: `ناتج قسمة: ${fmtFrac(3, 5)} ÷ ${fmtFrac(3, 5)} :`,
-                        options: ["١", "٠", `${fmtFrac(9, 25)}`, `${fmtFrac(5, 3)}`],
-                        correct: 0,
-                        explanation: "أي عدد غير صفري مقسوماً على نفسه يساوي ١."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(2, 3)} ÷ ٢ :`,
-                        options: [`${fmtFrac(1, 3)}`, `${fmtFrac(4, 3)}`, `${fmtFrac(2, 6)}`, "٣"],
-                        correct: 0,
-                        explanation: "٢/٣ × ١/٢ = ٢/٦ وبعد التبسيط ١/٣."
-                    },
-                    {
-                        title: "المعكوس الضربي (مقلوب) للعدد سالب ثلاثة أرباع (-٣/٤) هو:",
-                        options: [`${fmtFrac(-4, 3)}`, `${fmtFrac(4, 3)}`, `${fmtFrac(3, 4)}`, `${fmtFrac(-3, 4)}`],
-                        correct: 0,
-                        explanation: "المعكوس الضربي للكسر يحافظ على الإشارة ويقلب البسط ومقام."
-                    },
-                    {
-                        title: `احسب: ${fmtFrac(3, 4)} ÷ ${fmtFrac(1, 2)} :`,
-                        options: [`${fmtFrac(3, 2)}`, `${fmtFrac(3, 8)}`, "٢", `${fmtFrac(1, 2)}`],
-                        correct: 0,
-                        explanation: "٣/٤ × ٢/١ = ٦/٤ = ٣/٢."
-                    }
-                ]
-            },
-            lesson7: {
-                title: "القوى والأسس",
-                desc: "فهم القوى والأسس وحساب قيم العبارات الأسية والأعداد المرفوعة لقوة.",
-                icon: "fa-solid fa-bolt",
-                color: "from-cyan-600 to-blue-600",
-                bgCard: "bg-gradient-to-br from-cyan-50 to-blue-50/50 border-cyan-200",
-                bgLight: "bg-cyan-50",
-                textColor: "text-cyan-700",
-                borderColor: "border-cyan-200",
-                questions: [
-                    {
-                        title: `احسب قيمة العبارة الأسية: ${fmtPower(2, 3)} :`,
-                        options: ["٨", "٦", "٩", "١٦"],
-                        correct: 0,
-                        explanation: "٢ × ٢ × ٢ = ٨."
-                    },
-                    {
-                        title: `ما القيمة الناتجة عن: ${fmtPower(5, 2)} ؟`,
-                        options: ["٢٥", "١٠", "٣٢", "٥٢"],
-                        correct: 0,
-                        explanation: "٥ × ٥ = ٢٥."
-                    },
-                    {
-                        title: "اكتب العدد ٨١ على صورة قوة للعدد ٣:",
-                        options: [`${fmtPower(3, 4)}`, `${fmtPower(3, 3)}`, `${fmtPower(9, 2)}`, `${fmtPower(3, 5)}`],
-                        correct: 0,
-                        explanation: "٣ × ٣ × ٣ × ٣ = ٨١ أي ٣ أس ٤."
-                    },
-                    {
-                        title: `قيمة أي عدد غير صفري مرفوع للقوة صفر ${fmtPower('أ', 0)} تساوي:`,
-                        options: ["١", "٠", "العدد نفسه", "غير منتهٍ"],
-                        correct: 0,
-                        explanation: "أي عدد غير صفري أس صفر يساوي دائماً ١."
-                    },
-                    {
-                        title: `احسب قيمة: ${fmtPower(10, 3)} :`,
-                        options: ["١٠٠٠", "٣٠", "١٠٠", "١٠٠٠٠"],
-                        correct: 0,
-                        explanation: "١٠ × ١٠ × ١٠ = ١٠٠٠."
-                    }
-                ]
+            } catch (e) {
+                console.log(e);
             }
+        }
+
+        // تخزين البيانات واسترجاعها
+        function getUsersData() {
+            let data = localStorage.getItem('math_initiative_users_v3');
+            return data ? JSON.parse(data) : {};
+        }
+
+        function saveUsersData(data) {
+            localStorage.setItem('math_initiative_users_v3', JSON.stringify(data));
+        }
+
+        // تهيئة التطبيق عند التحميل
+        window.onload = function() {
+            checkActiveSession();
+            renderLeaderboard();
+            renderLessonsList();
         };
 
-        if (localStorage.getItem('math_lessons_data')) {
-            try {
-                lessonsData = JSON.parse(localStorage.getItem('math_lessons_data'));
-            } catch(e) {}
-        }
-
-        function getUsersScores() {
-            try {
-                return JSON.parse(localStorage.getItem('math_users_scores')) || {};
-            } catch(e) {
-                return {};
+        function checkActiveSession() {
+            let session = localStorage.getItem('math_initiative_current_user_v3');
+            if (session) {
+                currentUser = JSON.parse(session);
+                if (currentUser.id === TEACHER_ADMIN_ID) {
+                    isAdmin = true;
+                }
+                document.getElementById('nav-user-info').classList.remove('hidden');
+                document.getElementById('display-username').innerText = currentUser.name;
             }
         }
 
-        function saveUsersScores(data) {
-            localStorage.setItem('math_users_scores', JSON.stringify(data));
-        }
-
+        // تبديل تبويبات التسجيل والدخول
         function switchAuthTab(tab) {
-            const regBtn = document.getElementById('tab-btn-register');
-            const loginBtn = document.getElementById('tab-btn-login');
             const regForm = document.getElementById('register-form');
             const loginForm = document.getElementById('login-form');
+            const btnReg = document.getElementById('tab-btn-register');
+            const btnLogin = document.getElementById('tab-btn-login');
 
-            if(tab === 'register') {
-                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
-                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
+            if (tab === 'register') {
                 regForm.classList.remove('hidden');
                 loginForm.classList.add('hidden');
+                btnReg.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
+                btnLogin.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
             } else {
-                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
-                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
-                loginForm.classList.remove('hidden');
                 regForm.classList.add('hidden');
+                loginForm.classList.remove('hidden');
+                btnLogin.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
+                btnReg.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
             }
+        }
+
+        // تسجيل طالب جديد
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const id = document.getElementById('reg-id').value.trim();
+
+            if (!name || !id) return;
+            if (id === TEACHER_ADMIN_ID) {
+                showMsgModal("تنبيه", "هذا الرقم مخصص للمعلم فقط. يرجى اختيار رقم آخر.", "fa-triangle-exclamation", "text-amber-500", "bg-amber-100");
+                return;
+            }
+
+            let users = getUsersData();
+            if (users[id]) {
+                showMsgModal("تنبيه", "هذا الرقم التعريفي مسجل مسبقاً لمفكر آخر. يجدر بك استخدام رقم مختلف أو الدخول السريع.", "fa-triangle-exclamation", "text-amber-500", "bg-amber-100");
+                return;
+            }
+
+            users[id] = {
+                name: name,
+                id: id,
+                scores: {},
+                completedLessons: 0,
+                totalPoints: 0
+            };
+
+            saveUsersData(users);
+            currentUser = users[id];
+            isAdmin = false;
+            localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+
+            playSound('success');
+            enterLessonsView();
+        }
+
+        // الدخول السريع بالرقم التعريفي (أو رقم المعلم)
+        function handleQuickLogin(e) {
+            e.preventDefault();
+            const id = document.getElementById('login-id').value.trim();
+
+            // فحص إذا كان المستخدم هو المعلم بالرقم 12344321
+            if (id === TEACHER_ADMIN_ID) {
+                isAdmin = true;
+                currentUser = {
+                    name: "الأستاذ عبدالمحيي السلمي (المعلم)",
+                    id: TEACHER_ADMIN_ID,
+                    isTeacher: true
+                };
+                localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+                playSound('success');
+                enterLessonsView();
+                return;
+            }
+
+            let users = getUsersData();
+            if (!users[id]) {
+                showMsgModal("عذراً", "الرقم التعريفي غير مسجل. يرجى التحقق من الرقم أو التسجيل كجديد.", "fa-circle-xmark", "text-red-500", "bg-red-100");
+                return;
+            }
+
+            currentUser = users[id];
+            isAdmin = false;
+            localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+
+            playSound('success');
+            enterLessonsView();
+        }
+
+        function logout() {
+            localStorage.removeItem('math_initiative_current_user_v3');
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('nav-user-info').classList.add('hidden');
+            goHome();
         }
 
         function goHome() {
-            currentUser = null;
-            activeLessonKey = null;
-            document.getElementById('nav-user-info').classList.add('hidden');
-            document.getElementById('register-form').reset();
-            document.getElementById('login-form').reset();
+            document.getElementById('admin-mode-indicator').classList.add('hidden');
+            document.getElementById('clear-all-btn').classList.add('hidden');
+            document.getElementById('admin-actions-header').classList.add('hidden');
+            
             document.getElementById('view-home').classList.remove('hidden');
             document.getElementById('view-lessons').classList.add('hidden');
             document.getElementById('view-quiz').classList.add('hidden');
@@ -907,470 +780,354 @@
             renderLeaderboard();
         }
 
-        // تسجيل مفكر جديد لأول مرة
-        function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('reg-name').value.trim();
-            const id = document.getElementById('reg-id').value.trim();
-
-            if(!name || !id) return;
-
-            const scores = getUsersScores();
-            
-            // التأكد إذا كان الرقم التعريفي مأخوذاً مسبقاً
-            if(scores[id]) {
-                showMsg("الرقم التعريفي مستخدم", "هذا الرقم التعريفي مسجل مسبقاً لمفكر آخر، يرجى اختيار رقم آخر أو استخدام الدخول السريع.", "error");
-                return;
-            }
-
-            // إنشاء الحساب الجديد
-            scores[id] = { name: name, id: id, lessons: {} };
-            saveUsersScores(scores);
-
-            currentUser = { name, id };
-            loginUserSuccess();
-        }
-
-        // دخول سريع بالرقم التعريفي فقط
-        function handleQuickLogin(e) {
-            e.preventDefault();
-            const id = document.getElementById('login-id').value.trim();
-
-            if(!id) return;
-
-            const scores = getUsersScores();
-
-            if(!scores[id]) {
-                showMsg("رقم تعريفي غير موجود", "لم نجد حساباً بهذا الرقم التعريفي. يرجى التأكد من الرقم أو إنشاء حساب جديد من تبويب (تسجيل جديد).", "error");
-                return;
-            }
-
-            currentUser = { name: scores[id].name, id: id };
-            loginUserSuccess();
-        }
-
-        function loginUserSuccess() {
-            document.getElementById('display-username').textContent = currentUser.name;
+        function enterLessonsView() {
             document.getElementById('nav-user-info').classList.remove('hidden');
-            document.getElementById('welcome-name').textContent = currentUser.name;
+            document.getElementById('display-username').innerText = currentUser.name;
+            document.getElementById('welcome-name').innerText = currentUser.name;
 
             document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-quiz').classList.add('hidden');
+            document.getElementById('view-result').classList.add('hidden');
             document.getElementById('view-lessons').classList.remove('hidden');
-            renderLessons();
+
+            if (isAdmin) {
+                document.getElementById('admin-mode-indicator').classList.remove('hidden');
+            }
+            renderLessonsList();
             renderLeaderboard();
         }
 
-        function logout() {
-            goHome();
-        }
-
-        function renderLeaderboard() {
-            const scores = getUsersScores();
-            const tbody = document.getElementById('leaderboard-body');
-            const adminHeader = document.getElementById('admin-actions-header');
-            const clearAllBtn = document.getElementById('clear-all-btn');
-
-            tbody.innerHTML = '';
-
-            if(isAdmin) {
-                adminHeader.classList.remove('hidden');
-                clearAllBtn.classList.remove('hidden');
+        function goToLessons() {
+            if (!currentUser) {
+                goHome();
             } else {
-                adminHeader.classList.add('hidden');
-                clearAllBtn.classList.add('hidden');
-            }
-
-            let usersList = [];
-            for(let key in scores) {
-                let u = scores[key];
-                let totalScore = 0;
-                let completedCount = 0;
-                for(let l in u.lessons) {
-                    totalScore += u.lessons[l].score || 0;
-                    if(u.lessons[l].completed) completedCount++;
-                }
-                usersList.push({
-                    keyId: key,
-                    name: u.name,
-                    totalScore: totalScore,
-                    completedCount: completedCount
-                });
-            }
-
-            usersList.sort((a, b) => b.totalScore - a.totalScore);
-
-            const colCount = isAdmin ? 5 : 4;
-
-            if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="${colCount}" class="p-6 text-center text-gray-300 font-bold">لا توجد نتائج مسجلة حتى الآن. كن أول المفكرين المبدعين المتصدرين!</td></tr>`;
-                return;
-            }
-
-            usersList.forEach((user, index) => {
-                let rankBadge = toArabicDigits(index + 1);
-                if(index === 0) rankBadge = '🥇 ١';
-                else if(index === 1) rankBadge = '🥈 ٢';
-                else if(index === 2) rankBadge = '🥉 ٣';
-
-                let deleteBtnHtml = isAdmin 
-                    ? `<td class="p-3 text-center">
-                        <button onclick="playSound('click'); deleteContestant('${user.keyId}', '${user.name}')" class="bg-red-500/20 hover:bg-red-600 text-red-300 hover:text-white p-1.5 rounded-lg transition border border-red-500/30 text-xs active:scale-95" title="حذف المفكر">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                      </td>` 
-                    : '';
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-white/5 transition">
-                        <td class="p-3 text-nassr-yellow font-black">${rankBadge}</td>
-                        <td class="p-3 text-sm font-black text-white">${user.name}</td>
-                        <td class="p-3"><span class="px-2.5 py-1 bg-white/10 rounded-full text-xs">${toArabicDigits(user.completedCount)} / ٧</span></td>
-                        <td class="p-3 text-nassr-yellow font-black text-base">${toArabicDigits(user.totalScore)}</td>
-                        ${deleteBtnHtml}
-                    </tr>
-                `;
-            });
-        }
-
-        function deleteContestant(userId, userName) {
-            if(!isAdmin) return;
-            if(confirm(`هل أنت تأكد من حذف المفكر (${userName}) بشكل نهائي من اللوحة؟`)) {
-                const scores = getUsersScores();
-                delete scores[userId];
-                saveUsersScores(scores);
-                renderLeaderboard();
-                showMsg("تم الحذف بنجاح", `تم حذف المفكر المبدع ${userName} من الكشف.`, "success");
+                enterLessonsView();
             }
         }
 
-        function clearAllScores() {
-            if(!isAdmin) return;
-            if(confirm("تنبيه: هل أنت متأكد من مسح جميع نتائج المفكرين وإعادة تصفير الجدول بالكامل؟")) {
-                localStorage.removeItem('math_users_scores');
-                renderLeaderboard();
-                showMsg("تم المسح الكامل", "تم مسح كشف جميع المفكرين بنجاح.", "success");
-            }
-        }
-
-        function renderLessons() {
+        // عرض قائمة الدروس
+        function renderLessonsList() {
             const grid = document.getElementById('lessons-grid');
             grid.innerHTML = '';
 
-            const scores = getUsersScores();
-            let userScores = currentUser ? (scores[currentUser.id]?.lessons || {}) : {};
+            Object.keys(lessonsData).forEach((key, index) => {
+                const lesson = lessonsData[key];
+                let userScore = (currentUser && !currentUser.isTeacher && currentUser.scores && currentUser.scores[key] !== undefined) ? currentUser.scores[key] : null;
+                let isCompleted = userScore !== null;
 
-            for(let key in lessonsData) {
-                let lesson = lessonsData[key];
-                let lScore = userScores[key]?.score;
-                let isCompleted = userScores[key]?.completed;
+                const card = document.createElement('div');
+                card.className = "bg-white/95 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-xl border-2 border-gray-100 hover:border-nassr-yellow transition flex flex-col justify-between group";
+                
+                let scoreBadge = isCompleted ? 
+                    `<span class="bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-check"></i> مكتمل (${userScore}/٥)</span>` :
+                    `<span class="bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full">لم يبدأ بعد</span>`;
 
-                let badgeHtml = isCompleted 
-                    ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-black px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-check-circle"></i> مكتمل (${toArabicDigits(lScore)}/٥)</span>`
-                    : `<span class="bg-amber-100 text-amber-800 text-xs font-black px-2.5 py-1 rounded-full">غير مكتمل</span>`;
+                let actionBtnText = currentUser && currentUser.isTeacher ? "معاينة الدرس" : "ابدأ التحدي";
 
-                grid.innerHTML += `
-                    <div class="bg-white rounded-3xl p-5 shadow-xl border-2 ${lesson.borderColor} flex flex-col justify-between hover:shadow-2xl transition transform hover:-translate-y-1">
-                        <div>
-                            <div class="flex items-center justify-between mb-3">
-                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${lesson.color} text-white flex items-center justify-center text-xl shadow-md">
-                                    <i class="${lesson.icon}"></i>
-                                </div>
-                                ${badgeHtml}
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${lesson.color} text-white flex items-center justify-center text-xl shadow-lg group-hover:scale-105 transition">
+                                <i class="fa-solid ${lesson.icon}"></i>
                             </div>
-                            <h3 class="font-black text-gray-800 text-base sm:text-lg mb-1.5">${lesson.title}</h3>
-                            <p class="text-xs text-gray-500 font-bold leading-relaxed mb-4">${lesson.desc}</p>
+                            ${currentUser && currentUser.isTeacher ? '<span class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-1 rounded-full"><i class="fa-solid fa-user-shield"></i> معاينة</span>' : scoreBadge}
                         </div>
-                        <button onclick="playSound('click'); startQuiz('${key}')" class="w-full bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black py-2.5 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95 border border-nassr-yellow/40 shadow">
-                            <span>ابدأ التحدي</span>
-                            <i class="fa-solid fa-play"></i>
+                        <h3 class="text-base sm:text-lg font-black text-nassr-blue mb-2">الدرس ${index + 1}: ${lesson.title}</h3>
+                        <p class="text-xs text-gray-500 font-semibold">اختبر فهمك عبر ٥ أسئلة تفاعلية ممتعة مع تغذية راجعة فورية.</p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-400"><i class="fa-regular fa-clock ml-1"></i>٥ دقائق</span>
+                        <button onclick="playSound('click'); startQuiz('${key}')" class="bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black px-4 py-2.5 rounded-xl transition text-xs sm:text-sm flex items-center gap-2 shadow-md active:scale-95">
+                            <span>${actionBtnText}</span>
+                            <i class="fa-solid fa-arrow-left"></i>
                         </button>
                     </div>
                 `;
-            }
-
-            if(isAdmin) {
-                document.getElementById('admin-mode-indicator').classList.remove('hidden');
-            } else {
-                document.getElementById('admin-mode-indicator').classList.add('hidden');
-            }
+                grid.appendChild(card);
+            });
         }
 
+        // بدء الاختبار
         function startQuiz(lessonKey) {
+            if (!currentUser) {
+                showMsgModal("تنبيه", "الرجاء تسجيل الدخول أولاً.", "fa-user-lock", "text-amber-500", "bg-amber-100");
+                return;
+            }
             activeLessonKey = lessonKey;
             currentQuestionIndex = 0;
             currentScore = 0;
-            selectedOptionIndex = null;
-            isAnswerSubmitted = false;
 
-            const lesson = lessonsData[lessonKey];
-            document.getElementById('quiz-lesson-title-badge').textContent = lesson.title;
-            document.getElementById('quiz-lesson-title-badge').className = `text-xs sm:text-sm font-bold px-3 py-1 rounded-full border ${lesson.bgLight} ${lesson.textColor} ${lesson.borderColor}`;
-
-            if(isAdmin) {
+            document.getElementById('view-lessons').classList.add('hidden');
+            document.getElementById('view-quiz').classList.remove('hidden');
+            
+            document.getElementById('quiz-lesson-title-badge').innerText = lessonsData[lessonKey].title;
+            if (isAdmin) {
                 document.getElementById('admin-edit-bar').classList.remove('hidden');
             } else {
                 document.getElementById('admin-edit-bar').classList.add('hidden');
             }
 
-            document.getElementById('view-lessons').classList.add('hidden');
-            document.getElementById('view-quiz').classList.remove('hidden');
-            renderQuestion();
+            loadQuestion();
         }
 
-        function backToLessons() {
-            document.getElementById('view-quiz').classList.add('hidden');
-            document.getElementById('view-lessons').classList.remove('hidden');
-            renderLessons();
-        }
-
-        function renderQuestion() {
+        function loadQuestion() {
+            selectedOptionIndex = null;
             isAnswerSubmitted = false;
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
+            
+            const qList = lessonsData[activeLessonKey].questions;
+            const q = qList[currentQuestionIndex];
 
-            document.getElementById('quiz-progress-text').textContent = `السؤال ${toArabicDigits(currentQuestionIndex + 1)} من ${toArabicDigits(lesson.questions.length)}`;
-            document.getElementById('quiz-score-badge').textContent = `النتيجة: ${toArabicDigits(currentScore)}`;
-            document.getElementById('quiz-progress-bar').style.width = `${((currentQuestionIndex + 1) / lesson.questions.length) * 100}%`;
+            document.getElementById('quiz-progress-text').innerText = `السؤال ${currentQuestionIndex + 1} من ${qList.length}`;
+            document.getElementById('quiz-score-badge').innerText = `النتيجة: ${currentScore}`;
+            document.getElementById('quiz-progress-bar').style.width = `${((currentQuestionIndex + 1) / qList.length) * 100}%`;
 
             document.getElementById('question-title').innerHTML = q.title;
 
-            document.getElementById('feedback-box').classList.add('hidden');
-
-            const optContainer = document.getElementById('options-container');
-            optContainer.innerHTML = '';
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
 
             q.options.forEach((opt, idx) => {
-                optContainer.innerHTML += `
-                    <button onclick="selectOption(${idx})" id="opt-btn-${idx}" class="w-full text-right p-3.5 rounded-2xl border-2 border-gray-200 bg-gray-50/50 hover:bg-gray-100 font-bold transition flex items-center justify-between text-xs sm:text-sm active:scale-[0.99]">
+                const btn = document.createElement('button');
+                btn.className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-gray-200 bg-white hover:border-nassr-blue hover:bg-blue-50/50 transition font-bold text-gray-800 flex items-center justify-between group active:scale-[0.99]";
+                btn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center text-xs font-black group-hover:bg-nassr-blue group-hover:text-nassr-yellow transition">${['أ', 'ب', 'ج', 'د'][idx]}</span>
                         <span>${opt}</span>
-                        <span id="opt-icon-${idx}" class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center text-xs text-transparent">✓</span>
-                    </button>
+                    </span>
+                    <span class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center radio-circle"></span>
                 `;
+                btn.onclick = () => selectOption(idx);
+                optionsContainer.appendChild(btn);
             });
 
-            selectedOptionIndex = null;
+            const feedbackBox = document.getElementById('feedback-box');
+            feedbackBox.classList.add('hidden');
+
             const nextBtn = document.getElementById('next-btn');
             nextBtn.disabled = true;
-            nextBtn.textContent = "السؤال التالي";
             nextBtn.className = "bg-gray-200 text-gray-400 font-bold px-5 py-2.5 rounded-xl transition cursor-not-allowed text-xs sm:text-sm";
+            nextBtn.innerHTML = currentQuestionIndex === qList.length - 1 ? 'عرض النتيجة والشهادة <i class="fa-solid fa-award ml-1"></i>' : 'السؤال التالي <i class="fa-solid fa-arrow-left ml-1"></i>';
         }
 
         function selectOption(idx) {
-            if(isAnswerSubmitted) return;
+            if (isAnswerSubmitted) return;
             selectedOptionIndex = idx;
+            playSound('click');
+
+            const optionsContainer = document.getElementById('options-container');
+            const buttons = optionsContainer.children;
+
+            for (let i = 0; i < buttons.length; i++) {
+                if (i === idx) {
+                    buttons[i].className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-nassr-blue bg-blue-50 transition font-bold text-gray-800 flex items-center justify-between shadow-sm";
+                    buttons[i].querySelector('.radio-circle').className = "w-5 h-5 rounded-full bg-nassr-blue text-white flex items-center justify-center text-xs fa-solid fa-check radio-circle";
+                } else {
+                    buttons[i].className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-gray-200 bg-white transition font-bold text-gray-800 flex items-center justify-between opacity-70";
+                    buttons[i].querySelector('.radio-circle').className = "w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center radio-circle";
+                }
+            }
+
             isAnswerSubmitted = true;
+            const q = lessonsData[activeLessonKey].questions[currentQuestionIndex];
+            const isCorrect = selectedOptionIndex === q.correct;
 
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
-            const isCorrect = (idx === q.correct);
-
-            if(isCorrect) {
+            if (isCorrect) {
                 currentScore++;
-                document.getElementById('quiz-score-badge').textContent = `النتيجة: ${toArabicDigits(currentScore)}`;
                 playSound('success');
             } else {
                 playSound('error');
             }
 
-            q.options.forEach((_, i) => {
-                const btn = document.getElementById(`opt-btn-${i}`);
-                const icon = document.getElementById(`opt-icon-${i}`);
-                btn.disabled = true;
-
-                if(i === q.correct) {
-                    btn.className = "w-full text-right p-3.5 rounded-2xl border-2 border-emerald-500 bg-emerald-50 font-bold transition flex items-center justify-between text-xs sm:text-sm text-emerald-900 shadow-md";
-                    icon.className = "w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs font-bold";
-                    icon.innerHTML = "✓";
-                } else if(i === idx && !isCorrect) {
-                    btn.className = "w-full text-right p-3.5 rounded-2xl border-2 border-red-500 bg-red-50 font-bold transition flex items-center justify-between text-xs sm:text-sm text-red-900 shadow-md";
-                    icon.className = "w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center text-xs font-bold";
-                    icon.innerHTML = "✕";
-                } else {
-                    btn.className = "w-full text-right p-3.5 rounded-2xl border-2 border-gray-200 bg-gray-50/30 opacity-60 font-bold transition flex items-center justify-between text-xs sm:text-sm text-gray-500";
-                }
-            });
+            document.getElementById('quiz-score-badge').innerText = `النتيجة: ${currentScore}`;
 
             const feedbackBox = document.getElementById('feedback-box');
             const feedbackTitle = document.getElementById('feedback-title');
             const feedbackText = document.getElementById('feedback-text');
 
             feedbackBox.classList.remove('hidden');
-
-            if(isCorrect) {
-                feedbackBox.className = "p-4 rounded-2xl border-2 border-emerald-300 bg-emerald-50 text-emerald-900 space-y-1.5 shadow-sm";
-                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600"></i> أحسنت يا بطل! إجابة صحيحة وموفقة 🌟`;
+            if (isCorrect) {
+                feedbackBox.className = "p-4 rounded-2xl border-2 bg-emerald-50 border-emerald-300 text-emerald-900 transition-all duration-300 space-y-1.5";
+                feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i> إجابة صحيحة وموفقة!';
             } else {
-                feedbackBox.className = "p-4 rounded-2xl border-2 border-red-300 bg-red-50 text-red-900 space-y-1.5 shadow-sm";
-                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-xmark text-red-600"></i> إجابة خاطئة، لا تقتصر على ذلك وحاول التركيز في القادم 💪`;
+                feedbackBox.className = "p-4 rounded-2xl border-2 bg-rose-50 border-rose-300 text-rose-900 transition-all duration-300 space-y-1.5";
+                feedbackTitle.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 text-lg"></i> إجابة غير دقيقة. الإجابة الصحيحة هي الخيار (${['أ', 'ب', 'ج', 'د'][q.correct]})`;
             }
-
-            feedbackText.innerHTML = `<span class="font-bold text-gray-800">التغذية الراجعة والشرح:</span> ${q.explanation || 'راجع القاعدة الرياضية للدرس لتثبيت المعلومة.'}`;
+            feedbackText.innerText = q.explanation;
 
             const nextBtn = document.getElementById('next-btn');
             nextBtn.disabled = false;
-            nextBtn.className = "bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black px-6 py-2.5 rounded-xl transition text-xs sm:text-sm shadow-md active:scale-95 border border-nassr-gold cursor-pointer";
-            
-            if(currentQuestionIndex === lesson.questions.length - 1) {
-                nextBtn.innerHTML = `عرض النتيجة النهائية <i class="fa-solid fa-award ml-1"></i>`;
-            } else {
-                nextBtn.innerHTML = `السؤال التالي <i class="fa-solid fa-arrow-left ml-1"></i>`;
-            }
+            nextBtn.className = "bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black px-6 py-2.5 rounded-xl transition shadow-lg text-xs sm:text-sm active:scale-95";
         }
 
         function nextQuestion() {
-            if(!isAnswerSubmitted) return;
-
-            const lesson = lessonsData[activeLessonKey];
-            currentQuestionIndex++;
-            if(currentQuestionIndex < lesson.questions.length) {
-                renderQuestion();
+            const qList = lessonsData[activeLessonKey].questions;
+            if (currentQuestionIndex < qList.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
             } else {
-                showResult();
+                if (currentUser.isTeacher) {
+                    showMsgModal("معاينة مكتملة", "لقد أنهيت المعاينة بنجاح يا أستاذنا.", "fa-circle-check", "text-emerald-600", "bg-emerald-100");
+                    goToLessons();
+                } else {
+                    finishQuiz();
+                }
             }
         }
 
-        function showResult() {
-            playSound('success');
+        function finishQuiz() {
+            let users = getUsersData();
+            if (users[currentUser.id]) {
+                if (!users[currentUser.id].scores) users[currentUser.id].scores = {};
+                
+                let prevScore = users[currentUser.id].scores[activeLessonKey] !== undefined ? users[currentUser.id].scores[activeLessonKey] : -1;
+                if (currentScore > prevScore) {
+                    users[currentUser.id].scores[activeLessonKey] = currentScore;
+                }
+
+                let totalPts = 0;
+                let completedCount = 0;
+                Object.keys(users[currentUser.id].scores).forEach(k => {
+                    totalPts += users[currentUser.id].scores[k];
+                    completedCount++;
+                });
+
+                users[currentUser.id].totalPoints = totalPts;
+                users[currentUser.id].completedLessons = completedCount;
+
+                saveUsersData(users);
+                currentUser = users[currentUser.id];
+                localStorage.setItem('math_initiative_current_user_v3', JSON.stringify(currentUser));
+            }
+
             document.getElementById('view-quiz').classList.add('hidden');
             document.getElementById('view-result').classList.remove('hidden');
 
-            const lesson = lessonsData[activeLessonKey];
-            document.getElementById('result-lesson-name').textContent = lesson.title;
-            
-            const percentage = Math.round((currentScore / lesson.questions.length) * 100);
-            document.getElementById('final-score-points').textContent = toArabicDigits(currentScore * 10);
-            document.getElementById('final-score-percentage').textContent = toArabicDigits(percentage) + '٪';
+            document.getElementById('print-name').innerText = currentUser.name;
+            document.getElementById('result-lesson-name').innerText = lessonsData[activeLessonKey].title;
+            document.getElementById('final-score-points').innerText = `${currentScore} / ٥`;
+            document.getElementById('final-score-percentage').innerText = `${Math.round((currentScore / 5) * 100)}٪`;
 
-            document.getElementById('print-name').textContent = currentUser ? currentUser.name : "المعلم المسؤول";
-            document.getElementById('print-date').textContent = toArabicDigits(new Date().toLocaleDateString('ar-SA'));
-
-            if(currentUser && currentUser.id !== "ADMIN") {
-                const scores = getUsersScores();
-                if(!scores[currentUser.id]) {
-                    scores[currentUser.id] = { name: currentUser.name, id: currentUser.id, lessons: {} };
-                }
-                scores[currentUser.id].name = currentUser.name;
-                
-                let prevScore = scores[currentUser.id].lessons[activeLessonKey]?.score || 0;
-                if(currentScore >= prevScore) {
-                    scores[currentUser.id].lessons[activeLessonKey] = {
-                        score: currentScore,
-                        completed: true
-                    };
-                }
-                saveUsersScores(scores);
-                renderLeaderboard();
-            }
+            const now = new Date();
+            document.getElementById('print-date').innerText = now.toLocaleDateString('ar-SA');
         }
 
-        function goToLessons() {
-            document.getElementById('view-result').classList.add('hidden');
-            document.getElementById('view-lessons').classList.remove('hidden');
-            renderLessons();
-        }
-
-        function promptAdminLogin() {
-            document.getElementById('admin-passcode-input').value = '';
-            document.getElementById('admin-passcode-modal').classList.remove('hidden');
-        }
-
-        function closeAdminPasscodeModal() {
-            document.getElementById('admin-passcode-modal').classList.add('hidden');
-        }
-
-        function verifyAdminPasscode() {
-            const val = document.getElementById('admin-passcode-input').value.trim();
-            if(val === ADMIN_PASSCODE) {
-                isAdmin = true;
-                closeAdminPasscodeModal();
-
-                if(!currentUser) {
-                    currentUser = { name: "المعلم المسؤول", id: "ADMIN" };
-                }
-
-                document.getElementById('display-username').textContent = currentUser.name;
-                document.getElementById('nav-user-info').classList.remove('hidden');
-                document.getElementById('welcome-name').textContent = currentUser.name;
-
-                document.getElementById('view-home').classList.add('hidden');
-                document.getElementById('view-lessons').classList.remove('hidden');
-                renderLessons();
-                renderLeaderboard();
-
-                showMsg("تم تسجيل دخول المسؤول بنجاح", "أهلاً بك أستاذنا الفاضل. تم تفعيل خيارات الإدارة وتعديل الأسئلة وشروح التغذية الراجعة.", "success");
-            } else {
-                showMsg("خطأ في الرقم السري", "الرقم السري الذي أدخلته غير صحيح.", "error");
-            }
-        }
-
-        function openAdminDownload() {
-            if(!isAdmin) {
-                promptAdminLogin();
-                return;
-            }
-            printAllResults();
-        }
-
-        function printAllResults() {
-            const scores = getUsersScores();
-            const tbody = document.getElementById('printable-all-tbody');
+        // لوحة الصدارة العامة
+        function renderLeaderboard() {
+            let users = getUsersData();
+            let tbody = document.getElementById('leaderboard-body');
             tbody.innerHTML = '';
 
-            let usersList = [];
-            for(let key in scores) {
-                let u = scores[key];
-                let totalScore = 0;
-                let completedCount = 0;
-                for(let l in u.lessons) {
-                    totalScore += u.lessons[l].score || 0;
-                    if(u.lessons[l].completed) completedCount++;
-                }
-                usersList.push({
-                    name: u.name,
-                    totalScore: totalScore,
-                    completedCount: completedCount
-                });
-            }
+            let sortedUsers = Object.values(users).sort((a, b) => b.totalPoints - a.totalPoints);
 
-            usersList.sort((a, b) => b.totalScore - a.totalScore);
-
-            if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center">لا توجد بيانات مسجلة.</td></tr>`;
+            // تفعيل أزرار الإدارة إذا كان المعلم مسجلاً
+            if (isAdmin) {
+                document.getElementById('clear-all-btn').classList.remove('hidden');
+                document.getElementById('admin-actions-header').classList.remove('hidden');
             } else {
-                usersList.forEach((user, idx) => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td class="border border-gray-300 p-2 text-center">${toArabicDigits(idx + 1)}</td>
-                            <td class="border border-gray-300 p-2 font-bold">${user.name}</td>
-                            <td class="border border-gray-300 p-2 text-center">${toArabicDigits(user.completedCount)} / ٧</td>
-                            <td class="border border-gray-300 p-2 text-center font-bold">${toArabicDigits(user.totalScore)}</td>
-                        </tr>
-                    `;
-                });
+                document.getElementById('clear-all-btn').classList.add('hidden');
+                document.getElementById('admin-actions-header').classList.add('hidden');
             }
 
-            document.getElementById('print-all-date').textContent = toArabicDigits(new Date().toLocaleDateString('ar-SA'));
-            document.getElementById('printable-all-results').classList.remove('hidden');
-            window.print();
-            document.getElementById('printable-all-results').classList.add('hidden');
+            if (sortedUsers.length === 0) {
+                let colSpanCount = isAdmin ? 5 : 4;
+                tbody.innerHTML = `<tr><td colspan="${colSpanCount}" class="p-6 text-center text-gray-300 font-bold">لا توجد سجلات للطلبة حتى الآن.</td></tr>`;
+                return;
+            }
+
+            sortedUsers.forEach((u, index) => {
+                let rankBadge = "";
+                if (index === 0) rankBadge = '<span class="w-7 h-7 rounded-full bg-yellow-400 text-nassr-blue inline-flex items-center justify-center font-black shadow-md">١</span>';
+                else if (index === 1) rankBadge = '<span class="w-7 h-7 rounded-full bg-gray-300 text-gray-800 inline-flex items-center justify-center font-black shadow-md">٢</span>';
+                else if (index === 2) rankBadge = '<span class="w-7 h-7 rounded-full bg-amber-600 text-white inline-flex items-center justify-center font-black shadow-md">٣</span>';
+                else rankBadge = `<span class="text-gray-300 font-bold">${index + 1}</span>`;
+
+                let row = document.createElement('tr');
+                row.className = "hover:bg-white/5 transition border-b border-white/5";
+
+                let adminActionsCell = isAdmin ? `
+                    <td class="p-3 text-center">
+                        <div class="flex items-center justify-center gap-1.5">
+                            <button onclick="playSound('click'); editUserScore('${u.id}')" class="bg-blue-500/20 hover:bg-blue-500 text-blue-200 hover:text-white p-1.5 rounded-lg text-xs transition" title="تعديل النقاط/السجل">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button onclick="playSound('click'); deleteUser('${u.id}')" class="bg-red-500/20 hover:bg-red-500 text-red-200 hover:text-white p-1.5 rounded-lg text-xs transition" title="حذف المفكر">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                ` : '';
+
+                row.innerHTML = `
+                    <td class="p-3">${rankBadge}</td>
+                    <td class="p-3 font-black text-nassr-yellow">${u.name}</td>
+                    <td class="p-3">${u.completedLessons || 0} من ٣ دروس</td>
+                    <td class="p-3"><span class="bg-nassr-yellow text-nassr-blue font-black px-2.5 py-1 rounded-lg text-xs">${u.totalPoints || 0} نقطة</span></td>
+                    ${adminActionsCell}
+                `;
+                tbody.appendChild(row);
+            });
         }
 
+        // وظائف الإدارة للمفكرين (حذف وتعديل)
+        function deleteUser(userId) {
+            if (!isAdmin) return;
+            if (confirm("هل أنت متأكد من رغبتك في حذف هذا المفكر وسجله بالكامل؟")) {
+                let users = getUsersData();
+                delete users[userId];
+                saveUsersData(users);
+                renderLeaderboard();
+                playSound('success');
+            }
+        }
+
+        function editUserScore(userId) {
+            if (!isAdmin) return;
+            let users = getUsersData();
+            let u = users[userId];
+            if (!u) return;
+
+            let newName = prompt("تعديل اسم المفكر المبدع:", u.name);
+            if (newName === null) return;
+            
+            let newPtsStr = prompt("تعديل إجمالي النقاط:", u.totalPoints || 0);
+            if (newPtsStr === null) return;
+            let newPts = parseInt(newPtsStr);
+
+            if (newName.trim() !== "") u.name = newName.trim();
+            if (!isNaN(newPts)) u.totalPoints = newPts;
+
+            users[userId] = u;
+            saveUsersData(users);
+            renderLeaderboard();
+            playSound('success');
+        }
+
+        function clearAllScores() {
+            if (!isAdmin) return;
+            if (confirm("تحذير: هل أنت متأكد من رغبتك في مسح كافة سجلات ودرجات الطلاب نهائياً؟")) {
+                localStorage.removeItem('math_initiative_users_v3');
+                renderLeaderboard();
+                playSound('success');
+            }
+        }
+
+        // تعديل الأسئلة الحالية (للمعلم)
         function openEditModal() {
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
+            const q = lessonsData[activeLessonKey].questions[currentQuestionIndex];
+            document.getElementById('edit-q-title').value = q.title.replace(/<[^>]*>?/gm, '');
+            document.getElementById('edit-q-explanation').value = q.explanation;
 
-            document.getElementById('edit-q-title').value = q.title;
-            document.getElementById('edit-q-explanation').value = q.explanation || "";
-            const list = document.getElementById('edit-options-list');
-            list.innerHTML = '';
+            const listDiv = document.getElementById('edit-options-list');
+            listDiv.innerHTML = '';
 
-            q.options.forEach((opt, i) => {
-                list.innerHTML += `
-                    <div class="flex items-center gap-2">
-                        <input type="radio" name="edit-correct" value="${i}" ${i === q.correct ? 'checked' : ''} class="w-4 h-4 text-emerald-600">
-                        <input type="text" id="edit-opt-${i}" value="${opt}" class="flex-1 p-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-semibold">
-                    </div>
+            q.options.forEach((opt, idx) => {
+                const div = document.createElement('div');
+                div.className = "flex items-center gap-2";
+                div.innerHTML = `
+                    <input type="radio" name="edit-correct-opt" value="${idx}" ${idx === q.correct ? 'checked' : ''} class="w-4 h-4 text-emerald-600">
+                    <input type="text" id="edit-opt-${idx}" value="${opt.replace(/<[^>]*>?/gm, '')}" class="w-full p-2 bg-gray-50 border border-gray-200 rounded-lg text-xs font-semibold focus:outline-none">
                 `;
+                listDiv.appendChild(div);
             });
 
             document.getElementById('edit-modal').classList.remove('hidden');
@@ -1383,46 +1140,82 @@
         function saveQuestionEdit() {
             const newTitle = document.getElementById('edit-q-title').value.trim();
             const newExplanation = document.getElementById('edit-q-explanation').value.trim();
-            const radios = document.getElementsByName('edit-correct');
+            
+            let newOptions = [];
             let newCorrect = 0;
-            let newOpts = [];
 
-            for(let i=0; i<4; i++) {
-                if(radios[i].checked) newCorrect = i;
-                newOpts.push(document.getElementById(`edit-opt-${i}`).value.trim());
+            for (let i = 0; i < 4; i++) {
+                const optVal = document.getElementById(`edit-opt-${i}`).value.trim();
+                newOptions.push(optVal);
             }
 
-            const lesson = lessonsData[activeLessonKey];
-            lesson.questions[currentQuestionIndex].title = newTitle;
-            lesson.questions[currentQuestionIndex].explanation = newExplanation;
-            lesson.questions[currentQuestionIndex].options = newOpts;
-            lesson.questions[currentQuestionIndex].correct = newCorrect;
+            const radios = document.getElementsByName('edit-correct-opt');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    newCorrect = parseInt(radios[i].value);
+                    break;
+                }
+            }
 
-            localStorage.setItem('math_lessons_data', JSON.stringify(lessonsData));
+            if (!newTitle) return;
+
+            lessonsData[activeLessonKey].questions[currentQuestionIndex] = {
+                title: newTitle,
+                options: newOptions,
+                correct: newCorrect,
+                explanation: newExplanation
+            };
+
             closeEditModal();
-            showMsg("تم الحفظ بنجاح", "تم تحديث السؤال والتغذية الراجعة الفورية بنجاح.", "success");
-            renderQuestion();
+            loadQuestion();
+            playSound('success');
         }
 
-        function showMsg(title, text, type) {
-            document.getElementById('msg-title').textContent = title;
-            document.getElementById('msg-text').textContent = text;
-            const iconBox = document.getElementById('msg-icon');
-            if(type === 'success') {
-                iconBox.className = "w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mx-auto";
-                iconBox.innerHTML = '<i class="fa-solid fa-check"></i>';
+        function openAdminDownload() {
+            printAllResults();
+        }
+
+        function printAllResults() {
+            let users = getUsersData();
+            let tbody = document.getElementById('printable-all-tbody');
+            tbody.innerHTML = '';
+
+            let sortedUsers = Object.values(users).sort((a, b) => b.totalPoints - a.totalPoints);
+
+            if (sortedUsers.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center">لا توجد بيانات مسجلة.</td></tr>`;
             } else {
-                iconBox.className = "w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-xl mx-auto";
-                iconBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+                sortedUsers.forEach((u, index) => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="border border-gray-300 p-2 text-center">${index + 1}</td>
+                        <td class="border border-gray-300 p-2 font-bold">${u.name}</td>
+                        <td class="border border-gray-300 p-2 text-center">${u.completedLessons || 0} / ٣ دروس</td>
+                        <td class="border border-gray-300 p-2 text-center font-bold">${u.totalPoints || 0} نقطة</td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
+
+            const now = new Date();
+            document.getElementById('print-all-date').innerText = now.toLocaleDateString('ar-SA');
+            window.print();
+        }
+
+        function showMsgModal(title, text, iconClass, iconColor, iconBg) {
+            document.getElementById('msg-title').innerText = title;
+            document.getElementById('msg-text').innerText = text;
+            
+            const iconDiv = document.getElementById('msg-icon');
+            iconDiv.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-xl mx-auto ${iconBg} ${iconColor}`;
+            iconDiv.innerHTML = `<i class="fa-solid ${iconClass}"></i>`;
+
             document.getElementById('msg-modal').classList.remove('hidden');
         }
 
         function closeMsgModal() {
             document.getElementById('msg-modal').classList.add('hidden');
         }
-
-        renderLeaderboard();
     </script>
 </body>
 </html>
