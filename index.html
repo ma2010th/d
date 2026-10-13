@@ -473,14 +473,15 @@
 
     <!-- JAVASCRIPT LOGIC & FIREBASE CLOUD SYNC -->
     <script>
-        // ضع بيانات مشروعك في فايربيس هنا بدلاً من القيم الافتراضية
+        // إعدادات فايربيس الخاصة بمشروعك (ma2030th)
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyArAxYLNK7W63sDrQFBY0UmephYL2eJ3_Y",
+            authDomain: "ma2030th.firebaseapp.com",
+            projectId: "ma2030th",
+            storageBucket: "ma2030th.firebasestorage.app",
+            messagingSenderId: "259983784733",
+            appId: "1:259983784733:web:76d03a85be1c6535a1fff4",
+            measurementId: "G-ZVZPMZVLE9"
         };
 
         // تهيئة فايربيس
@@ -898,7 +899,7 @@
                 enterLessonsView();
             } catch (err) {
                 console.error(err);
-                showMsgModal("خطأ", "حدث خطأ أثناء الاتصال بالسحابة. تحقق من إعدادات فايربيس.", "fa-circle-xmark", "text-red-500", "bg-red-100");
+                showMsgModal("خطأ", "حدث خطأ أثناء الاتصال بالسحابة. تحقق من قواعد الأمان في فايربيس (Firestore Rules).", "fa-circle-xmark", "text-red-500", "bg-red-100");
             }
         }
 
@@ -1198,7 +1199,7 @@
             document.getElementById('print-date').innerText = now.toLocaleDateString('ar-SA');
         }
 
-        // لوحة الصدارة العامة (تعمل تلقائياً بالتزامن الفوري)
+        // لوحة الصدارة العامة (تتحدث لحظياً لكل الطلاب والمعلم)
         function renderLeaderboard() {
             let tbody = document.getElementById('leaderboard-body');
             tbody.innerHTML = '';
