@@ -2,36 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>مبادرة الرياضيات - الصف الثاني متوسط - العب وأفكر</title>
-    <!-- Tailwind CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أوراق عمل الرياضيات التفاعلية - أ. عبدالمحيي السلمي</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts Cairo -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDK (Google Cloud Database) -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-    <!-- تهيئة الألوان والتنسيقات العصريّة -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         cairo: ['Cairo', 'sans-serif'],
-                    },
-                    colors: {
-                        nassr: {
-                            yellow: '#F59E0B',        /* أصفر ذهبي مشرق */
-                            yellowHover: '#D97706',   /* ذهبي دافئ عند التمرير */
-                            blue: '#1E3A8A',          /* أزرق ملكي أنيق */
-                            blueDark: '#0F172A',      /* أزرق داكن فخم */
-                            blueLight: '#3B82F6',     /* أزرق فاتح */
-                            gold: '#D97706'           /* درجة الذهبي للحدود */
-                        }
+                        tajawal: ['Tajawal', 'sans-serif'],
                     }
                 }
             }
@@ -39,1774 +21,877 @@
     </script>
     <style>
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 50%, #FEF3C7 100%);
-            min-height: 100vh;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
         }
-        .fraction {
-            display: inline-flex;
-            flex-direction: column;
-            vertical-align: middle;
-            text-align: center;
-            padding: 0 4px;
+
+        /* Styling for Option Selection */
+        .option-card.selected {
+            border-color: #2563eb !important;
+            background-color: #dbeafe !important;
             font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
         }
-        .fraction > span:first-child {
-            border-bottom: 2px solid currentColor;
-            padding-bottom: 2px;
+
+        .grid-bg {
+            background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px),
+                              linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
         }
-        .fraction > span:last-child {
-            padding-top: 2px;
-        }
-        .sqrt {
-            display: inline-flex;
-            align-items: center;
-            border-top: 2px solid currentColor;
-            padding-top: 1px;
-            padding-left: 4px;
-            margin-right: 2px;
-            position: relative;
-        }
-        .sqrt::before {
-            content: "√";
-            font-size: 1.1em;
-            margin-left: 3px;
-            display: inline-block;
-            transform: translateY(-1px);
-        }
-        .power-expr {
-            display: inline-flex;
-            align-items: flex-start;
-            direction: ltr;
-            unicode-bidi: isolate;
-            margin: 0 2px;
-            font-weight: bold;
-        }
-        .power-expr .base {
-            font-size: 1.1em;
-            line-height: 1;
-        }
-        .power-expr .exponent {
-            font-size: 0.75em;
-            line-height: 1;
-            vertical-align: super;
-            margin-left: 1px;
-        }
+
+        /* Print Media CSS Rules */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printable-result, #printable-result *, #printable-all-results, #printable-all-results * {
-                visibility: visible;
-            }
-            #printable-result {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 100vw;
-                height: 100vh;
-                margin: 0;
-                padding: 20px;
-                background: white !important;
-                display: flex !important;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                box-shadow: none !important;
-                border: 8px solid #F59E0B !important;
-            }
-            #printable-all-results {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white !important;
-            }
             .no-print {
                 display: none !important;
+            }
+            .tab-content {
+                display: none !important;
+            }
+            .tab-content.active-print {
+                display: block !important;
+            }
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 2px solid #000000 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+            input[type="text"], textarea, select {
+                border: none !important;
+                border-bottom: 1px solid #000 !important;
+                background: transparent !important;
+                border-radius: 0 !important;
+            }
+            .page-break {
+                page-break-after: always;
             }
         }
     </style>
 </head>
-<body class="text-gray-900 flex flex-col justify-between min-h-screen selection:bg-nassr-yellow selection:text-nassr-blue">
+<body class="min-h-screen pb-12 text-slate-800">
 
-    <!-- HEADER -->
-    <header class="bg-nassr-blue text-white shadow-lg sticky top-0 z-40 no-print border-b-4 border-nassr-yellow">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="playSound('click'); goHome()">
-                <div class="bg-nassr-yellow text-nassr-blue p-2 sm:p-2.5 rounded-2xl shadow-md flex items-center justify-center transform active:scale-95 transition">
-                    <i class="fa-solid fa-lightbulb text-xl sm:text-2xl"></i>
+    <!-- Top Interactive Navbar (Hidden in Print) -->
+    <header class="no-print sticky top-0 z-50 bg-slate-900 text-white shadow-xl border-b border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    <i class="fas fa-square-root-variable"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg sm:text-xl lg:text-2xl font-black text-nassr-yellow leading-tight tracking-wide">مبادرة الرياضيات</h1>
-                    <p class="text-xs text-yellow-100 font-bold">الصف الثاني متوسط - العب وأفكر</p>
+                    <h1 class="text-lg font-bold leading-tight">منصة أوراق العمل التفاعلية</h1>
+                    <p class="text-xs text-slate-400">إعداد المعلم: <span class="text-amber-400 font-bold">عبدالمحيي السلمي</span></p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="playSound('click'); goHome()" class="bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black text-xs sm:text-sm px-3.5 py-2 rounded-xl transition flex items-center gap-2 shadow-md active:scale-95">
-                    <i class="fa-solid fa-house"></i>
-                    <span class="hidden sm:inline">الرئيسية</span>
+
+            <!-- Tab Buttons to switch worksheets -->
+            <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700 flex-wrap">
+                <button id="tab-btn-1" onclick="switchTab(1)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow">
+                    <i class="fas fa-chart-line"></i>
+                    <span>ورقة ١: العلاقات المتناسبة</span>
                 </button>
-                <div id="nav-user-info" class="hidden flex items-center gap-2">
-                    <span id="display-username" class="bg-white/10 text-nassr-yellow font-black px-3 py-1.5 rounded-full text-xs border border-nassr-yellow/40 max-w-[130px] sm:max-w-xs truncate"></span>
-                    <button onclick="playSound('click'); logout()" class="text-red-300 hover:text-white font-bold text-xs px-2.5 py-1.5 bg-red-600/30 hover:bg-red-600 rounded-xl transition active:scale-95" title="تسجيل الخروج">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </div>
+                <button id="tab-btn-2" onclick="switchTab(2)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-shapes"></i>
+                    <span>ورقة ٢: الهندسة الإحداثية</span>
+                </button>
+                <button id="tab-btn-3" onclick="switchTab(3)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>ورقة ٣: المعدل الثابت للتغير</span>
+                </button>
             </div>
+
+            <!-- Global Tools -->
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+                    <i class="fas fa-print"></i>
+                    <span>طباعة الورقة الحالية</span>
+                </button>
+            </div>
+
         </div>
     </header>
 
-    <main class="max-w-7xl w-full mx-auto p-4 sm:p-6 my-auto flex-grow flex items-center justify-center">
-        
-        <!-- HOME SECTION -->
-        <section id="view-home" class="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-            <div class="lg:col-span-5 bg-white/95 backdrop-blur-md p-5 sm:p-7 rounded-3xl shadow-2xl border-2 border-nassr-yellow flex flex-col justify-between">
-                <div>
-                    <div class="text-center mb-4">
-                        <div class="inline-block p-3.5 bg-gradient-to-br from-nassr-blue to-nassr-blueLight text-nassr-yellow rounded-3xl mb-2 text-3xl shadow-xl shadow-nassr-blue/30 border-2 border-nassr-yellow">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                        </div>
-                        <h2 class="text-xl font-black text-nassr-blue">بوابة المفكر المبدع</h2>
-                        <p class="text-gray-600 text-xs font-bold mt-1">اختر طريقة الدخول للبدء في التحدي</p>
-                    </div>
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
 
-                    <!-- أزرار التنقل بين التسجيل الجديد ودخول بالرقم التعريفي -->
-                    <div class="grid grid-cols-2 gap-2 p-1.5 bg-gray-100 rounded-2xl mb-5 text-xs font-bold">
-                        <button id="tab-btn-register" onclick="playSound('click'); switchAuthTab('register')" class="py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md">
-                            <i class="fa-solid fa-user-plus"></i>
-                            <span>تسجيل جديد</span>
-                        </button>
-                        <button id="tab-btn-login" onclick="playSound('click'); switchAuthTab('login')" class="py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue">
-                            <i class="fa-solid fa-right-to-bracket"></i>
-                            <span>دخول سريع</span>
-                        </button>
-                    </div>
-
-                    <!-- نموذج التسجيل لأول مرة -->
-                    <form id="register-form" onsubmit="handleRegister(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">اسم المفكر المبدع</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
-                                    <i class="fa-solid fa-user text-sm"></i>
-                                </span>
-                                <input type="text" id="reg-name" required placeholder="مثال: عبد العزيز السلمي" 
-                                    class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">اختر رقمك التعريفي الخاص (من اختيارك)</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
-                                    <i class="fa-solid fa-key text-sm"></i>
-                                </span>
-                                <input type="text" id="reg-id" required placeholder="مثال: 5544 أو رقم السجل" 
-                                    class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
-                            </div>
-                            <p class="text-[11px] text-gray-500 font-bold mt-1">احفظ هذا الرقم جيداً لتستطيع الدخول به في أي وقت لاحقاً.</p>
-                        </div>
-                        <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm border-2 border-nassr-gold">
-                            <span>إنشاء الحساب والانطلاق</span>
-                            <i class="fa-solid fa-rocket text-base"></i>
-                        </button>
-                    </form>
-
-                    <!-- نموذج الدخول السريع بالرقم التعريفي -->
-                    <form id="login-form" onsubmit="handleQuickLogin(event)" class="space-y-4 hidden">
-                        <div>
-                            <label class="block text-xs sm:text-sm font-black text-nassr-blue mb-1.5">أدخل رقمك التعريفي الخاص</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-nassr-blue">
-                                    <i class="fa-solid fa-id-card text-sm"></i>
-                                </span>
-                                <input type="text" id="login-id" required placeholder="أدخل رقمك التعريفي أو رقم المعلم" 
-                                    class="w-full pr-10 pl-3 py-3 bg-yellow-50/50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-nassr-yellow focus:bg-white transition text-xs sm:text-sm font-bold text-gray-800">
-                            </div>
-                            <p class="text-[11px] text-gray-500 font-bold mt-1">ملاحظة: دخول المعلم يتم بإدخال الرقم التعريفي (12344321).</p>
-                        </div>
-                        <button type="submit" onclick="playSound('click')" class="w-full bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black py-3 rounded-xl shadow-lg transition transform active:scale-95 flex items-center justify-center gap-2 text-sm border-2 border-nassr-yellow">
-                            <span>دخول إلى حسابي</span>
-                            <i class="fa-solid fa-arrow-left text-base"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="mt-6 pt-4 border-t-2 border-yellow-100 flex gap-2 text-xs">
-                    <button onclick="playSound('click'); openAdminDownload()" class="w-full bg-amber-100 hover:bg-amber-200 text-amber-900 font-black px-3 py-2.5 rounded-xl transition border border-amber-300 flex items-center justify-center gap-1.5 active:scale-95" title="تصدير إلى Excel">
-                        <i class="fa-solid fa-file-excel text-base text-emerald-700"></i> طباعة كشف الدرجات Excel
-                    </button>
-                </div>
-            </div>
-
-            <!-- Total Score Leaderboard -->
-            <div class="lg:col-span-7 bg-nassr-blue text-white p-5 sm:p-7 rounded-3xl shadow-2xl border-4 border-nassr-yellow flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
-                        <div class="flex items-center gap-3">
-                            <div class="p-2.5 bg-nassr-yellow text-nassr-blue rounded-xl text-xl font-black">
-                                <i class="fa-solid fa-ranking-star"></i>
+        <!-- ========================================== -->
+        <!-- WORKSHEET 1: العلاقات المتناسبة والغير متناسبة -->
+        <!-- ========================================== -->
+        <div id="worksheet-1" class="tab-content block">
+            <div class="print-card bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-6 md:p-10 relative">
+                
+                <!-- Header Section -->
+                <div class="border-b-2 border-purple-100 pb-6 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-amber-400 flex items-center justify-center text-white text-3xl font-extrabold shadow-md">
+                                <i class="fas fa-calculator"></i>
                             </div>
                             <div>
-                                <h3 class="text-lg sm:text-xl font-black text-nassr-yellow">لوحة الصدارة العامة</h3>
-                                <p class="text-gray-200 text-xs font-semibold">تظهر أسماء المفكرين المبدعين ونقاطهم الإجمالية</p>
+                                <span class="bg-purple-100 text-purple-700 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">مادة الرياضيات</span>
+                                <h2 class="text-2xl font-extrabold text-slate-800 mt-1">ورقة عمل تفاعلية (١)</h2>
+                                <p class="text-sm font-semibold text-purple-600">درس: العلاقات المتناسبة وغير المتناسبة</p>
                             </div>
                         </div>
-                        <div class="flex gap-2">
-                            <button id="clear-all-btn" onclick="playSound('click'); clearAllScores()" class="hidden bg-red-500/20 hover:bg-red-600 text-red-200 hover:text-white text-xs font-black px-3 py-2 rounded-xl border border-red-400/40 transition flex items-center gap-1 active:scale-95">
-                                <i class="fa-solid fa-trash-can"></i> مسح الكشف
-                            </button>
-                            <button onclick="playSound('click'); printAllResults()" class="bg-white/10 hover:bg-white/20 text-nassr-yellow text-xs font-black px-3.5 py-2 rounded-xl border border-nassr-yellow/30 transition flex items-center gap-1.5 active:scale-95">
-                                <i class="fa-solid fa-print"></i> طباعة الكشف
-                            </button>
+                    </div>
+
+                    <!-- Student Info Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-purple-50/50 p-4 rounded-xl border border-purple-100">
+                        <div class="flex items-center gap-2">
+                            <label for="ws1-student-name" class="font-bold text-slate-700 whitespace-nowrap text-sm">اسم الطالب/ـة:</label>
+                            <input type="text" id="ws1-student-name" placeholder="اكتب اسمك هنا..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="ws1-student-class" class="font-bold text-slate-700 whitespace-nowrap text-sm">الصف / الفصل:</label>
+                            <input type="text" id="ws1-student-class" placeholder="مثال: ثاني متوسط (أ)" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">1</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            في أحد المراكز الرياضية، يشرف كل مدرب على <span class="text-purple-700 font-extrabold">28</span> متدرباً. إذا كان هناك <span class="text-purple-700 font-extrabold">3</span> مدربين احتياطيين، فهل يتناسب عدد المتدربين مع عدد المدربين؟ وضح إجابتك.
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto rounded-xl border border-white/10">
-                        <table class="w-full text-right text-xs sm:text-sm">
-                            <thead>
-                                <tr class="bg-nassr-blueLight text-nassr-yellow font-black border-b border-nassr-yellow/30">
-                                    <th class="p-3">الترتيب</th>
-                                    <th class="p-3">اسم المفكر المبدع</th>
-                                    <th class="p-3">الدروس المكتملة</th>
-                                    <th class="p-3">مجموع النقاط</th>
-                                    <th id="admin-actions-header" class="p-3 hidden text-center">إجراءات المعلم</th>
-                                </tr>
-                            </thead>
-                            <tbody id="leaderboard-body" class="divide-y divide-white/10 text-white font-bold">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
+                    <div class="space-y-4 mr-0 sm:mr-11">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label class="font-semibold text-slate-700 text-sm">هل العلاقة متناسبة؟</label>
+                            <div class="flex items-center gap-4">
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q1_proportional" value="no" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">غير متناسبة</span>
+                                </label>
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q1_proportional" value="yes" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">متناسبة</span>
+                                </label>
+                            </div>
+                        </div>
 
-        <!-- LESSONS SECTION -->
-        <section id="view-lessons" class="w-full hidden space-y-5">
-            <div class="bg-nassr-blue text-white p-5 sm:p-6 rounded-3xl shadow-xl border-4 border-nassr-yellow flex justify-between items-center flex-wrap gap-3">
-                <div>
-                    <h2 class="text-xl sm:text-2xl font-black">مرحباً بك، <span id="welcome-name" class="text-nassr-yellow"></span>! 👋</h2>
-                    <p class="text-xs sm:text-sm text-gray-200 font-bold mt-0.5">اختر الدرس المطلوب وابدأ التحدي التفاعلي</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <div id="admin-mode-indicator" class="hidden bg-nassr-yellow text-nassr-blue text-xs font-black px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-nassr-gold">
-                        <i class="fa-solid fa-user-shield"></i> لوحة تحكم المعلم
-                    </div>
-                    <button onclick="playSound('click'); goHome()" class="bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black text-xs px-3.5 py-2 rounded-xl transition border border-nassr-gold flex items-center gap-1.5 shadow-md active:scale-95">
-                        <i class="fa-solid fa-house"></i> الرئيسية
-                    </button>
-                </div>
-            </div>
+                        <div>
+                            <label for="q1_explain" class="block font-semibold text-slate-700 text-sm mb-1">التوضيح / خطوات الحل:</label>
+                            <textarea id="q1_explain" rows="2" placeholder="اكتب التوضيح الخاص بك هنا..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition"></textarea>
+                        </div>
 
-            <div id="lessons-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            </div>
-        </section>
-
-        <!-- QUIZ SECTION -->
-        <section id="view-quiz" class="w-full max-w-2xl mx-auto hidden">
-            <div class="bg-white/95 backdrop-blur-md p-5 sm:p-7 rounded-3xl shadow-2xl border border-white space-y-5 relative">
-                <div class="flex items-center justify-between">
-                    <button onclick="playSound('click'); backToLessons()" class="text-xs font-bold text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-xl transition flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-right"></i> الدروس
-                    </button>
-                    <span id="quiz-lesson-title-badge" class="text-xs sm:text-sm font-bold px-3 py-1 rounded-full border"></span>
-                </div>
-
-                <div id="admin-edit-bar" class="hidden bg-amber-50 border border-amber-200 p-2.5 rounded-xl flex items-center justify-between text-xs font-bold text-amber-800">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-wand-magic-sparkles"></i> خيارات المعلم المسؤول:</span>
-                    <button onclick="playSound('click'); openEditModal()" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 rounded-lg transition flex items-center gap-1">
-                        <i class="fa-solid fa-pen-to-square"></i> تعديل السؤال
-                    </button>
-                </div>
-
-                <div class="space-y-1.5">
-                    <div class="flex justify-between items-center text-xs sm:text-sm font-bold text-gray-600">
-                        <span id="quiz-progress-text">السؤال ١ من ٥</span>
-                        <span id="quiz-score-badge" class="bg-emerald-100 text-emerald-800 px-2.5 py-0.5 rounded-md">النتيجة: ٠</span>
-                    </div>
-                    <div class="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                        <div id="quiz-progress-bar" class="bg-gradient-to-r from-blue-600 to-indigo-500 h-2.5 rounded-full transition-all duration-300" style="width: 20%"></div>
+                        <div id="q1_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
                     </div>
                 </div>
 
-                <div class="py-1">
-                    <h3 id="question-title" class="text-sm sm:text-base lg:text-lg font-bold text-gray-800 leading-relaxed min-h-[48px] flex items-center flex-wrap">
-                    </h3>
+                <!-- Question 2 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">2</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            بين ما إذا كانت القياسات للشكل المجاور متناسبة أم لا:
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mr-0 sm:mr-11">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col items-center justify-center shadow-sm">
+                            <div class="text-xs text-slate-500 mb-2">أبعاد المستطيلات / الأشكال</div>
+                            <svg class="w-64 h-40" viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="20" width="220" height="120" rx="6" stroke="#475569" stroke-width="2" fill="#f1f5f9" stroke-dasharray="4 4" />
+                                <rect x="30" y="30" width="90" height="50" rx="4" stroke="#7e22ce" stroke-width="2.5" fill="#f3e8ff" />
+                                <text x="75" y="52" fill="#6b21a8" font-size="11" font-weight="bold" text-anchor="middle">المستطيل (أ)</text>
+                                <text x="75" y="68" fill="#475569" font-size="10" text-anchor="middle">الطول: 6 | العرض: 4</text>
+                                
+                                <rect x="135" y="30" width="95" height="100" rx="4" stroke="#059669" stroke-width="2.5" fill="#ecfdf5" />
+                                <text x="182" y="75" fill="#047857" font-size="11" font-weight="bold" text-anchor="middle">المستطيل (ب)</text>
+                                <text x="182" y="92" fill="#475569" font-size="10" text-anchor="middle">الطول: 12 | العرض: 8</text>
+                            </svg>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-semibold text-slate-700 text-sm block mb-1">نسبة الطول إلى العرض في الشكلين:</label>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="bg-purple-50 p-2 rounded border border-purple-200">
+                                        <span class="font-bold">الشكل (أ):</span> 6 ÷ 4 = 1.5
+                                    </div>
+                                    <div class="bg-emerald-50 p-2 rounded border border-emerald-200">
+                                        <span class="font-bold">الشكل (ب):</span> 12 ÷ 8 = 1.5
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="font-semibold text-slate-700 text-sm mb-1 block">هل القياسات متناسبة؟</label>
+                                <select id="q2_answer" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                                    <option value="">-- اختر الإجابة --</option>
+                                    <option value="yes">نعم، القياسات متناسبة لأن النسب متساوية</option>
+                                    <option value="no">لا، القياسات غير متناسبة</option>
+                                </select>
+                            </div>
+
+                            <div id="q2_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div id="options-container" class="space-y-2.5 text-sm sm:text-base">
+                <!-- Question 3 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">3</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            <span class="text-emerald-700 font-extrabold">نباتات:</span> ينمو أحد نباتات الكرمة وهو نبات متسلق - بمعدل <span class="text-purple-700 font-extrabold">7.5</span> أقدام كل <span class="text-purple-700 font-extrabold">5</span> أيام. هل يتناسب عدد الأيام مع طول النبات عند قياسه في اليوم الأخير؟ وضح إجابتك.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mr-0 sm:mr-11">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse text-sm bg-white rounded-lg overflow-hidden border border-slate-200">
+                                <thead>
+                                    <tr class="bg-purple-100 text-purple-900">
+                                        <th class="p-2 border border-slate-200">عدد الأيام (س)</th>
+                                        <th class="p-2 border border-slate-200">5</th>
+                                        <th class="p-2 border border-slate-200">10</th>
+                                        <th class="p-2 border border-slate-200">15</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-2 font-bold border border-slate-200 bg-slate-50">طول النبات بالأقدام (ص)</td>
+                                        <td class="p-2 border border-slate-200">7.5</td>
+                                        <td class="p-2 border border-slate-200">15</td>
+                                        <td class="p-2 border border-slate-200">22.5</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 font-bold border border-slate-200">معدل الوحدة (ص / س)</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                            <label class="font-semibold text-slate-700 text-sm">النتيجة:</label>
+                            <div class="flex items-center gap-4">
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q3_proportional" value="yes" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">يتناسب (العلاقة متناسبة)</span>
+                                </label>
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q3_proportional" value="no" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">لا يتناسب</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="q3_explain" class="block font-semibold text-slate-700 text-sm mb-1">التوضيح:</label>
+                            <textarea id="q3_explain" rows="2" placeholder="اكتب سبب الإجابة..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition"></textarea>
+                        </div>
+
+                        <div id="q3_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                    </div>
                 </div>
 
-                <!-- صندوق التغذية الراجعة والتعزيز الفوري -->
-                <div id="feedback-box" class="hidden p-4 rounded-2xl border-2 transition-all duration-300 space-y-1.5">
-                    <div id="feedback-title" class="font-black text-sm sm:text-base flex items-center gap-2"></div>
-                    <p id="feedback-text" class="text-xs sm:text-sm font-semibold leading-relaxed"></p>
-                </div>
-
-                <div class="flex justify-end pt-3 border-t border-gray-100">
-                    <button id="next-btn" onclick="playSound('click'); nextQuestion()" disabled class="bg-gray-200 text-gray-400 font-bold px-5 py-2.5 rounded-xl transition cursor-not-allowed text-xs sm:text-sm">
-                        السؤال التالي <i class="fa-solid fa-arrow-left ml-1"></i>
+                <!-- Worksheet 1 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS1()" class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
                     </button>
+
+                    <div id="score_card_ws1" class="hidden flex items-center gap-3 bg-purple-50 border border-purple-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws1" class="text-xl font-extrabold text-purple-700">0 / 3</span>
+                    </div>
                 </div>
+
+                <!-- Custom Teacher Signature Footer -->
+                <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold text-slate-700">
+                    <div class="flex items-center gap-2">
+                        <span>إعداد المعلم:</span>
+                        <span class="text-purple-700 font-bold border-b-2 border-purple-300 px-2">عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-300">
+                        درجة الطالب: <span class="text-slate-400 font-normal">....... / ٣</span>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
 
-        <!-- RESULT SECTION / CERTIFICATE -->
-        <section id="view-result" class="w-full max-w-xl mx-auto hidden text-center">
-            <div id="printable-result" class="bg-white p-8 rounded-3xl shadow-2xl border-8 border-nassr-gold space-y-6 relative m-auto">
-                <div class="w-20 h-20 bg-nassr-yellow text-nassr-blue rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg">
-                    <i class="fa-solid fa-award"></i>
+        <!-- ========================================== -->
+        <!-- WORKSHEET 2: هندسة الأبعاد في المستوى الإحداثي -->
+        <!-- ========================================== -->
+        <div id="worksheet-2" class="tab-content hidden">
+            <div class="print-card bg-white rounded-2xl shadow-xl border-4 border-blue-900 overflow-hidden p-6 md:p-8 relative">
+                
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <div class="bg-blue-900 text-white border-2 border-blue-950 rounded-lg py-3 px-8 inline-block shadow-md mb-4">
+                        <h2 class="text-2xl md:text-3xl font-black tracking-wide font-tajawal">هندسة الأبعاد في المستوى الإحداثي</h2>
+                    </div>
+                    
+                    <!-- Student Info -->
+                    <div class="bg-slate-50 border-2 border-blue-100 rounded-lg p-4 flex flex-wrap justify-between items-center text-base md:text-lg font-bold text-gray-800 gap-4">
+                        <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+                            <span class="text-blue-900 whitespace-nowrap">اسم الطالب:</span>
+                            <input type="text" id="ws2-student-name" placeholder="اكتب اسمك هنا..." class="border-b-2 border-dashed border-blue-400 bg-transparent px-2 py-1 w-full focus:outline-none focus:border-blue-700 text-blue-950 font-semibold">
+                        </div>
+                        <div class="flex items-center gap-2 min-w-[140px]">
+                            <span class="text-blue-900 whitespace-nowrap">الفصل:</span>
+                            <input type="text" id="ws2-student-class" placeholder="......." class="border-b-2 border-dashed border-blue-400 bg-transparent px-2 py-1 w-20 text-center focus:outline-none focus:border-blue-700 text-blue-950 font-semibold">
+                        </div>
+                    </div>
                 </div>
 
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-nassr-blue mb-1">شهادة إنجاز تفاعلية</h2>
-                    <p class="text-xs sm:text-sm font-bold text-nassr-gold">مبادرة الرياضيات - العب وأفكر</p>
+                <!-- Question 1: True / False -->
+                <div class="mb-8">
+                    <div class="bg-amber-300 text-black font-extrabold py-2 px-4 rounded-md inline-block text-lg mb-4 shadow-sm border border-amber-400">
+                        السؤال الأول: ضع علامة ( ✓ ) أمام الإجابة الصحيحة وعلامة ( ✗ ) أمام الخاطئة
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Paragraph 1 -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between p-3.5 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:bg-white transition gap-3">
+                            <span class="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
+                                ١) في المستوى الإحداثي يكون المحور الصادي هو خط الأعداد الأفقي
+                            </span>
+                            <div class="flex gap-2" data-q="tf1">
+                                <button onclick="toggleTF(this, '✓', 'tf1')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-100 hover:border-green-500 text-green-600 transition">✓</button>
+                                <button onclick="toggleTF(this, '✗', 'tf1')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-red-100 hover:border-red-500 text-red-600 transition">✗</button>
+                            </div>
+                        </div>
+
+                        <!-- Paragraph 2 -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between p-3.5 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:bg-white transition gap-3">
+                            <span class="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
+                                ٢) يطلق على العدد الأول في الزوج المرتب الإحداثي السيني أو المقطع السيني
+                            </span>
+                            <div class="flex gap-2" data-q="tf2">
+                                <button onclick="toggleTF(this, '✓', 'tf2')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-100 hover:border-green-500 text-green-600 transition">✓</button>
+                                <button onclick="toggleTF(this, '✗', 'tf2')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-red-100 hover:border-red-500 text-red-600 transition">✗</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="space-y-3 py-1">
-                    <p class="text-sm sm:text-base font-bold text-gray-700">تشهد المبادرة بأن المفكر المبدع:</p>
+                <!-- Question 2: Multiple Choice -->
+                <div class="mb-6">
+                    <div class="bg-amber-300 text-black font-extrabold py-2 px-4 rounded-md inline-block text-lg mb-4 shadow-sm border border-amber-400">
+                        السؤال الثاني: اختر الإجابة الصحيحة
+                    </div>
+
+                    <!-- Part 1 -->
+                    <div class="mb-8 border-b-2 border-gray-100 pb-6">
+                        <p class="text-base md:text-lg font-bold text-gray-900 mb-4">
+                            الزوج المرتب الذي يمثل النقطة <span class="text-red-600 font-extrabold">( أ )</span> في المستوى الإحداثي الآتي هو:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                            <!-- Options Right -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q1', '(-1, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( -۱ ، ۲ )
+                                </div>
+                                <div onclick="selectOption(this, 'q1', '(0, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۰ ، ۲ )
+                                </div>
+                            </div>
+
+                            <!-- Coordinate Grid Illustration 1 -->
+                            <div class="flex justify-center my-2 md:my-0">
+                                <div class="w-48 h-48 border-2 border-blue-600 bg-white grid-bg relative rounded-md shadow-inner">
+                                    <div class="absolute w-full h-0.5 bg-blue-700 top-1/2 left-0 -translate-y-1/2"></div>
+                                    <div class="absolute h-full w-0.5 bg-blue-700 left-1/2 top-0 -translate-x-1/2"></div>
+                                    
+                                    <!-- Point A (-1, 2) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 32px); right: calc(50% + 16px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 46px); right: calc(50% + 18px);">أ</span>
+                                    
+                                    <!-- Point B (3, 1) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 16px); right: calc(50% - 48px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 30px); right: calc(50% - 50px);">ب</span>
+                                </div>
+                            </div>
+
+                            <!-- Options Left -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q1', '(1, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۱ ، ۲ )
+                                </div>
+                                <div onclick="selectOption(this, 'q1', '(2, 1)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۲ ، ۱ )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 2 -->
                     <div>
-                        <span id="print-name" class="text-xl sm:text-2xl font-black text-nassr-blue border-b-4 border-nassr-yellow inline-block px-6 py-1"></span>
+                        <p class="text-base md:text-lg font-bold text-gray-900 mb-4">
+                            المسافة بين النقطتين <span class="text-red-600 font-extrabold">( أ ، ب )</span> هي:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                            <!-- Options Right -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q2', '4')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ٤ وحدات
+                                </div>
+                                <div onclick="selectOption(this, 'q2', 'sqrt17')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    جذر ۱۷ وحدة
+                                </div>
+                            </div>
+
+                            <!-- Coordinate Grid Illustration 2 -->
+                            <div class="flex justify-center my-2 md:my-0">
+                                <div class="w-48 h-48 border-2 border-blue-600 bg-white grid-bg relative rounded-md shadow-inner">
+                                    <div class="absolute w-full h-0.5 bg-blue-700 top-1/2 left-0 -translate-y-1/2"></div>
+                                    <div class="absolute h-full w-0.5 bg-blue-700 left-1/2 top-0 -translate-x-1/2"></div>
+                                    
+                                    <!-- Point A (-1, 2) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 32px); right: calc(50% + 16px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 46px); right: calc(50% + 18px);">أ</span>
+                                    
+                                    <!-- Point B (3, 1) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 16px); right: calc(50% - 48px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 30px); right: calc(50% - 50px);">ب</span>
+                                </div>
+                            </div>
+
+                            <!-- Options Left -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q2', '5')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ٥ وحدات
+                                </div>
+                                <div onclick="selectOption(this, 'q2', '7')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ۷ وحدات
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-sm sm:text-base font-bold text-gray-700">
-                        قد أتم بنجاح تحدي <span id="result-lesson-name" class="font-black text-nassr-blue"></span> بكل تفوق.
-                    </p>
+
                 </div>
 
-                <div class="flex justify-center gap-4 py-2">
-                    <div class="bg-yellow-50 border-2 border-nassr-yellow px-6 py-3 rounded-2xl shadow-sm">
-                        <span class="block text-xs font-bold text-gray-600 mb-1">النقاط</span>
-                        <span id="final-score-points" class="text-xl sm:text-2xl font-black text-nassr-blue">٠</span>
-                    </div>
-                    <div class="bg-yellow-50 border-2 border-nassr-yellow px-6 py-3 rounded-2xl shadow-sm">
-                        <span class="block text-xs font-bold text-gray-600 mb-1">نسبة النجاح</span>
-                        <span id="final-score-percentage" class="text-xl sm:text-2xl font-black text-emerald-600">٠٪</span>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-center text-xs text-gray-500 pt-4 border-t border-gray-200 font-bold w-full px-2">
-                    <div><strong>التاريخ:</strong> <span id="print-date"></span></div>
-                    <div><strong>إعداد وتطوير:</strong> الأستاذ السلمي</div>
-                </div>
-
-                <div class="flex gap-3 no-print pt-2">
-                    <button onclick="playSound('click'); window.print()" class="flex-1 bg-nassr-blue hover:bg-nassr-blueLight text-nassr-yellow font-black py-3 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95">
-                        <i class="fa-solid fa-print"></i> طباعة الشهادة
+                <!-- Worksheet 2 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS2()" class="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
                     </button>
-                    <button onclick="playSound('click'); goToLessons()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-2 active:scale-95">
-                        <i class="fa-solid fa-gamepad"></i> درس جديد
-                    </button>
+
+                    <div id="score_card_ws2" class="hidden flex items-center gap-3 bg-blue-50 border border-blue-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws2" class="text-xl font-extrabold text-blue-800">0 / 4</span>
+                    </div>
                 </div>
+
+                <!-- Signature Footer -->
+                <div class="mt-10 pt-4 border-t-2 border-gray-200 flex justify-between items-center text-base font-extrabold text-blue-950">
+                    <div class="flex items-center gap-1">
+                        <span>معلم المادة:</span>
+                        <span class="text-blue-900 border-b-2 border-dashed border-blue-400 px-3 py-0.5">أ. عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-1.5 rounded-lg border border-gray-300">
+                        درجة الطالب: <span class="text-gray-400 font-normal">....... / ۱۰</span>
+                    </div>
+                </div>
+
             </div>
-        </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- WORKSHEET 3: المعدل الثابت للتغير -->
+        <!-- ========================================== -->
+        <div id="worksheet-3" class="tab-content hidden">
+            <div class="print-card bg-white rounded-2xl shadow-xl border-4 border-teal-800 overflow-hidden p-6 md:p-8 relative">
+                
+                <!-- Header -->
+                <div class="border-b-2 border-teal-100 pb-6 mb-6">
+                    <div class="text-center mb-6">
+                        <div class="bg-teal-700 text-white border-2 border-teal-900 rounded-xl py-3 px-8 inline-block shadow-md mb-2">
+                            <h2 class="text-2xl md:text-3xl font-black tracking-wide font-tajawal">المعدل الثابت للتغير</h2>
+                        </div>
+                    </div>
+
+                    <!-- Student Info Box -->
+                    <div class="bg-teal-50/60 border-2 border-teal-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-slate-800 font-bold">
+                        <div class="flex items-center gap-2">
+                            <span class="text-teal-900 whitespace-nowrap text-sm md:text-base">الاسم /</span>
+                            <input type="text" id="ws3-student-name" placeholder="اكتب اسمك هنا..." class="w-full bg-white border border-teal-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-teal-900 whitespace-nowrap text-sm md:text-base">الفصل /</span>
+                            <input type="text" id="ws3-student-class" placeholder="مثال: ثاني متوسط (أ)" class="w-full bg-white border border-teal-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="mb-8 bg-slate-50/70 rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-teal-700 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">١</span>
+                        <div class="text-base font-bold text-slate-900 leading-relaxed">
+                            بيني ما إذا كانت العلاقة بين الكميتين في الجدول المجاور خطية أم لا ، وإذا كانت خطية فجدي المعدل الثابت للتغير ، وإذا لم تكن كذلك فوضحي السبب.
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <!-- Table Display -->
+                        <div class="md:col-span-5 bg-white p-3 rounded-xl border-2 border-teal-200 shadow-sm">
+                            <div class="text-center font-extrabold text-teal-900 bg-teal-100/80 py-2 rounded-t-lg mb-2 text-sm">
+                                عدد الزبائن في أحد المحلات
+                            </div>
+                            <table class="w-full text-center border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700">
+                                        <th class="p-2 border border-slate-300">الزمن (ساعة)</th>
+                                        <th class="p-2 border border-slate-300">عدد الزبائن</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="font-bold text-slate-800">
+                                    <tr>
+                                        <td class="p-2 border border-slate-300">١</td>
+                                        <td class="p-2 border border-slate-300">١٢</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 border border-slate-300">٢</td>
+                                        <td class="p-2 border border-slate-300">٢٤</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 border border-slate-300">٣</td>
+                                        <td class="p-2 border border-slate-300">٣٦</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 border border-slate-300">٤</td>
+                                        <td class="p-2 border border-slate-300">٦٠</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Answers Input Section -->
+                        <div class="md:col-span-7 space-y-4">
+                            <div>
+                                <label class="font-bold text-slate-800 text-sm block mb-1">هل العلاقة خطية؟</label>
+                                <select id="ws3_q1_linear" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                                    <option value="">-- اختر الإجابة --</option>
+                                    <option value="no">غير خطية (المعدل ليس ثابتاً)</option>
+                                    <option value="yes">خطية (المعدل ثابت)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="ws3_q1_explain" class="block font-bold text-slate-800 text-sm mb-1">توضيح السبب / المعدل الثابت للتغير:</label>
+                                <textarea id="ws3_q1_explain" rows="3" placeholder="اكتب معدل التغير بين الساعات المختلفة والسبب (مثال: من ساعة 3 إلى 4 الزيادة 24 زبون بدلاً من 12)..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                            </div>
+
+                            <div id="ws3_q1_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 (Parts A & B) -->
+                <div class="mb-8 bg-slate-50/70 rounded-2xl p-5 border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-teal-700 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">٢</span>
+                        <h3 class="text-lg font-extrabold text-slate-900">المعدل الثابت للتغير والتناسب</h3>
+                    </div>
+
+                    <!-- Part A -->
+                    <div class="bg-white p-4 rounded-xl border border-teal-200 space-y-3">
+                        <label class="font-bold text-slate-800 text-sm md:text-base block">
+                            أ ) أوجدي المعدل الثابت للتغير وفسري معناه .
+                        </label>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 mb-1 block">قيمة المعدل الثابت للتغير:</label>
+                                <input type="text" id="ws3_q2a_val" placeholder="مثال: 12 زبون/ساعة" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 mb-1 block">تفسير المعنى:</label>
+                                <input type="text" id="ws3_q2a_meaning" placeholder="أي أن عدد الزبائن يزداد بمعدل..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <textarea id="ws3_q2a_explain" rows="2" placeholder="اكتب التوضيح وخطوات التفسير تفصيلياً..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Part B -->
+                    <div class="bg-white p-4 rounded-xl border border-teal-200 space-y-3">
+                        <label class="font-bold text-slate-800 text-sm md:text-base block">
+                            ب ) هل العلاقة بين الأرباح والزمن خطية متناسبة أم لا ووضحي إجابتك ؟
+                        </label>
+
+                        <div class="flex items-center gap-6 py-1">
+                            <label class="inline-flex items-center gap-2 cursor-pointer font-bold text-sm text-slate-700">
+                                <input type="radio" name="ws3_q2b_prop" value="yes" class="w-4 h-4 text-teal-600 focus:ring-teal-500">
+                                <span>متناسبة</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer font-bold text-sm text-slate-700">
+                                <input type="radio" name="ws3_q2b_prop" value="no" class="w-4 h-4 text-teal-600 focus:ring-teal-500">
+                                <span>غير متناسبة</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <textarea id="ws3_q2b_explain" rows="3" placeholder="وضحي السبب وخطوات الحل المقترحة..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                        </div>
+
+                        <div id="ws3_q2_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Worksheet 3 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS3()" class="w-full sm:w-auto bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
+                    </button>
+
+                    <div id="score_card_ws3" class="hidden flex items-center gap-3 bg-teal-50 border border-teal-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws3" class="text-xl font-extrabold text-teal-800">0 / 3</span>
+                    </div>
+                </div>
+
+                <!-- Teacher Signature Footer -->
+                <div class="mt-8 pt-6 border-t-2 border-slate-200 flex justify-between items-center text-sm font-extrabold text-teal-950">
+                    <div class="flex items-center gap-1">
+                        <span>إعداد المعلم:</span>
+                        <span class="text-teal-800 border-b-2 border-dashed border-teal-400 px-3 py-0.5">عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-300">
+                        درجة الطالب: <span class="text-slate-400 font-normal">....... / ٣</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </main>
 
-    <!-- ADMIN QUESTION EDIT MODAL -->
-    <div id="edit-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-lg w-full space-y-4 shadow-2xl text-right">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-bold text-gray-800 text-sm sm:text-base">تعديل السؤال الحالي</h3>
-                <button onclick="playSound('click'); closeEditModal()" class="text-gray-400 hover:text-gray-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">عنوان السؤال:</label>
-                <textarea id="edit-q-title" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold h-20 focus:outline-none focus:border-emerald-500"></textarea>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">الخيارات (حدد الخيار الصحيح بالزر):</label>
-                <div id="edit-options-list" class="space-y-2">
-                </div>
-            </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-700 mb-1">التغذية الراجعة وشرح الإجابة:</label>
-                <textarea id="edit-q-explanation" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold h-16 focus:outline-none focus:border-emerald-500"></textarea>
-            </div>
-            <div class="flex gap-2 pt-2">
-                <button onclick="playSound('click'); saveQuestionEdit()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs sm:text-sm transition">حفظ التعديلات</button>
-                <button onclick="playSound('click'); closeEditModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition">إلغاء</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NOTIFICATION MODAL -->
-    <div id="msg-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
-            <div id="msg-icon" class="w-12 h-12 rounded-2xl flex items-center justify-center text-xl mx-auto"></div>
-            <div>
-                <h3 id="msg-title" class="text-base font-bold text-gray-800"></h3>
-                <p id="msg-text" class="text-xs text-gray-500 mt-1 leading-relaxed"></p>
-            </div>
-            <button onclick="playSound('click'); closeMsgModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-xl text-xs sm:text-sm transition">حسناً</button>
-        </div>
-    </div>
-
-    <!-- PRINTABLE SUMMARY TABLE FOR ALL CONTESTANTS -->
-    <div id="printable-all-results" class="hidden">
-        <div class="p-8 text-center">
-            <h1 class="text-2xl font-black mb-1">مبادرة الرياضيات - الصف الثاني متوسط</h1>
-            <h2 class="text-lg font-bold text-gray-700 mb-2">كشف درجات ونتائج جميع المفكرين المبدعين الإجمالية</h2>
-            <p class="text-xs text-gray-600 font-bold mb-1">إعداد الأستاذ عبدالمحيي السلمي</p>
-            <p class="text-xs text-gray-500 mb-6">تاريخ الاستخراج: <span id="print-all-date"></span></p>
-
-            <table class="w-full border-collapse border border-gray-300 text-right text-xs">
-                <thead>
-                    <tr class="bg-gray-100">
-                        <th class="border border-gray-300 p-2">#</th>
-                        <th class="border border-gray-300 p-2">اسم المفكر المبدع</th>
-                        <th class="border border-gray-300 p-2">الدروس المكتملة</th>
-                        <th class="border border-gray-300 p-2">مجموع الدرجات الكلية</th>
-                    </tr>
-                </thead>
-                <tbody id="printable-all-tbody">
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="bg-white/80 backdrop-blur-md border-t border-gray-200/50 py-3 text-center text-xs text-gray-500 no-print mt-auto">
-        <p class="font-bold text-gray-700">مبادرة الرياضيات - الصف الثاني متوسط © ٢٠٢٦</p>
-        <p class="font-bold text-emerald-700 mt-0.5 text-xs">إعداد الأستاذ عبدالمحيي السلمي</p>
-    </footer>
-
-    <!-- JAVASCRIPT LOGIC & FIREBASE CLOUD SYNC -->
     <script>
-        // إعدادات فايربيس الخاصة بمشروعك (ma2030th)
-        const firebaseConfig = {
-            apiKey: "AIzaSyArAxYLNK7W63sDrQFBY0UmephYL2eJ3_Y",
-            authDomain: "ma2030th.firebaseapp.com",
-            projectId: "ma2030th",
-            storageBucket: "ma2030th.firebasestorage.app",
-            messagingSenderId: "259983784733",
-            appId: "1:259983784733:web:76d03a85be1c6535a1fff4",
-            measurementId: "G-ZVZPMZVLE9"
+        // State variables for Answers
+        let ws2Answers = {
+            tf1: null,
+            tf2: null,
+            q1: null,
+            q2: null
         };
 
-        // تهيئة فايربيس
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
-        const db = firebase.firestore();
+        // Switch Tabs Logic
+        function switchTab(tabIndex) {
+            const ws1 = document.getElementById('worksheet-1');
+            const ws2 = document.getElementById('worksheet-2');
+            const ws3 = document.getElementById('worksheet-3');
+            const btn1 = document.getElementById('tab-btn-1');
+            const btn2 = document.getElementById('tab-btn-2');
+            const btn3 = document.getElementById('tab-btn-3');
 
-        const TEACHER_ADMIN_ID = "12344321";
-        let isAdmin = false;
-        let currentUser = null;
-        let activeLessonKey = null;
-        let currentQuestionIndex = 0;
-        let currentScore = 0;
-        let selectedOptionIndex = null;
-        let isAnswerSubmitted = false;
-        let allUsersCache = {};
-
-        // قاعدة بيانات الدروس والأسئلة الشاملة (جميع فصول الصف الثاني متوسط مضافاً إليها الدروس الجديدة)
-        let lessonsData = {
-            "lesson-1": {
-                title: "الأعداد النسبية",
-                icon: "fa-divide",
-                color: "from-blue-600 to-indigo-700",
-                questions: [
-                    {
-                        title: "أي من الأعداد الآتية يعتبر عدداً نسبياً؟",
-                        options: ["<span class=\"sqrt\"><span>٧</span></span>", "<span class=\"fraction\"><span>٣</span><span>٤</span></span>", "العدد π", "جذر ١٠"],
-                        correct: 1,
-                        explanation: "العدد النسبي هو الذي يمكن كتابته على صورة كسر أ/ب حيث ب لا تساوي صفراً."
-                    },
-                    {
-                        title: "اكتب العدد الكسري ٢ ١/٢ على صورة كسر عشري:",
-                        options: ["٢٫٥", "٢٫٢٥", "٢٫١", "٢٫٧٥"],
-                        correct: 0,
-                        explanation: "نصف الواحد يساوي ٠٫٥، إذن العدد هو ٢٫٥."
-                    },
-                    {
-                        title: "اكتب الكسر العشري ٠٫٦ على صورة كسر أعتادي في أبسط صورة:",
-                        options: ["<span class=\"fraction\"><span>١</span><span>٢</span></span>", "<span class=\"fraction\"><span>٣</span><span>٥</span></span>", "<span class=\"fraction\"><span>٢</span><span>٣</span></span>", "<span class=\"fraction\"><span>١</span><span>٣</span></span>"],
-                        correct: 1,
-                        explanation: "٠٫٦ = ٦/١٠، وبالقسمة على ٢ يُصبح ٣/٥."
-                    },
-                    {
-                        title: "العدد ٤- كعدد نسبي مقامه ١ يساوي:",
-                        options: ["<span class=\"fraction\"><span>٤-</span><span>١</span></span>", "<span class=\"fraction\"><span>١</span><span>٤</span></span>", "<span class=\"fraction\"><span>٨</span><span>٢-</span></span>", "أ و ج صحيحتان"],
-                        correct: 3,
-                        explanation: "أي عدد صحيح مقامه ١، ويمكن كتابته بأشكال مكافئة عديدة."
-                    },
-                    {
-                        title: "ناتج جمع ٢/٥ + ١/٥ في أبسط صورة يساوي:",
-                        options: ["<span class=\"fraction\"><span>٣</span><span>٥</span></span>", "<span class=\"fraction\"><span>٣</span><span>١٠</span></span>", "<span class=\"fraction\"><span>٢</span><span>٢٥</span></span>", "١"],
-                        correct: 0,
-                        explanation: "عند توحيد المقام (٥)، نجمع البسطين: ٢ + ١ = ٣ ليصبح الناتج ٣/٥."
-                    }
-                ]
-            },
-            "lesson-2": {
-                title: "ضرب الأعداد النسبية وقسمتها",
-                icon: "fa-xmark",
-                color: "from-emerald-600 to-teal-700",
-                questions: [
-                    {
-                        title: "ناتج ضرب <span class=\"fraction\"><span>٢</span><span>٣</span></span> × <span class=\"fraction\"><span>٣</span><span>٤</span></span> في أبسط صورة:",
-                        options: ["<span class=\"fraction\"><span>٦</span><span>٧</span></span>", "<span class=\"fraction\"><span>١</span><span>٢</span></span>", "<span class=\"fraction\"><span>٥</span><span>٧</span></span>", "<span class=\"fraction\"><span>٥</span><span>١٢</span></span>"],
-                        correct: 1,
-                        explanation: "نضرب البسطين في بعضهما والمقامين: (٢×٣)/(٣×٤) = ٦/١٢ وتختصر إلى ١/٢."
-                    },
-                    {
-                        title: "نظير الضربي (المقلوب) للعدد <span class=\"fraction\"><span>٣</span><span>٤</span></span> هو:",
-                        options: ["<span class=\"fraction\"><span>٣-</span><span>٤</span></span>", "<span class=\"fraction\"><span>٤</span><span>٣</span></span>", "<span class=\"fraction\"><span>١</span><span>٣</span></span>", "٠"],
-                        correct: 1,
-                        explanation: "النظير الضربي هو مقلوب الكسر بحيث يكون حاصل ضربهما ١، لذا مقلوب ٣/٤ هو ٤/٣."
-                    },
-                    {
-                        title: "عند قسمة عدد نسبي على آخر، فإننا نضرب الكسر الأول في:",
-                        options: ["نظيره الجمعي", "نظيره الضربي (المقلوب)", "الصفر", "نفس الكسر"],
-                        correct: 1,
-                        explanation: "قسمة عدد نسبي تعني ضربه في نظير الضربي للعدد الثاني (مقلوبه)."
-                    },
-                    {
-                        title: "ناتج ضرب ٢- × <span class=\"fraction\"><span>١</span><span>٢</span></span> يساوي:",
-                        options: ["١", "١-", "٢", "٢-"],
-                        correct: 1,
-                        explanation: "٢- × (١/٢) = -٢/٢ = -١."
-                    },
-                    {
-                        title: "إذا ضربنا عددين نسبيين سالبين، فسيكون إشارة الناتج:",
-                        options: ["سالبة دائماً", "موجبة دائماً", "صفر", "تعتمد على القيمة الكبرى"],
-                        correct: 1,
-                        explanation: "ضرب عدد سالب في عدد سالب يعطي عدداً موجباً."
-                    }
-                ]
-            },
-            "lesson-3": {
-                title: "جمع الأعداد النسبية وطرحها ذات المقام المشترك",
-                icon: "fa-plus-minus",
-                color: "from-amber-600 to-orange-700",
-                questions: [
-                    {
-                        title: "ناتج <span class=\"fraction\"><span>٧</span><span>٩</span></span> - <span class=\"fraction\"><span>٤</span><span>٩</span></span> في أبسط صورة:",
-                        options: ["<span class=\"fraction\"><span>١</span><span>٣</span></span>", "<span class=\"fraction\"><span>١١</span><span>٩</span></span>", "<span class=\"fraction\"><span>٣</span><span>١٨</span></span>", "<span class=\"fraction\"><span>٢</span><span>٣</span></span>"],
-                        correct: 0,
-                        explanation: "المقامات موحدة (٩)، نطرح البسطين: ٧ - ٤ = ٣، والكسر ٣/٩ يبسط إلى ١/٣."
-                    },
-                    {
-                        title: "ناتج (- ٥/٨) + (١/٨) يساوي:",
-                        options: ["<span class=\"fraction\"><span>٦</span><span>٨</span></span>", "<span class=\"fraction\"><span>٤-</span><span>٨</span></span> (أو <span class=\"fraction\"><span>١-</span><span>٢</span></span>)", "<span class=\"fraction\"><span>١</span><span>٢</span></span>", "٠"],
-                        correct: 1,
-                        explanation: "(-٥ + ١) / ٨ = -٤/٨ وتختصر إلى -١/٢."
-                    },
-                    {
-                        title: "أبسط مضاف مشترك أصغر (م.م.أ) للمقامين ٤ و ٦ هو:",
-                        options: ["٢٤", "١٢", "١٠", "٢"],
-                        correct: 1,
-                        explanation: "مضاعفات ٤ هي (٤، ٨، ١٢...) ومضاعفات ٦ هي (٦، ١٢...) وأصغر مضاعف مشترك هو ١٢."
-                    },
-                    {
-                        title: "لكي نجمع كسرين مقاماهما مختلفان، يجب أولاً:",
-                        options: ["جمع البسطين", "توحيد المقامات", "طرح المقامين", "قلب الكسر الثاني"],
-                        correct: 1,
-                        explanation: "شرط جمع أو طرح الكسور هو توحيد المقامات أولاً."
-                    },
-                    {
-                        title: "ناتج ٣٫٢ + ٤٫٥ يساوي:",
-                        options: ["٧٫٧", "٧٫٥", "٨٫٢", "٦٫٧"],
-                        correct: 0,
-                        explanation: "نجمع الأجزاء مع الأجزاء والأعداد الصحيحة: ٣ + ٤ = ٧، و٠٫٢ + ٠٫٥ = ٠٫٧ ليصبح ٧٫٧."
-                    }
-                ]
-            },
-            "lesson-4": {
-                title: "القوى والأسس",
-                icon: "fa-superscript",
-                color: "from-purple-600 to-indigo-800",
-                questions: [
-                    {
-                        title: "قيمة العبارة الآتية <span class=\"power-expr\"><span class=\"base\">٢</span><span class=\"exponent\">٤</span></span> تساوي:",
-                        options: ["٨", "١٦", "٦", "٣٢"],
-                        correct: 1,
-                        explanation: "<span class=\"power-expr\"><span class=\"base\">٢</span><span class=\"exponent\">٤</span></span> تعني ٢ × ٢ × ٢ × ٢ = ١٦."
-                    },
-                    {
-                        title: "أي مما يأتي يمثل العدد ٨ على صورة قوة (أسس):",
-                        options: ["<span class=\"power-expr\"><span class=\"base\">٢</span><span class=\"exponent\">٣</span></span>", "<span class=\"power-expr\"><span class=\"base\">٤</span><span class=\"exponent\">٢</span></span>", "<span class=\"power-expr\"><span class=\"base\">٨</span><span class=\"exponent\">٢</span></span>", "<span class=\"power-expr\"><span class=\"base\">٣</span><span class=\"exponent\">٢</span></span>"],
-                        correct: 0,
-                        explanation: "٢ × ٢ × ٢ = ٨، أي <span class=\"power-expr\"><span class=\"base\">٢</span><span class=\"exponent\">٣</span></span>."
-                    },
-                    {
-                        title: "قيمة أي عدد غير صفري مرفوع للأس صفر تساوي:",
-                        options: ["نفس العدد", "صفراً", "واحداً", "١٠"],
-                        correct: 2,
-                        explanation: "أي عدد مرفوع للأس صفر يساوي ١ (باستثناء الصفر)."
-                    },
-                    {
-                        title: "القوة التي تعبر عن ضرب العدد ٥ في نفسه ٤ مرات هي:",
-                        options: ["<span class=\"power-expr\"><span class=\"base\">٤</span><span class=\"exponent\">٥</span></span>", "<span class=\"power-expr\"><span class=\"base\">٥</span><span class=\"exponent\">٤</span></span>", "٥ × ٤", "٢٠"],
-                        correct: 1,
-                        explanation: "الأس ٤ يمثل عدد مرات تكرار ضرب الأساس ٥ في نفسه."
-                    },
-                    {
-                        title: "قيمة العبارة <span class=\"power-expr\"><span class=\"base\">١٠</span><span class=\"exponent\">٣</span></span> تساوي:",
-                        options: ["٣٠", "١٠٠", "١٠٠٠", "١٠٠٠٠"],
-                        correct: 2,
-                        explanation: "١٠ × ١٠ × ١٠ = ١٠٠٠."
-                    }
-                ]
-            },
-            "lesson-5": {
-                title: "صيغة العلمية (الأسس الكبيرة والصغيرة)",
-                icon: "fa-atom",
-                color: "from-sky-600 to-blue-800",
-                questions: [
-                    {
-                        title: "اكتب العدد ٤٠٠٠ بالصيغة العلمية:",
-                        options: ["<span class=\"power-expr\"><span class=\"base\">٤ × ١٠</span><span class=\"exponent\">٢</span></span>", "<span class=\"power-expr\"><span class=\"base\">٤ × ١٠</span><span class=\"exponent\">٣</span></span>", "<span class=\"power-expr\"><span class=\"base\">٤٠ × ١٠</span><span class=\"exponent\">٢</span></span>", "<span class=\"power-expr\"><span class=\"base\">٤ × ١٠</span><span class=\"exponent\">٤</span></span>"],
-                        correct: 1,
-                        explanation: "نحرك الفاصلة ٣ منازل لليسار ليصبح العدد ٤، إذن <span class=\"power-expr\"><span class=\"base\">٤ × ١٠</span><span class=\"exponent\">٣</span></span>."
-                    },
-                    {
-                        title: "العدد المكتوب بالصيغة القياسية للعبارة <span class=\"power-expr\"><span class=\"base\">٥٫٢ × ١٠</span><span class=\"exponent\">٢</span></span> هو:",
-                        options: ["٥٢", "٥٢٠", "٥٢٠٠", "٠٫٠٥٢"],
-                        correct: 1,
-                        explanation: "نحرك الفاصلة منزلتين لليمين لنحصل على ٥٢٠."
-                    },
-                    {
-                        title: "اكتب العدد ٠٫٠٠٣ بالصيغة العلمية:",
-                        options: ["<span class=\"power-expr\"><span class=\"base\">٣ × ١٠</span><span class=\"exponent\">٣</span></span>", "<span class=\"power-expr\"><span class=\"base\">٣ × ١٠</span><span class=\"exponent\">٣-</span></span>", "<span class=\"power-expr\"><span class=\"base\">٣ × ١٠</span><span class=\"exponent\">٢-</span></span>", "<span class=\"power-expr\"><span class=\"base\">٣٠ × ١٠</span><span class=\"exponent\">٤-</span></span>"],
-                        correct: 1,
-                        explanation: "عند تحريك الفاصلة لليمين ٣ منازل، يكون الأس سالباً ليصبح <span class=\"power-expr\"><span class=\"base\">٣ × ١٠</span><span class=\"exponent\">٣-</span></span>."
-                    },
-                    {
-                        title: "عند ضرب عددين بالصيغة العلمية، فإننا نضرب الأعداد ونجمع:",
-                        options: ["الأسس", "المقامات", "القيم المطلقة", "المعاملات فقط"],
-                        correct: 0,
-                        explanation: "حسب قوانين الأسس، عند ضرب أساسات متساوية (١٠) نجمع أسسها."
-                    },
-                    {
-                        title: "قيمة العبارة <span class=\"power-expr\"><span class=\"base\">١٠</span><span class=\"exponent\">٤-</span></span> بالصيغة العشرية هي:",
-                        options: ["٠٫٠٠٠١", "٠٫٠٠١", "٠٫٠١", "٠٫٠٠٠٠١"],
-                        correct: 0,
-                        explanation: "الأس السالب ٤- يعني تحريك الفاصلة ٤ منازل لليسار لتصبح ٠٫٠٠٠١."
-                    }
-                ]
-            },
-            "lesson-6": {
-                title: "الجذور التربيعية",
-                icon: "fa-square-root-variable",
-                color: "from-rose-600 to-pink-700",
-                questions: [
-                    {
-                        title: "قيمة الجذر التربيعي <span class=\"sqrt\"><span>٨١</span></span> تساوي:",
-                        options: ["٩", "٨", "١٨", "٣"],
-                        correct: 0,
-                        explanation: "العدد الذي إذا ضرب في نفسه كان الناتج ٨١ هو ٩ (٩ × ٩ = ٨١)."
-                    },
-                    {
-                        title: "الجذر التربيعي الموجب والسالب للعدد ١٠٠ يكتب هكذا:",
-                        options: ["١٠", "١٠-", "±١٠", "٥٠"],
-                        correct: 2,
-                        explanation: "الرمز ± يعني وجود جذرين: موجب ١٠ وسالب ١٠."
-                    },
-                    {
-                        title: "أين يقع العدد <span class=\"sqrt\"><span>٢٠</span></span> تقريباً بين أي عددين صحيحين متتاليين؟",
-                        options: ["بين ٣ و ٤", "بين ٤ و ٥", "بين ٥ و ٦", "بين ٩ و ١٠"],
-                        correct: 1,
-                        explanation: "بما أن <span class=\"sqrt\"><span>١٦</span></span> = ٤ و <span class=\"sqrt\"><span>٢٥</span></span> = ٥، إذن <span class=\"sqrt\"><span>٢٠</span></span> تقع بين ٤ و ٥."
-                    },
-                    {
-                        title: "أي من الأعداد الآتية يعتبر مربعاً كاملاً؟",
-                        options: ["١٢", "٢٠", "٣٦", "٥٠"],
-                        correct: 2,
-                        explanation: "٣٦ هو مربع كامل لأن جذره التربيعي عدد صحيح (٦)."
-                    },
-                    {
-                        title: "قيمة العبارة <span class=\"sqrt\"><span>١٤٤</span></span> تساوي:",
-                        options: ["١٢", "١٤", "١١", "١٣"],
-                        correct: 0,
-                        explanation: "لأن ١٢ × ١٢ = ١٤٤."
-                    }
-                ]
-            },
-            "lesson-7": {
-                title: "الجبر: المعادلات الخطية",
-                icon: "fa-equals",
-                color: "from-violet-600 to-purple-800",
-                questions: [
-                    {
-                        title: "حل المعادلة: س + ٥ = ١٢ هو:",
-                        options: ["س = ٥", "س = ٧", "س = ١٧", "س = ٢"],
-                        correct: 1,
-                        explanation: "بطرح ٥ من الطرفين: س = ١٢ - ٥ = ٧."
-                    },
-                    {
-                        title: "حل المعادلة: ٣س = ١٥ هو:",
-                        options: ["س = ٥", "س = ١٢", "س = ٤٥", "س = ٣"],
-                        correct: 0,
-                        explanation: "بقسمة الطرفين على ٣: س = ١٥ ÷ ٣ = ٥."
-                    },
-                    {
-                        title: "المعادلة الخطية هي معادلة تمثل بيئياً بـ:",
-                        options: ["خط مستقيم", "قطع مكافئ", "دائرة", "منحنى"],
-                        correct: 0,
-                        explanation: "تسمى خطية لأن تمثيلها البياني يكون على شكل خط مستقيم."
-                    },
-                    {
-                        title: "حل المعادلة: ٢س - ٣ = ٧ هو:",
-                        options: ["س = ٢", "س = ٥", "س = ١٠", "س = ٧"],
-                        correct: 1,
-                        explanation: "بإضافة ٣ للطرفين: ٢س = ١٠، ثم بالقسمة على ٢: س = ٥."
-                    },
-                    {
-                        title: "الخطوة الأولى لحل المعادلة س - ٤ = ١٠ هي:",
-                        options: ["طرح ٤", "إضافة ٤ للطرفين", "الضرب في ٤", "القسمة على ١٠"],
-                        correct: 1,
-                        explanation: "لعزل المجهول س، نضيف ٤ لكلا طرفي المعادلة."
-                    }
-                ]
-            },
-            "lesson-8": {
-                title: "الهندسة: التناسب والتشابه",
-                icon: "fa-shapes",
-                color: "from-cyan-600 to-blue-700",
-                questions: [
-                    {
-                        title: "إذا تناسب طولا ضلعين، فإن النسبة بينهما تسمى:",
-                        options: ["معامل مقياس الرسم (أو معامل التشابه)", "المحيط", "المساحة", "القطر"],
-                        correct: 0,
-                        explanation: "معامل التشابه هو نسبة طول ضلع في شكل إلى نظيره في الشكل المشابه."
-                    },
-                    {
-                        title: "إذا كان مقياس الرسم على خريطة ١ سم لكل ٥ كم، فما المسافة الحقيقية لـ ٣ سم؟",
-                        options: ["٥ كم", "١٠ كم", "١٥ كم", "٢٠ كم"],
-                        correct: 2,
-                        explanation: "٣ × ٥ = ١٥ كم."
-                    },
-                    {
-                        title: "المضلعان المتشابهان لهما نفس:",
-                        options: ["الأطوال تماماً", "الشكل القياسي ونفس قياسات الزوايا المتناظرة", "المحيط قطعاُ", "المساحة قطعاُ"],
-                        correct: 1,
-                        explanation: "المضلعان المتشابهان تتطابق زواياهما وتتساوى نسب أطوال أضلاعهما المتناظرة."
-                    },
-                    {
-                        title: "حل التناسب <span class=\"fraction\"><span>س</span><span>٦</span></span> = <span class=\"fraction\"><span>١٠</span><span>١٢</span></span> هو:",
-                        options: ["س = ٥", "س = ٦", "س = ٨", "س = ١٢"],
-                        correct: 0,
-                        explanation: "بالضرب التبادلي: ١٢س = ٦ × ١٠ = ٦٠، ومنه س = ٦٠ ÷ ١٢ = ٥."
-                    },
-                    {
-                        title: "إذا تكبر شكل بمعامل مقياس الرسم ٣، فإن الأضلاع الجديدة تكون:",
-                        options: ["أقصر بـ ٣ مرات", "أطول بـ ٣ مرات", "كما هي", "تزيد ٣ سم"],
-                        correct: 1,
-                        explanation: "معامل التكبير ٣ يعني ضرب أطوال الأضلاع في ٣."
-                    }
-                ]
-            },
-            "lesson-9": {
-                title: "نظرية فيثاغورس",
-                icon: "fa-triangle-exclamation",
-                color: "from-amber-700 to-yellow-800",
-                questions: [
-                    {
-                        title: "في المثلث القائم الزاوية، الضلع المقابل للزاوية القائمة يسمى:",
-                        options: ["الوتر", "الضلع المجاور", "الارتفاع", "القاعدة"],
-                        correct: 0,
-                        explanation: "الوتر هو أطول ضلع في المثلث القائم الزاوية ويقابل الزاوية القائمة دائماً."
-                    },
-                    {
-                        title: "تنص نظرية فيثاغورس على أن في المثلث القائم: (مربع الوتر جـ² يساوي):",
-                        options: ["أ² + ب²", "أ² - ب²", "(أ + ب)²", "٢(أ + ب)"],
-                        correct: 0,
-                        explanation: "مجموع مربعي طولي الضلعين القائمين يساوي مربع طول الوتر (جـ² = أ² + ب²)."
-                    },
-                    {
-                        title: "إذا كان طولا ضلعين قائمين في مثلث هما ٣ سم و ٤ سم، فما طول الوتر؟",
-                        options: ["٥ سم", "٧ سم", "١٢ سم", "٢٥ سم"],
-                        correct: 0,
-                        explanation: "جـ² = ٣² + ٤² = ٩ + ١٦ = ٢٥، إذن الوتر جـ = جذر ٢٥ = ٥ سم."
-                    },
-                    {
-                        title: "إذا كان الوتر في مثلث قائم يساوي ١٠ سم، وأحد الضلعين ٦ سم، فما طول الضلع الآخر؟",
-                        options: ["٨ سم", "٤ سم", "١٦ سم", "٢ سم"],
-                        correct: 0,
-                        explanation: "ب² = جـ² - أ² = ١٠² - ٦² = ١٠٠ - ٣٦ = ٦٤، وجذر ٦٤ = ٨ سم."
-                    },
-                    {
-                        title: "أي مجموعة أطوال أضلاع آتية تشكل مثلثاً قائم الزاوية؟",
-                        options: ["٣، ٤، ٥", "١، ٢، ٣", "٢، ٣، ٤", "٥، ٥، ١٠"],
-                        correct: 0,
-                        explanation: "لأن ٣² + ٤² = ٥² (٩ + ١٦ = ٢٥)."
-                    }
-                ]
-            },
-            "lesson-10": {
-                title: "تطبيقات على نظرية فيثاغورس",
-                icon: "fa-compass-drafting",
-                color: "from-indigo-600 to-blue-900",
-                questions: [
-                    {
-                        title: "تُستخدم عكس نظرية فيثاغورس لـ:",
-                        options: ["إيجاد وتر مثلث مجهول", "التحقق مما إذا كان المثلث قائم الزاوية أم لا", "حساب مساحة المربع", "إيجاد محيط الدائرة"],
-                        correct: 1,
-                        explanation: "عكس نظرية فيثاغورس يحدد ما إذا كانت أطوال أضلاع مثلث شكلت زاوية قائمة."
-                    },
-                    {
-                        title: "المسافة بين نقطتين في المستوى الإحداثي ترتبط ارتباطاً وثيقاً بـ:",
-                        options: ["نظرية فيثاغورس", "نظرية التناسب", "حجم الأسطوانة", "قانون التشابه"],
-                        correct: 0,
-                        explanation: "قانون المسافة مشتق أساساً من تطبيق نظرية فيثاغورس على الإحداثيات السينية والصادية."
-                    },
-                    {
-                        title: "سلم طوله ١٠ أمتار يستند على حائط رأسي، فإذا كانت القاعدة تبعد ٦ أمتار عن الحائط، فما ارتفاع نقطة استناد السلم على الحائط؟",
-                        options: ["٨ أمتار", "٤ أمتار", "١٢ متراً", "١٦ متراً"],
-                        correct: 0,
-                        explanation: "الارتفاع = جذر (١٠² - ٦²) = جذر (١٠٠ - ٣٦) = جذر ٦٤ = ٨ أمتار."
-                    },
-                    {
-                        title: "إذا كانت أطوال أضلاع مثلث ٦، ٨، ١٠، فهل هو مثلث قائم الزاوية؟",
-                        options: ["نعم", "لا", "لا يمكن التحديد", "فقط إذا تساوت الزوايا"],
-                        correct: 0,
-                        explanation: "٦² + ٨² = ٣٦ + ٦٤ = ١٠٠، وهو يساوي ١٠² (١٠٠)، إذن هو قائم الزاوية."
-                    },
-                    {
-                        title: "تساعدنا نظرية فيثاغورس في الحياة الواقعية على إيجاد:",
-                        options: ["أقصر مسافة خط مستقيم بين نقطتين لا يمكن المشي بينهما مباشرة", "مساحة الحقول الدائرية", "حجم الكرة", "وزن الأجسام"],
-                        correct: 0,
-                        explanation: "تستخدم لحساب المسافات المائلة أو المباشرة في الخرائط والهندسة المعمارية."
-                    }
-                ]
-            },
-            "lesson-11": {
-                title: "استراتيجية حل مسألة (أشكال فن)",
-                icon: "fa-diagram-venn",
-                color: "from-emerald-700 to-teal-900",
-                questions: [
-                    {
-                        title: "تُستخدم أشكال ڤن (Venn Diagrams) أساساً لـ:",
-                        options: ["تمثيل مجموعات العناصر والعلاقات بينها (التقاطع والاتحاد)", "قياس الزوايا", "رسم الدوال الخطية", "حساب مساحة المثلث"],
-                        correct: 0,
-                        explanation: "أشكال ڤن توضح التداخل والتقاطع بين المجموعات المختلفة بصرياً."
-                    },
-                    {
-                        title: "في شكل ڤن، المنطقة المشتركة (المتقاطعة) بين دائرتين تمثل:",
-                        options: ["اتحاد المجموعتين", "عناصر المجموعة الأولى فقط", "التقاطع (العناصر المشتركة بين المجموعتين)", "مجموعة الخالصة"],
-                        correct: 2,
-                        explanation: "منطقة التقاطع تضم العناصر الموجودة في كلا المجموعتين في آنٍ واحد."
-                    },
-                    {
-                        title: "إذا كان لدينا ١٥ طالباً يفضلون الرياضيات، و١٠ يفضلون العلوم، و٥ يفضلونهما معاً، فما عدد الطلاب الذين يفضلون الرياضيات فقط؟",
-                        options: ["١٠ طلاب", "١٥ طالباً", "٥ طلاب", "٢٠ طالباً"],
-                        correct: 0,
-                        explanation: "الرياضيات فقط = إجمالي محبي الرياضيات - المشتركون = ١٥ - ٥ = ١٠ طلاب."
-                    },
-                    {
-                        title: "منطقة اتحاد مجموعتين في أشكال ڤن تعني:",
-                        options: ["جميع العناصر الموجودة في المجموعتين دون تكرار", "العناصر المشتركة فقط", "العناصر غير المشتركة فقط", "صفر"],
-                        correct: 0,
-                        explanation: "الاتحاد يضم كل عناصر المجموعتين معاً."
-                    },
-                    {
-                        title: "في استراتيجية حل المسألة باستخدام أشكال ڤن، نبدأ عادة بتعبئة:",
-                        options: ["منطقة التقاطع (المنطقة المشتركة)", "الخارج دائماً", "المجموعات المنفصلة عشوائياً", "لا يفرق الترتيب"],
-                        correct: 0,
-                        explanation: "تعبئة التقاطع أولاً تسهل حساب باقي أجزاء المجموعات بدقة."
-                    }
-                ]
-            },
-            "lesson-12": {
-                title: "هندسة الأبعاد في المستوى الإحداثي",
-                icon: "fa-chart-line",
-                color: "from-purple-700 to-indigo-900",
-                questions: [
-                    {
-                        title: "المستوى الإحداثي يتكون من تقاطع خطي أعداد متعامدين هما:",
-                        options: ["المحور السيني والمحور الصادي", "المحور الأفقي والرأسي الدائري", "المحور والمحيط", "محور الطول والعرض"],
-                        correct: 0,
-                        explanation: "المستوى الإحداثي (الديكارتي) يتكون من المحور السيني (س) ومحور الصادات (ص)."
-                    },
-                    {
-                        title: "النقطة (٠، ٠) في المستوى الإحداثي تسمى:",
-                        options: ["نقطة الأصل", "النقطة المركزية العظمى", "نقطة التقاطع المائل", "نقطة النهاية"],
-                        correct: 0,
-                        explanation: "نقطة الأصل هي نقطة تقاطع المحورين السيني والصادي وإحداثياتها (٠، ٠)."
-                    },
-                    {
-                        title: "الزوج المرتب (٣، ٥-): في أي ربع يقع؟",
-                        options: ["الربع الأول", "الربع الثاني", "الربع الثالث", "الربع الرابع"],
-                        correct: 3,
-                        explanation: "السين موجب (٣) والصاد سالب (٥-)، وهذا يقع في الربع الرابع."
-                    },
-                    {
-                        title: "إحداثي منتصف قطعتي المستقيمة الواصلة بين النقطتين (س١، ص١) و (س٢، ص٢) يحسب بـ:",
-                        options: ["<span class=\"fraction\"><span>س١ + س٢</span><span>٢</span></span>، <span class=\"fraction\"><span>ص١ + ص٢</span><span>٢</span></span>", "(س١ - س٢)، (ص١ - ص٢)", "س١×س٢، ص١×ص٢", "الجذر التربيعي"],
-                        correct: 0,
-                        explanation: "إحداثيات نقطة المنتصف هي متوسط القيم السينية ومتوسط القيم الصادية."
-                    },
-                    {
-                        title: "إذا كانت النقطة تقع على المحور الصادي مباشرة، فإن إحداثيها السيني يساوي:",
-                        options: ["صفراً", "واحداً", "لا يمكن تحديد", "ما لا نهاية"],
-                        correct: 0,
-                        explanation: "أي نقطة على محور الصادات إحداثيها السيني س = ٠."
-                    }
-                ]
-            },
-            "lesson-13": {
-                title: "المسافة بين نقطتين",
-                icon: "fa-ruler-combined",
-                color: "from-blue-800 to-slate-900",
-                questions: [
-                    {
-                        title: "قانون المسافة ف بين نقطتين (س١، ص١) و (س٢، ص٢) مستمد من:",
-                        options: ["نظرية فيثاغورس", "محيط الدائرة", "مجموع الزوايا", "قانون الميل"],
-                        correct: 0,
-                        explanation: "المسافة ف = الجذر التربيعي لـ (س٢ - س١)² + (ص٢ - ص١)² وهو تطبيق لنظرية فيثاغورس."
-                    },
-                    {
-                        title: "ما المسافة بين النقطتين (٠، ٠) و (٣، ٤) في المستوى الإحداثي؟",
-                        options: ["٥ وحدات", "٧ وحدات", "١٢ وحدة", "٢٥ وحدة"],
-                        correct: 0,
-                        explanation: "ف = الجذر التربيعي لـ (٣ - ٠)² + (٤ - ٠)² = جذر (٩ + ١٦) = جذر ٢٥ = ٥ وحدات."
-                    },
-                    {
-                        title: "المسافة بين أي نقطتين في المستوى الإحداثي تكون دائماً:",
-                        options: ["عدداً موجباً أو صفراً", "سالباً دائماً", "كسراً عشرياً دورياً", "متخيلاً"],
-                        correct: 0,
-                        explanation: "المسافة كمية قياسية طولية ولا تكون سالبة أبداً."
-                    },
-                    {
-                        title: "لحساب المسافة الأفقية البحتة بين نقطتين، نطرح إحداثيهما:",
-                        options: ["السينيين بالقيمة المطلقة", "الصاديين", "مجموعهما", "ضربهما"],
-                        correct: 0,
-                        explanation: "المسافة الأفقية هي القيمة المطلقة للفرق بين الإحداثيين السينيين (|س٢ - س١|)."
-                    },
-                    {
-                        title: "إذا كانت المسافة بين نقطتين هي صفر، فإن هذا يعني أن النقطتين:",
-                        options: ["منطبقتان (نقطة واحدة)", "متوازيتان", "متعامدتان", "على محور السينات"],
-                        correct: 0,
-                        explanation: "المسافة الصفرية تعني أن النقطة الأولى هي نفس النقطة الثانية تماماً."
-                    }
-                ]
-            },
-            "lesson-14": {
-                title: "حل التناسب",
-                icon: "fa-scale-balanced",
-                color: "from-teal-600 to-emerald-800",
-                questions: [
-                    {
-                        title: "التناسب هو:",
-                        options: ["تساوي نسبة أو معدلين", "مجموع عددين", "فرق بين كسرين", "ضرب كسر في مقلوبه"],
-                        correct: 0,
-                        explanation: "التناسب عبارة عن تكافؤ أو تساوي بين نسبتين أو معدلين (أ/ب = جـ/د)."
-                    },
-                    {
-                        title: "خاصية الضرب التبادلي في التناسب <span class=\"fraction\"><span>أ</span><span>ب</span></span> = <span class=\"fraction\"><span>جـ</span><span>د</span></span> تنص على أن:",
-                        options: ["أ × د = ب × جـ", "أ × ب = جـ × د", "أ + د = ب + جـ", "أ ÷ ب = جـ ÷ د"],
-                        correct: 0,
-                        explanation: "حاصل ضرب الطرفين يساوي حاصل ضرب الوسطين (أ × د = ب × جـ)."
-                    },
-                    {
-                        title: "حل التناسب <span class=\"fraction\"><span>٣</span><span>٥</span></span> = <span class=\"fraction\"><span>س</span><span>١٥</span></span> هو:",
-                        options: ["س = ٩", "س = ١٥", "س = ٥", "س = ٣"],
-                        correct: 0,
-                        explanation: "بالضرب التبادلي: ٥س = ٣ × ١٥ = ٤٥، ومنه س = ٤٥ ÷ ٥ = ٩."
-                    },
-                    {
-                        title: "أي من الآتي يمثل تناسباً صحيحاً؟",
-                        options: ["<span class=\"fraction\"><span>٢</span><span>٣</span></span> = <span class=\"fraction\"><span>٤</span><span>٦</span></span>", "<span class=\"fraction\"><span>١</span><span>٢</span></span> = <span class=\"fraction\"><span>٣</span><span>٥</span></span>", "<span class=\"fraction\"><span>٤</span><span>٥</span></span> = <span class=\"fraction\"><span>٥</span><span>٦</span></span>", "<span class=\"fraction\"><span>٣</span><span>٤</span></span> = <span class=\"fraction\"><span>٥</span><span>٨</span></span>"],
-                        correct: 0,
-                        explanation: "بالضرب التبادلي: ٢ × ٦ = ١٢ و ٣ × ٤ = ١٢، وهما متساويان."
-                    },
-                    {
-                        title: "إذا كان ثمن ٣ تفاحات ٦ ريالات، فما ثمن ٥ تفاحات بنفس المعدل؟",
-                        options: ["١٠ ريالات", "١٥ ريالاً", "١٢ ريالاً", "٨ ريالات"],
-                        correct: 0,
-                        explanation: "التناسب: ٣/٦ = ٥/س، إذن ٣س = ٣٠، ومنه س = ١٠ ريالات."
-                    }
-                ]
-            },
-            "lesson-15": {
-                title: "التناسب المئوي",
-                icon: "fa-percent",
-                color: "from-amber-600 to-rose-800",
-                questions: [
-                    {
-                        title: "التناسب المئوي هو تناسب يربط بين جزء وكل ونسبة مئوية أساسية صورتها:",
-                        options: ["<span class=\"fraction\"><span>الجزء</span><span>الكل</span></span> = <span class=\"fraction\"><span>النسبة المئوية</span><span>١٠٠</span></span>", "الجزء × الكل = النسبة", "الكل ÷ النسبة = الجزء", "النسبة + الكل = الجزء"],
-                        correct: 0,
-                        explanation: "صيغة التناسب المئوي الأساسية هي (الجزء / الكل = النسبة المئوية / ١٠٠)."
-                    },
-                    {
-                        title: "ما النسبة المئوية للعدد ١٥ من أصل ٦٠؟",
-                        options: ["٢٥٪", "١٥٪", "٥٠٪", "١٠٪"],
-                        correct: 0,
-                        explanation: "(١٥ / ٦٠) = (س / ١٠٠)، ومنه ٦٠س = ١٥٠٠، إذن س = ٢٥٪."
-                    },
-                    {
-                        title: "ما هو العدد الذي ١٠٪ منه يساوي ٢٠؟",
-                        options: ["٢٠٠", "٢٠", "٢", "١٠٠٠"],
-                        correct: 0,
-                        explanation: "(الجزء / الكل) = ١٠/١٠٠، أي (٢٠ / الكل) = (١٠ / ١٠٠)، الكل = ٢٠ × ١٠٠ ÷ ١٠ = ٢٠٠."
-                    },
-                    {
-                        title: "قيمة ٢٠٪ من العدد ٨٠ تساوي:",
-                        options: ["١٦", "٨", "٣٢", "٢٠"],
-                        correct: 0,
-                        explanation: "(س / ٨٠) = (٢٠ / ١٠٠)، إذن س = ٨٠ × ٢٠ ÷ ١٠٠ = ١٦."
-                    },
-                    {
-                        title: "في التناسب المئوي، المقابل للعدد ١٠٠ دائماً في المقام هو:",
-                        options: ["الكل (الأساس)", "الجزء", "النسبة المئوية", "لا شيئ"],
-                        correct: 0,
-                        explanation: "النسبة المئوية تُكتب دائماً ككسر مقامه ١٠٠."
-                    }
-                ]
-            },
-            "lesson-16": {
-                title: "التناسب الطردي",
-                icon: "fa-arrow-trend-up",
-                color: "from-blue-600 to-cyan-700",
-                questions: [
-                    {
-                        title: "يمثل التناسب الطردي علاقة بين كميتين إذا زادت إحداهما:",
-                        options: ["زادت الأخرى بالمقابل بنسبة ثابتة", "نقصت الأخرى بنفس المعدل", "بقيت ثابتة", "تصبح صفراً"],
-                        correct: 0,
-                        explanation: "في التناسب الطردي، الزيادة في كمية تقابلها زيادة طردية في الكمية الأخرى بحيث يظل الثابت ك = ص/س."
-                    },
-                    {
-                        title: "معادل التناسب الطردي الشهيرة هي:",
-                        options: ["ص = ك س", "ص = س + ك", "ص = ك / س", "ص = س - ك"],
-                        correct: 0,
-                        explanation: "المعادلة الأساسية للتناسب الطردي هي ص = ك س، حيث ك هو ثابت التناسب."
-                    },
-                    {
-                        title: "إذا كانت ص تتناسب طردياً مع س، وكانت ص = ١٢ عندما س = ٤، فما قيمة ثابت التناسب ك؟",
-                        options: ["٣", "٤", "١٦", "٨"],
-                        correct: 0,
-                        explanation: "ك = ص / س = ١٢ / ٤ = ٣."
-                    },
-                    {
-                        title: "التمثيل البياني للتناسب الطردي في المستوى الإحداثي هو:",
-                        options: ["خط مستقيم يمر بنقطة الأصل (٠، ٠)", "قطع مكافئ", "خط أفقي", "دائرة"],
-                        correct: 0,
-                        explanation: "دائماً يمر التمثيل البياني للتناسب الطردي بنقطة الأصل وصيله خط مستقيم ميلُه موجب أو سالب."
-                    },
-                    {
-                        title: "إذا كان ثمن ٤ أقلام ١٢ ريالاً، فإن سعر القلم الواحد يمثل:",
-                        options: ["ثابت التناسب الطردي (ك = ٣)", "ثابت التناسب العكسي", "الصفر", "المجموع"],
-                        correct: 0,
-                        explanation: "ثابت التناسب هو معدل الوحدة (١٢ ÷ ٤ = ٣ ريالات للقلم)."
-                    }
-                ]
-            },
-            "lesson-17": {
-                title: "معدل التغير الثابت والمتغير",
-                icon: "fa-chart-area",
-                color: "from-violet-700 to-indigo-900",
-                questions: [
-                    {
-                        title: "معدل التغير يحسب بقانون التغير في قيم الصادات مقسوماً على التغير في قيم السينات أي:",
-                        options: ["<span class=\"fraction\"><span>التغير في ص</span><span>التغير في س</span></span>", "<span class=\"fraction\"><span>التغير في س</span><span>التغير في ص</span></span>", "التغير في ص × التغير في س", "ص١ + ص٢"],
-                        correct: 0,
-                        explanation: "معدل التغير = (ص٢ - ص١) / (س٢ - س١) وهو ما يسمى بالميل."
-                    },
-                    {
-                        title: "إذا كان معدل التغير بين أي نقطتين متتاليتين في جدول دالة ثابتاً، فإن الدالة تسمى:",
-                        options: ["دالة خطية (ذات معدل تغير ثابت)", "دالة غير خطية", "دالة صفرية", "دالة تربيعية"],
-                        correct: 0,
-                        explanation: "التغير الثابت يعني أن الزيادة في ص منتظمة مقابل الزيادة في س، وهي صفة الدوال الخطية."
-                    },
-                    {
-                        title: "في الدالة غير الخطية، يكون معدل التغير:",
-                        options: ["متغيراً وغير ثابتاً", "ثابتاً دائماً", "يساوي صفراً قطعاُ", "يساوي الواحد"],
-                        correct: 0,
-                        explanation: "الدوائر أو المنحنيات تتغير فيها معدلات الزيادة والنقصان باستمرار (معدل تغير متغير)."
-                    },
-                    {
-                        title: "إذا كانت قيم ص تتغير من ٥ إلى ١٥ عندما تتغير س من ١ إلى ٣، فما معدل التغير الثابت؟",
-                        options: ["٥", "١٠", "٢", "٣"],
-                        correct: 0,
-                        explanation: "معدل التغير = (١٥ - ٥) / (٣ - ١) = ١٠ / ٢ = ٥."
-                    },
-                    {
-                        title: "ميل الخط المستقيم الأفقي (حيث لا يتغير إحداثي ص أبداً) يساوي:",
-                        options: ["صفراً", "واحداً", "غير معرف", "ما لا نهاية"],
-                        correct: 0,
-                        explanation: "التغير في الصادات يساوي صفر (ص٢ = ص١)، لذا الميل = ٠."
-                    }
-                ]
-            }
-        };
-
-        // تشغيل الأصوات التفاعلية (صوت النجاح، الخطأ، النقر)
-        function playSound(type) {
-            try {
-                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                if (type === 'click') {
-                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.05);
-                } else if (type === 'correct') {
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
-                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.35);
-                } else if (type === 'wrong') {
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-                    osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.3);
-                }
-            } catch (e) {
-                // AudioContext restricted in some browsers without user gesture
-            }
-        }
-
-        // إظهار رسالة تنبيه منبثقة
-        function showMsg(title, text, type = 'success') {
-            const modal = document.getElementById('msg-modal');
-            const titleEl = document.getElementById('msg-title');
-            const textEl = document.getElementById('msg-text');
-            const iconEl = document.getElementById('msg-icon');
-
-            titleEl.textContent = title;
-            textEl.textContent = text;
-
-            if (type === 'success') {
-                iconEl.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-xl mx-auto bg-emerald-100 text-emerald-600";
-                iconEl.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
-            } else {
-                iconEl.className = "w-12 h-12 rounded-2xl flex items-center justify-center text-xl mx-auto bg-red-100 text-red-600";
-                iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i>';
-            }
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeMsgModal() {
-            document.getElementById('msg-modal').classList.add('hidden');
-        }
-
-        // التنقل بين التبويبات (تسجيل جديد ودخول سريع)
-        function switchAuthTab(tab) {
-            const regBtn = document.getElementById('tab-btn-register');
-            const loginBtn = document.getElementById('tab-btn-login');
-            const regForm = document.getElementById('register-form');
-            const loginForm = document.getElementById('login-form');
-
-            if (tab === 'register') {
-                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
-                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
-                regForm.classList.remove('hidden');
-                loginForm.classList.add('hidden');
-            } else {
-                loginBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 bg-nassr-blue text-nassr-yellow shadow-md";
-                regBtn.className = "py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 text-gray-600 hover:text-nassr-blue";
-                loginForm.classList.remove('hidden');
-                regForm.classList.add('hidden');
-            }
-        }
-
-        // استماع لقاعدة البيانات وتحديث لوحة الصدارة فورياً (Real-time Cloud Sync)
-        function initRealtimeLeaderboard() {
-            db.collection("math_users").onSnapshot((snapshot) => {
-                let users = [];
-                snapshot.forEach((doc) => {
-                    let data = doc.data();
-                    users.push({ id: doc.id, ...data });
-                    allUsersCache[doc.id] = data;
-                });
-
-                // ترتيب المستخدمين حسب مجموع النقاط تنازلياً
-                users.sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
-
-                renderLeaderboardTable(users);
-                renderPrintableAllTable(users);
-            }, (error) => {
-                console.log("Error fetching offline/online data:", error);
-                // Fallback لو حدث خطأ اتصال
-                loadLocalLeaderboard();
-            });
-        }
-
-        function loadLocalLeaderboard() {
-            let users = [];
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if (key.startsWith('user_')) {
-                    try {
-                        let data = JSON.parse(localStorage.getItem(key));
-                        users.push(data);
-                        allUsersCache[data.id] = data;
-                    } catch (e) {}
-                }
-            }
-            users.sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0));
-            renderLeaderboardTable(users);
-            renderPrintableAllTable(users);
-        }
-
-        function renderLeaderboardTable(users) {
-            const tbody = document.getElementById('leaderboard-body');
-            tbody.innerHTML = '';
-
-            if (users.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-gray-300">لا يوجد مفكرون مسجلون حتى الآن. كن أول المنطلقين!</td></tr>`;
-                return;
-            }
-
-            users.forEach((user, index) => {
-                let rankBadge = '';
-                if (index === 0) rankBadge = '<span class="inline-flex items-center justify-center w-7 h-7 bg-yellow-400 text-nassr-blueDark rounded-full font-black text-xs shadow">🥇 ١</span>';
-                else if (index === 1) rankBadge = '<span class="inline-flex items-center justify-center w-7 h-7 bg-gray-300 text-nassr-blueDark rounded-full font-black text-xs shadow">🥈 ٢</span>';
-                else if (index === 2) rankBadge = '<span class="inline-flex items-center justify-center w-7 h-7 bg-amber-600 text-white rounded-full font-black text-xs shadow">🥉 ٣</span>';
-                else rankBadge = `<span class="px-2.5 py-1 bg-white/10 rounded-full text-xs">${index + 1}</span>`;
-
-                let completedCount = user.completedLessons ? Object.keys(user.completedLessons).length : 0;
-                let isCurrent = currentUser && currentUser.id === user.id;
-
-                let tr = document.createElement('tr');
-                tr.className = `border-b border-white/10 transition hover:bg-white/5 ${isCurrent ? 'bg-yellow-500/20' : ''}`;
-                
-                let adminActionHtml = '';
-                if (isAdmin) {
-                    adminActionHtml = `<td class="p-3 text-center"><button onclick="deleteUser('${user.id}')" class="bg-red-500/30 hover:bg-red-600 text-red-200 hover:text-white px-2.5 py-1 rounded-lg text-xs transition" title="حذف الطالب"><i class="fa-solid fa-trash"></i></button></td>`;
-                }
-
-                tr.innerHTML = `
-                    <td class="p-3 font-black">${rankBadge}</td>
-                    <td class="p-3 font-bold flex items-center gap-2">
-                        <span>${user.name}</span>
-                        ${isCurrent ? '<span class="text-[10px] bg-nassr-yellow text-nassr-blue px-2 py-0.5 rounded-full font-black">أنت</span>' : ''}
-                    </td>
-                    <td class="p-3"><span class="bg-blue-900/60 text-yellow-300 px-2.5 py-1 rounded-lg text-xs border border-yellow-400/30">${completedCount} دروس</span></td>
-                    <td class="p-3 font-black text-nassr-yellow text-base">${user.totalScore || 0} نقطة</td>
-                    ${isAdmin ? adminActionHtml : ''}
-                `;
-                tbody.appendChild(tr);
+            // Reset visibility
+            [ws1, ws2, ws3].forEach(ws => {
+                ws.classList.add('hidden');
+                ws.classList.remove('block', 'active-print');
             });
 
-            // إظهار زر الحذف والعمود إذا كان المعلم مسجلاً
-            if (isAdmin) {
-                document.getElementById('admin-actions-header').classList.remove('hidden');
-                document.getElementById('clear-all-btn').classList.remove('hidden');
-            } else {
-                document.getElementById('admin-actions-header').classList.add('hidden');
-                document.getElementById('clear-all-btn').classList.add('hidden');
-            }
-        }
-
-        function renderPrintableAllTable(users) {
-            const tbody = document.getElementById('printable-all-tbody');
-            tbody.innerHTML = '';
-            users.forEach((user, index) => {
-                let completedCount = user.completedLessons ? Object.keys(user.completedLessons).length : 0;
-                let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="border border-gray-300 p-2 text-center font-bold">${index + 1}</td>
-                    <td class="border border-gray-300 p-2 font-bold">${user.name}</td>
-                    <td class="border border-gray-300 p-2 text-center">${completedCount} دروس</td>
-                    <td class="border border-gray-300 p-2 text-center font-bold">${user.totalScore || 0}</td>
-                `;
-                tbody.appendChild(tr);
+            [btn1, btn2, btn3].forEach(btn => {
+                btn.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700";
             });
-            document.getElementById('print-all-date').textContent = new Date().toLocaleDateString('ar-SA');
-        }
 
-        // تسجيل طالب جديد
-        async function handleRegister(e) {
-            e.preventDefault();
-            const name = document.getElementById('reg-name').value.trim();
-            const id = document.getElementById('reg-id').value.trim();
-
-            if (!name || !id) {
-                showMsg('تنبيه', 'الرجاء إدخال الاسم والرقم التعريفي بشكل صحيح.', 'error');
-                return;
-            }
-
-            if (id === TEACHER_ADMIN_ID) {
-                showMsg('تنبيه', 'هذا الرقم خاص بحساب المعلم. يرجى الدخول من تبويب دخول سريع.', 'error');
-                return;
-            }
-
-            let userData = {
-                id: id,
-                name: name,
-                totalScore: 0,
-                completedLessons: {},
-                lessonScores: {}
-            };
-
-            try {
-                // حفظ في فايربيس
-                await db.collection("math_users").doc(id).set(userData, { merge: true });
-                currentUser = userData;
-                localStorage.setItem('math_current_user_id', id);
-                loginSuccessActions();
-            } catch (err) {
-                // Offline fallback storage
-                localStorage.setItem('user_' + id, JSON.stringify(userData));
-                currentUser = userData;
-                localStorage.setItem('math_current_user_id', id);
-                loginSuccessActions();
+            if (tabIndex === 1) {
+                ws1.classList.remove('hidden');
+                ws1.classList.add('block', 'active-print');
+                btn1.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow";
+            } else if (tabIndex === 2) {
+                ws2.classList.remove('hidden');
+                ws2.classList.add('block', 'active-print');
+                btn2.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow";
+            } else if (tabIndex === 3) {
+                ws3.classList.remove('hidden');
+                ws3.classList.add('block', 'active-print');
+                btn3.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow";
             }
         }
 
-        // الدخول السريع بالرقم التعريفي
-        async function handleQuickLogin(e) {
-            e.preventDefault();
-            const id = document.getElementById('login-id').value.trim();
-
-            if (!id) {
-                showMsg('تنبيه', 'الرجاء إدخال الرقم التعريفي.', 'error');
-                return;
-            }
-
-            // فحص دخول المعلم المسؤول
-            if (id === TEACHER_ADMIN_ID) {
-                isAdmin = true;
-                currentUser = { id: TEACHER_ADMIN_ID, name: "الأستاذ عبدالمحيي السلمي (المعلم)", totalScore: 9999, completedLessons: {} };
-                loginSuccessActions();
-                return;
-            }
-
-            try {
-                let docRef = await db.collection("math_users").doc(id).get();
-                if (docRef.exists) {
-                    currentUser = docRef.data();
-                    localStorage.setItem('math_current_user_id', id);
-                    loginSuccessActions();
-                } else {
-                    // Check local storage fallback
-                    let localData = localStorage.getItem('user_' + id);
-                    if (localData) {
-                        currentUser = JSON.parse(localData);
-                        localStorage.setItem('math_current_user_id', id);
-                        loginSuccessActions();
-                    } else {
-                        showMsg('عذراً', 'الرقم التعريفي غير مسجل. يرجى اختيار (تسجيل جديد) أول مرة.', 'error');
-                    }
-                }
-            } catch (err) {
-                let localData = localStorage.getItem('user_' + id);
-                if (localData) {
-                    currentUser = JSON.parse(localData);
-                    localStorage.setItem('math_current_user_id', id);
-                    loginSuccessActions();
-                } else {
-                    showMsg('خطأ في الاتصال', 'تعذر التحقق من الحساب عبر السحاب. تأكد من اتصال الإنترنت أو استخدم التسجيل الجديد.', 'error');
-                }
-            }
+        // Initialize print setup
+        window.onload = function() {
+            switchTab(1);
         }
 
-        function loginSuccessActions() {
-            isAdmin = (currentUser.id === TEACHER_ADMIN_ID);
+        // --- WORKSHEET 1 LOGIC ---
+        function checkAnswersWS1() {
+            let score = 0;
+            const total = 3;
+
+            const nameInput = document.getElementById('ws1-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
+
+            // Q1 Check
+            const q1Val = document.querySelector('input[name="q1_proportional"]:checked')?.value;
+            const q1Feedback = document.getElementById('q1_feedback');
+            q1Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
             
-            // تحديث شريط الهيدر
-            document.getElementById('nav-user-info').classList.remove('hidden');
-            document.getElementById('display-username').textContent = currentUser.name;
-
-            if (isAdmin) {
-                document.getElementById('admin-mode-indicator').classList.remove('hidden');
+            if (q1Val === 'no') {
+                score++;
+                q1Feedback.classList.add('bg-green-100', 'text-green-800');
+                q1Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! العلاقة غير متناسبة وجود مدربين احتياطيين ثابت يمنع تساوي النسب.';
             } else {
-                document.getElementById('admin-mode-indicator').classList.add('hidden');
+                q1Feedback.classList.add('bg-red-100', 'text-red-800');
+                q1Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة غير متناسبة لأن الإضافة الثابتة تمنع تناسب العددين.';
             }
 
-            goToLessons();
+            // Q2 Check
+            const q2Val = document.getElementById('q2_answer').value;
+            const q2Feedback = document.getElementById('q2_feedback');
+            q2Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q2Val === 'yes') {
+                score++;
+                q2Feedback.classList.add('bg-green-100', 'text-green-800');
+                q2Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! نسبة الطول إلى العرض متساوية في كلا المستطيلين وتساوي 1.5.';
+            } else {
+                q2Feedback.classList.add('bg-red-100', 'text-red-800');
+                q2Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. القياسات متناسبة لأن النسب متساوية (6÷4 = 12÷8 = 1.5).';
+            }
+
+            // Q3 Check
+            const q3Val = document.querySelector('input[name="q3_proportional"]:checked')?.value;
+            const q3Feedback = document.getElementById('q3_feedback');
+            q3Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q3Val === 'yes') {
+                score++;
+                q3Feedback.classList.add('bg-green-100', 'text-green-800');
+                q3Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! معدل النمو ثابت (1.5 قدم/يوم)، بالتالي فالعلاقة متناسبة.';
+            } else {
+                q3Feedback.classList.add('bg-red-100', 'text-red-800');
+                q3Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة متناسبة ثبات معدل النمو.';
+            }
+
+            // Show Total Score
+            const scoreCard = document.getElementById('score_card_ws1');
+            const scoreText = document.getElementById('score_text_ws1');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function logout() {
-            currentUser = null;
-            isAdmin = false;
-            localStorage.removeItem('math_current_user_id');
-            document.getElementById('nav-user-info').classList.add('hidden');
-            goHome();
+
+        // --- WORKSHEET 2 LOGIC ---
+        function toggleTF(btn, symbol, qKey) {
+            const container = btn.parentElement;
+            const buttons = container.querySelectorAll('.tf-btn');
+            
+            buttons.forEach(b => {
+                b.classList.remove('bg-green-600', 'bg-red-600', 'text-white', 'border-transparent');
+                b.classList.add('border-gray-300');
+            });
+
+            if (symbol === '✓') {
+                btn.classList.add('bg-green-600', 'text-white', 'border-transparent');
+            } else {
+                btn.classList.add('bg-red-600', 'text-white', 'border-transparent');
+            }
+
+            ws2Answers[qKey] = symbol;
         }
 
-        function goHome() {
-            document.getElementById('view-home').classList.remove('hidden');
-            document.getElementById('view-lessons').classList.add('hidden');
-            document.getElementById('view-quiz').classList.add('hidden');
-            document.getElementById('view-result').classList.add('hidden');
-            renderLeaderboardTable(Object.values(allUsersCache));
+        function selectOption(element, groupClass, val) {
+            const group = document.querySelectorAll('.' + groupClass);
+            group.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            ws2Answers[groupClass] = val;
         }
 
-        function goToLessons() {
-            if (!currentUser) {
-                goHome();
+        function checkAnswersWS2() {
+            const nameInput = document.getElementById('ws2-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب أولاً قبل التصحيح.');
                 return;
             }
 
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('view-lessons').classList.remove('hidden');
-            document.getElementById('view-quiz').classList.add('hidden');
-            document.getElementById('view-result').classList.add('hidden');
+            let score = 0;
+            const total = 4;
 
-            document.getElementById('welcome-name').textContent = currentUser.name;
+            // tf1: 1) المحور الصادي هو الأفقي؟ -> ✗ (خاطئة، الصادي رأسي)
+            if (ws2Answers.tf1 === '✗') score++;
 
-            renderLessonsGrid();
+            // tf2: 2) العدد الأول في الزوج المرتب هو الإحداثي السيني؟ -> ✓ (صحيحة)
+            if (ws2Answers.tf2 === '✓') score++;
+
+            // q1: الزوج المرتب للنقطة أ (-1, 2)
+            if (ws2Answers.q1 === '(-1, 2)') score++;
+
+            // q2: المسافة بين النقطتين أ(-1,2) و ب(3,1) -> جذر 17 وحدة
+            if (ws2Answers.q2 === 'sqrt17') score++;
+
+            const scoreCard = document.getElementById('score_card_ws2');
+            const scoreText = document.getElementById('score_text_ws2');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // عرض شبكة الدروس
-        function renderLessonsGrid() {
-            const grid = document.getElementById('lessons-grid');
-            grid.innerHTML = '';
+        // --- WORKSHEET 3 LOGIC ---
+        function checkAnswersWS3() {
+            const nameInput = document.getElementById('ws3-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
 
-            let completedLessons = currentUser.completedLessons || {};
-            let lessonScores = currentUser.lessonScores || {};
+            let score = 0;
+            const total = 3;
 
-            Object.keys(lessonsData).forEach((key, idx) => {
-                let lesson = lessonsData[key];
-                let isCompleted = completedLessons[key] === true;
-                let score = lessonScores[key] || 0;
+            // Q1 Check: Non-linear because from hr 3 to 4 delta is 24 customers instead of 12 (12, 24, 36, 60)
+            const q1Linear = document.getElementById('ws3_q1_linear').value;
+            const q1Feedback = document.getElementById('ws3_q1_feedback');
+            q1Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
 
-                let card = document.createElement('div');
-                card.className = `bg-white rounded-3xl p-5 shadow-xl border-2 ${isCompleted ? 'border-emerald-500 bg-emerald-50/20' : 'border-gray-100'} hover:border-nassr-yellow transition flex flex-col justify-between cursor-pointer transform hover:-translate-y-1`;
-                card.onclick = () => { playSound('click'); startLesson(key); };
-
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${lesson.color} text-white flex items-center justify-center text-xl shadow-md">
-                                <i class="fa-solid ${lesson.icon}"></i>
-                            </div>
-                            <span class="text-xs font-black px-2.5 py-1 rounded-full ${isCompleted ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'}">
-                                ${isCompleted ? '<i class="fa-solid fa-check ml-1"></i> مكتمل' : 'الدرس ' + (idx + 1)}
-                            </span>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-black text-nassr-blue mb-1">${lesson.title}</h3>
-                        <p class="text-xs text-gray-500 font-bold">٥ أسئلة تفاعلية مع شرح وتغذية راجعة فورية</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-bold">
-                        <span class="text-gray-600">أعلى نتيجة: <strong class="text-nassr-blue">${score}/٥</strong></span>
-                        <span class="text-nassr-blue hover:text-nassr-yellow flex items-center gap-1 font-black">
-                            ابدأ التحدي <i class="fa-solid fa-arrow-left"></i>
-                        </span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // بدء درس معين
-        function startLesson(lessonKey) {
-            activeLessonKey = lessonKey;
-            currentQuestionIndex = 0;
-            currentScore = 0;
-            selectedOptionIndex = null;
-            isAnswerSubmitted = false;
-
-            const lesson = lessonsData[lessonKey];
-            document.getElementById('quiz-lesson-title-badge').textContent = lesson.title;
-            document.getElementById('quiz-lesson-title-badge').className = "text-xs sm:text-sm font-bold px-3 py-1 rounded-full border bg-blue-50 text-nassr-blue border-blue-200";
-
-            // إظهار زر التعديل إذا كان المعلم
-            if (isAdmin) {
-                document.getElementById('admin-edit-bar').classList.remove('hidden');
+            if (q1Linear === 'no') {
+                score++;
+                q1Feedback.classList.add('bg-green-100', 'text-green-800');
+                q1Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! العلاقة غير خطية لأن معدل التغير ليس ثابتاً (التغير في الساعة الرابعة كان 24 زبون بينما الساعات السابقة كان 12 زبون).';
             } else {
-                document.getElementById('admin-edit-bar').classList.add('hidden');
+                q1Feedback.classList.add('bg-red-100', 'text-red-800');
+                q1Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة غير خطية لأن معدل التغير غير ثابت (60 - 36 = 24 وليس 12).';
             }
 
-            document.getElementById('view-lessons').classList.add('hidden');
-            document.getElementById('view-quiz').classList.remove('hidden');
+            // Q2a Check: Rate of change input or description present
+            const q2aVal = document.getElementById('ws3_q2a_val').value.trim();
+            if (q2aVal.length > 0) score++;
 
-            loadQuestion();
+            // Q2b Check: Proportional radio check
+            const q2bProp = document.querySelector('input[name="ws3_q2b_prop"]:checked')?.value;
+            const q2Feedback = document.getElementById('ws3_q2_feedback');
+            q2Feedback.classList.remove('hidden', 'bg-teal-100', 'text-teal-900');
+
+            if (q2bProp) score++;
+
+            q2Feedback.classList.add('bg-teal-100', 'text-teal-900');
+            q2Feedback.innerHTML = '<i class="fas fa-info-circle ml-1"></i> تم تقييم إجابات السؤال الثاني بنجاح!';
+
+            // Display result
+            const scoreCard = document.getElementById('score_card_ws3');
+            const scoreText = document.getElementById('score_text_ws3');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
         }
-
-        function backToLessons() {
-            goToLessons();
-        }
-
-        // تحميل السؤال الحالي في الاختبار
-        function loadQuestion() {
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
-
-            document.getElementById('quiz-progress-text').textContent = `السؤال ${currentQuestionIndex + 1} من ${lesson.questions.length}`;
-            document.getElementById('quiz-score-badge').textContent = `النتيجة: ${toArabicDigits(currentScore)}`;
-            
-            let progressPercent = ((currentQuestionIndex + 1) / lesson.questions.length) * 100;
-            document.getElementById('quiz-progress-bar').style.width = progressPercent + '%';
-
-            document.getElementById('question-title').innerHTML = `<span class="bg-nassr-blue text-nassr-yellow text-xs font-black px-2.5 py-1 rounded-lg ml-2">س${currentQuestionIndex + 1}</span> ${q.title}`;
-
-            const optionsContainer = document.getElementById('options-container');
-            optionsContainer.innerHTML = '';
-
-            q.options.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-gray-200 bg-gray-50 hover:bg-yellow-50 hover:border-nassr-yellow transition font-bold text-gray-800 flex items-center justify-between group active:scale-[0.99]";
-                btn.onclick = () => selectOption(idx);
-                btn.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <span class="w-7 h-7 rounded-xl bg-white border border-gray-300 group-hover:border-nassr-yellow group-hover:bg-nassr-yellow group-hover:text-nassr-blue flex items-center justify-center text-xs font-black transition">${String.fromCharCode(1575 + idx)}</span>
-                        <span>${opt}</span>
-                    </div>
-                `;
-                optionsContainer.appendChild(btn);
-            });
-
-            // إخفاء صندوق التغذية الراجعة
-            document.getElementById('feedback-box').classList.add('hidden');
-            document.getElementById('next-btn').disabled = true;
-            document.getElementById('next-btn').className = "bg-gray-200 text-gray-400 font-bold px-5 py-2.5 rounded-xl transition cursor-not-allowed text-xs sm:text-sm";
-            isAnswerSubmitted = false;
-            selectedOptionIndex = null;
-        }
-
-        // اختيار إجابة
-        function selectOption(idx) {
-            if (isAnswerSubmitted) return;
-            selectedOptionIndex = idx;
-            playSound('click');
-
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
-            isAnswerSubmitted = true;
-
-            const optionsContainer = document.getElementById('options-container');
-            const buttons = optionsContainer.getElementsByTagName('button');
-
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].disabled = true;
-                if (i === q.correct) {
-                    buttons[i].className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-bold flex items-center justify-between";
-                } else if (i === selectedOptionIndex) {
-                    buttons[i].className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-red-500 bg-red-50 text-red-900 font-bold flex items-center justify-between";
-                } else {
-                    buttons[i].className = "w-full text-right p-3.5 sm:p-4 rounded-2xl border-2 border-gray-200 bg-gray-50 opacity-50 font-bold flex items-center justify-between";
-                }
-            }
-
-            const feedbackBox = document.getElementById('feedback-box');
-            const feedbackTitle = document.getElementById('feedback-title');
-            const feedbackText = document.getElementById('feedback-text');
-
-            feedbackBox.classList.remove('hidden');
-
-            if (selectedOptionIndex === q.correct) {
-                currentScore++;
-                playSound('correct');
-                feedbackBox.className = "p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50 space-y-1.5 animate-bounce-short";
-                feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i> <span class="text-emerald-800">إجابة صحيحة ورائعة! كفو يا مبدع 🌟</span>';
-            } else {
-                playSound('wrong');
-                feedbackBox.className = "p-4 rounded-2xl border-2 border-red-400 bg-red-50 space-y-1.5";
-                feedbackTitle.innerHTML = '<i class="fa-solid fa-circle-xmark text-red-500 text-lg"></i> <span class="text-red-800">إجابة غير دقيقة، حاول التركيز في المرة القادمة</span>';
-            }
-
-            feedbackText.innerHTML = `<strong>شرح القاعدة:</strong> ${q.explanation}`;
-            document.getElementById('quiz-score-badge').textContent = `النتيجة: ${toArabicDigits(currentScore)}`;
-
-            const nextBtn = document.getElementById('next-btn');
-            nextBtn.disabled = false;
-            nextBtn.className = "bg-nassr-yellow hover:bg-nassr-yellowHover text-nassr-blue font-black px-6 py-2.5 rounded-xl transition shadow-md cursor-pointer text-xs sm:text-sm active:scale-95";
-
-            if (currentQuestionIndex === lesson.questions.length - 1) {
-                nextBtn.innerHTML = 'عرض النتيجة والشهادة <i class="fa-solid fa-award ml-1"></i>';
-            } else {
-                nextBtn.innerHTML = 'السؤال التالي <i class="fa-solid fa-arrow-left ml-1"></i>';
-            }
-        }
-
-        // الانتقال للسؤال التالي أو إنهاء الاختبار
-        function nextQuestion() {
-            const lesson = lessonsData[activeLessonKey];
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex < lesson.questions.length) {
-                loadQuestion();
-            } else {
-                finishQuiz();
-            }
-        }
-
-        // إنهاء الاختبار وحفظ النتائج في فايربيس
-        async function finishQuiz() {
-            document.getElementById('view-quiz').classList.add('hidden');
-            document.getElementById('view-result').classList.remove('hidden');
-
-            const lesson = lessonsData[activeLessonKey];
-            let percentage = Math.round((currentScore / lesson.questions.length) * 100);
-
-            document.getElementById('print-name').textContent = currentUser.name;
-            document.getElementById('result-lesson-name').textContent = lesson.title;
-            document.getElementById('final-score-points').textContent = `${toArabicDigits(currentScore)} / ${toArabicDigits(lesson.questions.length)}`;
-            document.getElementById('final-score-percentage').textContent = `${toArabicDigits(percentage)}٪`;
-            document.getElementById('print-date').textContent = new Date().toLocaleDateString('ar-SA');
-
-            // تحديث بيانات المستخدم
-            if (!currentUser.completedLessons) currentUser.completedLessons = {};
-            if (!currentUser.lessonScores) currentUser.lessonScores = {};
-
-            currentUser.completedLessons[activeLessonKey] = true;
-            
-            // احتفاظ بأعلى نتيجة تم تحقيقها للدرس
-            let prevScore = currentUser.lessonScores[activeLessonKey] || 0;
-            if (currentScore > prevScore) {
-                currentUser.lessonScores[activeLessonKey] = currentScore;
-            }
-
-            // إعادة حساب مجموع النقاط الإجمالي لكل الدروس
-            let total = 0;
-            Object.keys(currentUser.lessonScores).forEach(k => {
-                total += currentUser.lessonScores[k];
-            });
-            currentUser.totalScore = total;
-
-            // حفظ في السحاب (Firestore) وفي التخزين المحلي
-            try {
-                if (currentUser.id !== TEACHER_ADMIN_ID) {
-                    await db.collection("math_users").doc(currentUser.id).set(currentUser, { merge: true });
-                }
-            } catch (e) {
-                localStorage.setItem('user_' + currentUser.id, JSON.stringify(currentUser));
-            }
-        }
-
-        // تحويل الأرقام إلى الأرقام العربية الهندية (٠١٢٣٤٥٦٧٨٩)
-        function toArabicDigits(str) {
-            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-            return String(str).replace(/[0-9]/g, w => arabicNumbers[+w]);
-        }
-
-        // وظائف تحكم المعلم لتعديل الأسئلة
-        function openEditModal() {
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
-
-            document.getElementById('edit-q-title').value = q.title;
-            document.getElementById('edit-q-explanation').value = q.explanation;
-
-            const list = document.getElementById('edit-options-list');
-            list.innerHTML = '';
-
-            q.options.forEach((opt, idx) => {
-                let div = document.createElement('div');
-                div.className = "flex items-center gap-2";
-                div.innerHTML = `
-                    <input type="radio" name="edit-correct-opt" value="${idx}" ${idx === q.correct ? 'checked' : ''} class="w-4 h-4 text-emerald-600">
-                    <input type="text" id="edit-opt-${idx}" value="${opt.replace(/"/g, '&quot;')}" class="w-full p-2 bg-gray-50 border rounded-lg text-xs font-semibold">
-                `;
-                list.appendChild(div);
-            });
-
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-
-        function closeEditModal() {
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-
-        function saveQuestionEdit() {
-            const lesson = lessonsData[activeLessonKey];
-            const q = lesson.questions[currentQuestionIndex];
-
-            q.title = document.getElementById('edit-q-title').value;
-            q.explanation = document.getElementById('edit-q-explanation').value;
-
-            let radios = document.getElementsByName('edit-correct-opt');
-            for (let i = 0; i < radios.length; i++) {
-                let optVal = document.getElementById(`edit-opt-${i}`).value;
-                q.options[i] = optVal;
-                if (radios[i].checked) {
-                    q.correct = i;
-                }
-            }
-
-            closeEditModal();
-            loadQuestion();
-            showMsg('تم الحفظ', 'تم تحديث السؤال بنجاح في هذه الجلسة.', 'success');
-        }
-
-        function deleteUser(userId) {
-            if (confirm("هل أنت متأكد من حذف هذا الطالب من الكشف؟")) {
-                db.collection("math_users").doc(userId).delete().then(() => {
-                    localStorage.removeItem('user_' + userId);
-                    showMsg('تم الحذف', 'تم حذف الطالب بنجاح.', 'success');
-                }).catch(err => {
-                    localStorage.removeItem('user_' + userId);
-                    loadLocalLeaderboard();
-                    showMsg('تم الحذف', 'تم حذف الطالب محلياً.', 'success');
-                });
-            }
-        }
-
-        function clearAllScores() {
-            if (confirm("تحذير: هل تريد مسح جميع سجلات الطلاب ونتائجهم؟")) {
-                // تصفير أو حذف السجلات في الكاش المحلي
-                for (let i = localStorage.length - 1; i >= 0; i--) {
-                    let key = localStorage.key(i);
-                    if (key.startsWith('user_')) {
-                        localStorage.removeItem(key);
-                    }
-                }
-                allUsersCache = {};
-                renderLeaderboardTable([]);
-                showMsg('تم المسح', 'تم تفريغ الكشف بنجاح.', 'success');
-            }
-        }
-
-        function openAdminDownload() {
-            if (!isAdmin) {
-                let pass = prompt("أدخل الرقم السري الخاص بالمعلم لعرض وتصدير كشف الدرجات:");
-                if (pass === TEACHER_ADMIN_ID) {
-                    isAdmin = true;
-                    renderLeaderboardTable(Object.values(allUsersCache));
-                } else if (pass !== null) {
-                    showMsg('خطأ', 'الرقم السري غير صحيح.', 'error');
-                    return;
-                } else {
-                    return;
-                }
-            }
-            printAllResults();
-        }
-
-        function printAllResults() {
-            const printContent = document.getElementById('printable-all-results');
-            printContent.classList.remove('hidden');
-            window.print();
-            printContent.classList.add('hidden');
-        }
-
-        // تهيئة التطبيق عند التحميل
-        window.onload = () => {
-            initRealtimeLeaderboard();
-
-            // فحص وجود جلسة مسجلة سابقاً في التخزين المحلي
-            let savedUserId = localStorage.getItem('math_current_user_id');
-            if (savedUserId) {
-                if (savedUserId === TEACHER_ADMIN_ID) {
-                    currentUser = { id: TEACHER_ADMIN_ID, name: "الأستاذ عبدالمحيي السلمي (المعلم)", totalScore: 9999, completedLessons: {} };
-                    loginSuccessActions();
-                } else {
-                    db.collection("math_users").doc(savedUserId).get().then(doc => {
-                        if (doc.exists) {
-                            currentUser = doc.data();
-                            loginSuccessActions();
-                        } else {
-                            let localData = localStorage.getItem('user_' + savedUserId);
-                            if (localData) {
-                                currentUser = JSON.parse(localData);
-                                loginSuccessActions();
-                            }
-                        }
-                    }).catch(e => {
-                        let localData = localStorage.getItem('user_' + savedUserId);
-                        if (localData) {
-                            currentUser = JSON.parse(localData);
-                            loginSuccessActions();
-                        }
-                    });
-                }
-            }
-        };
     </script>
 </body>
 </html>
