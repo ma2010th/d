@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أوراق عمل الرياضيات التفاعلية - أ. عبدالمحيي السلمي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        /* Styling for Option Selection */
+        .option-card.selected {
+            border-color: #2563eb !important;
+            background-color: #dbeafe !important;
+            font-weight: bold;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+        }
+
+        .grid-bg {
+            background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px),
+                              linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+
+        /* Print Media CSS Rules */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .tab-content {
+                display: none !important;
+            }
+            .tab-content.active-print {
+                display: block !important;
+            }
+            body {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+            }
+            .print-card {
+                box-shadow: none !important;
+                border: 2px solid #000000 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                border-radius: 0 !important;
+            }
+            input[type="text"], textarea, select {
+                border: none !important;
+                border-bottom: 1px solid #000 !important;
+                background: transparent !important;
+                border-radius: 0 !important;
+            }
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-12 text-slate-800">
+
+    <!-- Top Interactive Navbar (Hidden in Print) -->
+    <header class="no-print sticky top-0 z-50 bg-slate-900 text-white shadow-xl border-b border-slate-700">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    <i class="fas fa-square-root-variable"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold leading-tight">منصة أوراق العمل التفاعلية</h1>
+                    <p class="text-xs text-slate-400">إعداد المعلم: <span class="text-amber-400 font-bold">عبدالمحيي السلمي</span></p>
+                </div>
+            </div>
+
+            <!-- Tab Buttons to switch worksheets -->
+            <div class="flex items-center gap-2 bg-slate-800 p-1.5 rounded-xl border border-slate-700 flex-wrap">
+                <button id="tab-btn-1" onclick="switchTab(1)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow">
+                    <i class="fas fa-chart-line"></i>
+                    <span>ورقة ١: العلاقات المتناسبة</span>
+                </button>
+                <button id="tab-btn-2" onclick="switchTab(2)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-shapes"></i>
+                    <span>ورقة ٢: الهندسة الإحداثية</span>
+                </button>
+                <button id="tab-btn-3" onclick="switchTab(3)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>ورقة ٣: المعدل الثابت للتغير</span>
+                </button>
+            </div>
+
+            <!-- Global Tools -->
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg shadow transition flex items-center gap-2 text-sm">
+                    <i class="fas fa-print"></i>
+                    <span>طباعة الورقة الحالية</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto p-4 sm:p-6 md:p-8">
+
+        <!-- ========================================== -->
+        <!-- WORKSHEET 1: العلاقات المتناسبة والغير متناسبة -->
+        <!-- ========================================== -->
+        <div id="worksheet-1" class="tab-content block">
+            <div class="print-card bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden p-6 md:p-10 relative">
+                
+                <!-- Header Section -->
+                <div class="border-b-2 border-purple-100 pb-6 mb-6">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 via-pink-500 to-amber-400 flex items-center justify-center text-white text-3xl font-extrabold shadow-md">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div>
+                                <span class="bg-purple-100 text-purple-700 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">مادة الرياضيات</span>
+                                <h2 class="text-2xl font-extrabold text-slate-800 mt-1">ورقة عمل تفاعلية (١)</h2>
+                                <p class="text-sm font-semibold text-purple-600">درس: العلاقات المتناسبة وغير المتناسبة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Info Inputs -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-purple-50/50 p-4 rounded-xl border border-purple-100">
+                        <div class="flex items-center gap-2">
+                            <label for="ws1-student-name" class="font-bold text-slate-700 whitespace-nowrap text-sm">اسم الطالب/ـة:</label>
+                            <input type="text" id="ws1-student-name" placeholder="اكتب اسمك هنا..." class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <label for="ws1-student-class" class="font-bold text-slate-700 whitespace-nowrap text-sm">الصف / الفصل:</label>
+                            <input type="text" id="ws1-student-class" placeholder="مثال: ثاني متوسط (أ)" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">1</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            في أحد المراكز الرياضية، يشرف كل مدرب على <span class="text-purple-700 font-extrabold">28</span> متدرباً. إذا كان هناك <span class="text-purple-700 font-extrabold">3</span> مدربين احتياطيين، فهل يتناسب عدد المتدربين مع عدد المدربين؟ وضح إجابتك.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mr-0 sm:mr-11">
+                        <div class="flex flex-wrap items-center gap-4">
+                            <label class="font-semibold text-slate-700 text-sm">هل العلاقة متناسبة؟</label>
+                            <div class="flex items-center gap-4">
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q1_proportional" value="no" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">غير متناسبة</span>
+                                </label>
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q1_proportional" value="yes" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">متناسبة</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="q1_explain" class="block font-semibold text-slate-700 text-sm mb-1">التوضيح / خطوات الحل:</label>
+                            <textarea id="q1_explain" rows="2" placeholder="اكتب التوضيح الخاص بك هنا..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition"></textarea>
+                        </div>
+
+                        <div id="q1_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">2</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            بين ما إذا كانت القياسات للشكل المجاور متناسبة أم لا:
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mr-0 sm:mr-11">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col items-center justify-center shadow-sm">
+                            <div class="text-xs text-slate-500 mb-2">أبعاد المستطيلات / الأشكال</div>
+                            <svg class="w-64 h-40" viewBox="0 0 260 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="20" y="20" width="220" height="120" rx="6" stroke="#475569" stroke-width="2" fill="#f1f5f9" stroke-dasharray="4 4" />
+                                <rect x="30" y="30" width="90" height="50" rx="4" stroke="#7e22ce" stroke-width="2.5" fill="#f3e8ff" />
+                                <text x="75" y="52" fill="#6b21a8" font-size="11" font-weight="bold" text-anchor="middle">المستطيل (أ)</text>
+                                <text x="75" y="68" fill="#475569" font-size="10" text-anchor="middle">الطول: 6 | العرض: 4</text>
+                                
+                                <rect x="135" y="30" width="95" height="100" rx="4" stroke="#059669" stroke-width="2.5" fill="#ecfdf5" />
+                                <text x="182" y="75" fill="#047857" font-size="11" font-weight="bold" text-anchor="middle">المستطيل (ب)</text>
+                                <text x="182" y="92" fill="#475569" font-size="10" text-anchor="middle">الطول: 12 | العرض: 8</text>
+                            </svg>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="font-semibold text-slate-700 text-sm block mb-1">نسبة الطول إلى العرض في الشكلين:</label>
+                                <div class="grid grid-cols-2 gap-2 text-xs">
+                                    <div class="bg-purple-50 p-2 rounded border border-purple-200">
+                                        <span class="font-bold">الشكل (أ):</span> 6 ÷ 4 = 1.5
+                                    </div>
+                                    <div class="bg-emerald-50 p-2 rounded border border-emerald-200">
+                                        <span class="font-bold">الشكل (ب):</span> 12 ÷ 8 = 1.5
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="font-semibold text-slate-700 text-sm mb-1 block">هل القياسات متناسبة؟</label>
+                                <select id="q2_answer" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition">
+                                    <option value="">-- اختر الإجابة --</option>
+                                    <option value="yes">نعم، القياسات متناسبة لأن النسب متساوية</option>
+                                    <option value="no">لا، القياسات غير متناسبة</option>
+                                </select>
+                            </div>
+
+                            <div id="q2_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="mb-8 bg-slate-50/60 rounded-2xl p-5 border border-slate-200">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-purple-600 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">3</span>
+                        <div class="text-base font-bold text-slate-800 leading-relaxed">
+                            <span class="text-emerald-700 font-extrabold">نباتات:</span> ينمو أحد نباتات الكرمة وهو نبات متسلق - بمعدل <span class="text-purple-700 font-extrabold">7.5</span> أقدام كل <span class="text-purple-700 font-extrabold">5</span> أيام. هل يتناسب عدد الأيام مع طول النبات عند قياسه في اليوم الأخير؟ وضح إجابتك.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 mr-0 sm:mr-11">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-center border-collapse text-sm bg-white rounded-lg overflow-hidden border border-slate-200">
+                                <thead>
+                                    <tr class="bg-purple-100 text-purple-900">
+                                        <th class="p-2 border border-slate-200">عدد الأيام (س)</th>
+                                        <th class="p-2 border border-slate-200">5</th>
+                                        <th class="p-2 border border-slate-200">10</th>
+                                        <th class="p-2 border border-slate-200">15</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="p-2 font-bold border border-slate-200 bg-slate-50">طول النبات بالأقدام (ص)</td>
+                                        <td class="p-2 border border-slate-200">7.5</td>
+                                        <td class="p-2 border border-slate-200">15</td>
+                                        <td class="p-2 border border-slate-200">22.5</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 font-bold border border-slate-200">معدل الوحدة (ص / س)</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                        <td class="p-2 border border-slate-200">1.5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                            <label class="font-semibold text-slate-700 text-sm">النتيجة:</label>
+                            <div class="flex items-center gap-4">
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q3_proportional" value="yes" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">يتناسب (العلاقة متناسبة)</span>
+                                </label>
+                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                                    <input type="radio" name="q3_proportional" value="no" class="w-4 h-4 text-purple-600 focus:ring-purple-500">
+                                    <span class="text-sm font-medium text-slate-700">لا يتناسب</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="q3_explain" class="block font-semibold text-slate-700 text-sm mb-1">التوضيح:</label>
+                            <textarea id="q3_explain" rows="2" placeholder="اكتب سبب الإجابة..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 transition"></textarea>
+                        </div>
+
+                        <div id="q3_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Worksheet 1 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS1()" class="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
+                    </button>
+
+                    <div id="score_card_ws1" class="hidden flex items-center gap-3 bg-purple-50 border border-purple-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws1" class="text-xl font-extrabold text-purple-700">0 / 3</span>
+                    </div>
+                </div>
+
+                <!-- Custom Teacher Signature Footer -->
+                <div class="mt-8 pt-6 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold text-slate-700">
+                    <div class="flex items-center gap-2">
+                        <span>إعداد المعلم:</span>
+                        <span class="text-purple-700 font-bold border-b-2 border-purple-300 px-2">عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-300">
+                        درجة الطالب: <span class="text-slate-400 font-normal">....... / ٣</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- WORKSHEET 2: هندسة الأبعاد في المستوى الإحداثي -->
+        <!-- ========================================== -->
+        <div id="worksheet-2" class="tab-content hidden">
+            <div class="print-card bg-white rounded-2xl shadow-xl border-4 border-blue-900 overflow-hidden p-6 md:p-8 relative">
+                
+                <!-- Header -->
+                <div class="text-center mb-6">
+                    <div class="bg-blue-900 text-white border-2 border-blue-950 rounded-lg py-3 px-8 inline-block shadow-md mb-4">
+                        <h2 class="text-2xl md:text-3xl font-black tracking-wide font-tajawal">هندسة الأبعاد في المستوى الإحداثي</h2>
+                    </div>
+                    
+                    <!-- Student Info -->
+                    <div class="bg-slate-50 border-2 border-blue-100 rounded-lg p-4 flex flex-wrap justify-between items-center text-base md:text-lg font-bold text-gray-800 gap-4">
+                        <div class="flex items-center gap-2 flex-1 min-w-[200px]">
+                            <span class="text-blue-900 whitespace-nowrap">اسم الطالب:</span>
+                            <input type="text" id="ws2-student-name" placeholder="اكتب اسمك هنا..." class="border-b-2 border-dashed border-blue-400 bg-transparent px-2 py-1 w-full focus:outline-none focus:border-blue-700 text-blue-950 font-semibold">
+                        </div>
+                        <div class="flex items-center gap-2 min-w-[140px]">
+                            <span class="text-blue-900 whitespace-nowrap">الفصل:</span>
+                            <input type="text" id="ws2-student-class" placeholder="......." class="border-b-2 border-dashed border-blue-400 bg-transparent px-2 py-1 w-20 text-center focus:outline-none focus:border-blue-700 text-blue-950 font-semibold">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 1: True / False -->
+                <div class="mb-8">
+                    <div class="bg-amber-300 text-black font-extrabold py-2 px-4 rounded-md inline-block text-lg mb-4 shadow-sm border border-amber-400">
+                        السؤال الأول: ضع علامة ( ✓ ) أمام الإجابة الصحيحة وعلامة ( ✗ ) أمام الخاطئة
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Paragraph 1 -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between p-3.5 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:bg-white transition gap-3">
+                            <span class="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
+                                ١) في المستوى الإحداثي يكون المحور الصادي هو خط الأعداد الأفقي
+                            </span>
+                            <div class="flex gap-2" data-q="tf1">
+                                <button onclick="toggleTF(this, '✓', 'tf1')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-100 hover:border-green-500 text-green-600 transition">✓</button>
+                                <button onclick="toggleTF(this, '✗', 'tf1')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-red-100 hover:border-red-500 text-red-600 transition">✗</button>
+                            </div>
+                        </div>
+
+                        <!-- Paragraph 2 -->
+                        <div class="flex flex-col sm:flex-row items-center justify-between p-3.5 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:bg-white transition gap-3">
+                            <span class="text-base md:text-lg font-bold text-gray-800 leading-relaxed">
+                                ٢) يطلق على العدد الأول في الزوج المرتب الإحداثي السيني أو المقطع السيني
+                            </span>
+                            <div class="flex gap-2" data-q="tf2">
+                                <button onclick="toggleTF(this, '✓', 'tf2')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-green-100 hover:border-green-500 text-green-600 transition">✓</button>
+                                <button onclick="toggleTF(this, '✗', 'tf2')" class="tf-btn w-11 h-11 border-2 border-gray-300 rounded-lg flex items-center justify-center font-bold text-xl hover:bg-red-100 hover:border-red-500 text-red-600 transition">✗</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2: Multiple Choice -->
+                <div class="mb-6">
+                    <div class="bg-amber-300 text-black font-extrabold py-2 px-4 rounded-md inline-block text-lg mb-4 shadow-sm border border-amber-400">
+                        السؤال الثاني: اختر الإجابة الصحيحة
+                    </div>
+
+                    <!-- Part 1 -->
+                    <div class="mb-8 border-b-2 border-gray-100 pb-6">
+                        <p class="text-base md:text-lg font-bold text-gray-900 mb-4">
+                            الزوج المرتب الذي يمثل النقطة <span class="text-red-600 font-extrabold">( أ )</span> في المستوى الإحداثي الآتي هو:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                            <!-- Options Right -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q1', '(-1, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( -۱ ، ۲ )
+                                </div>
+                                <div onclick="selectOption(this, 'q1', '(0, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۰ ، ۲ )
+                                </div>
+                            </div>
+
+                            <!-- Coordinate Grid Illustration 1 -->
+                            <div class="flex justify-center my-2 md:my-0">
+                                <div class="w-48 h-48 border-2 border-blue-600 bg-white grid-bg relative rounded-md shadow-inner">
+                                    <div class="absolute w-full h-0.5 bg-blue-700 top-1/2 left-0 -translate-y-1/2"></div>
+                                    <div class="absolute h-full w-0.5 bg-blue-700 left-1/2 top-0 -translate-x-1/2"></div>
+                                    
+                                    <!-- Point A (-1, 2) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 32px); right: calc(50% + 16px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 46px); right: calc(50% + 18px);">أ</span>
+                                    
+                                    <!-- Point B (3, 1) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 16px); right: calc(50% - 48px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 30px); right: calc(50% - 50px);">ب</span>
+                                </div>
+                            </div>
+
+                            <!-- Options Left -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q1', '(1, 2)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۱ ، ۲ )
+                                </div>
+                                <div onclick="selectOption(this, 'q1', '(2, 1)')" class="option-card q1 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ( ۲ ، ۱ )
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Part 2 -->
+                    <div>
+                        <p class="text-base md:text-lg font-bold text-gray-900 mb-4">
+                            المسافة بين النقطتين <span class="text-red-600 font-extrabold">( أ ، ب )</span> هي:
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                            <!-- Options Right -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q2', '4')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ٤ وحدات
+                                </div>
+                                <div onclick="selectOption(this, 'q2', 'sqrt17')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    جذر ۱۷ وحدة
+                                </div>
+                            </div>
+
+                            <!-- Coordinate Grid Illustration 2 -->
+                            <div class="flex justify-center my-2 md:my-0">
+                                <div class="w-48 h-48 border-2 border-blue-600 bg-white grid-bg relative rounded-md shadow-inner">
+                                    <div class="absolute w-full h-0.5 bg-blue-700 top-1/2 left-0 -translate-y-1/2"></div>
+                                    <div class="absolute h-full w-0.5 bg-blue-700 left-1/2 top-0 -translate-x-1/2"></div>
+                                    
+                                    <!-- Point A (-1, 2) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 32px); right: calc(50% + 16px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 46px); right: calc(50% + 18px);">أ</span>
+                                    
+                                    <!-- Point B (3, 1) -->
+                                    <div class="absolute w-3 h-3 bg-red-600 rounded-full border-2 border-white shadow" style="top: calc(50% - 16px); right: calc(50% - 48px); transform: translate(50%, -50%);"></div>
+                                    <span class="absolute font-black text-sm text-red-600" style="top: calc(50% - 30px); right: calc(50% - 50px);">ب</span>
+                                </div>
+                            </div>
+
+                            <!-- Options Left -->
+                            <div class="space-y-3">
+                                <div onclick="selectOption(this, 'q2', '5')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ٥ وحدات
+                                </div>
+                                <div onclick="selectOption(this, 'q2', '7')" class="option-card q2 p-3 border-2 border-blue-200 rounded-lg bg-blue-50/50 text-center font-bold text-lg text-blue-950 cursor-pointer hover:bg-blue-100 transition shadow-sm">
+                                    ۷ وحدات
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Worksheet 2 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS2()" class="w-full sm:w-auto bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
+                    </button>
+
+                    <div id="score_card_ws2" class="hidden flex items-center gap-3 bg-blue-50 border border-blue-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws2" class="text-xl font-extrabold text-blue-800">0 / 4</span>
+                    </div>
+                </div>
+
+                <!-- Signature Footer -->
+                <div class="mt-10 pt-4 border-t-2 border-gray-200 flex justify-between items-center text-base font-extrabold text-blue-950">
+                    <div class="flex items-center gap-1">
+                        <span>معلم المادة:</span>
+                        <span class="text-blue-900 border-b-2 border-dashed border-blue-400 px-3 py-0.5">أ. عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-1.5 rounded-lg border border-gray-300">
+                        درجة الطالب: <span class="text-gray-400 font-normal">....... / ۱۰</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- WORKSHEET 3: المعدل الثابت للتغير -->
+        <!-- ========================================== -->
+        <div id="worksheet-3" class="tab-content hidden">
+            <div class="print-card bg-white rounded-2xl shadow-xl border-4 border-teal-800 overflow-hidden p-6 md:p-8 relative">
+                
+                <!-- Header -->
+                <div class="border-b-2 border-teal-100 pb-6 mb-6">
+                    <div class="text-center mb-6">
+                        <div class="bg-teal-700 text-white border-2 border-teal-900 rounded-xl py-3 px-8 inline-block shadow-md mb-2">
+                            <h2 class="text-2xl md:text-3xl font-black tracking-wide font-tajawal">المعدل الثابت للتغير</h2>
+                        </div>
+                    </div>
+
+                    <!-- Student Info Box -->
+                    <div class="bg-teal-50/60 border-2 border-teal-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-slate-800 font-bold">
+                        <div class="flex items-center gap-2">
+                            <span class="text-teal-900 whitespace-nowrap text-sm md:text-base">الاسم /</span>
+                            <input type="text" id="ws3-student-name" placeholder="اكتب اسمك هنا..." class="w-full bg-white border border-teal-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-teal-900 whitespace-nowrap text-sm md:text-base">الفصل /</span>
+                            <input type="text" id="ws3-student-class" placeholder="مثال: ثاني متوسط (أ)" class="w-full bg-white border border-teal-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 1 -->
+                <div class="mb-8 bg-slate-50/70 rounded-2xl p-5 border border-slate-200 shadow-sm">
+                    <div class="flex items-start gap-3 mb-4">
+                        <span class="bg-teal-700 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">١</span>
+                        <div class="text-base font-bold text-slate-900 leading-relaxed">
+                            بيني ما إذا كانت العلاقة بين الكميتين في الجدول المجاور خطية أم لا ، وإذا كانت خطية فجدي المعدل الثابت للتغير ، وإذا لم تكن كذلك فوضحي السبب.
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <!-- Table Display -->
+                        <div class="md:col-span-5 bg-white p-3 rounded-xl border-2 border-teal-200 shadow-sm">
+                            <div class="text-center font-extrabold text-teal-900 bg-teal-100/80 py-2 rounded-t-lg mb-2 text-sm">
+                                عدد الزبائن في أحد المحلات
+                            </div>
+                            <table class="w-full text-center border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700">
+                                        <th class="p-2 border border-slate-300">الزمن (ساعة)</th>
+                                        <th class="p-2 border border-slate-300">عدد الزبائن</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="font-bold text-slate-800">
+                                    <tr>
+                                        <td class="p-2 border border-slate-300">١</td>
+                                        <td class="p-2 border border-slate-300">١٢</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 border border-slate-300">٢</td>
+                                        <td class="p-2 border border-slate-300">٢٤</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-2 border border-slate-300">٣</td>
+                                        <td class="p-2 border border-slate-300">٣٦</td>
+                                    </tr>
+                                    <tr class="bg-slate-50">
+                                        <td class="p-2 border border-slate-300">٤</td>
+                                        <td class="p-2 border border-slate-300">٦٠</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Answers Input Section -->
+                        <div class="md:col-span-7 space-y-4">
+                            <div>
+                                <label class="font-bold text-slate-800 text-sm block mb-1">هل العلاقة خطية؟</label>
+                                <select id="ws3_q1_linear" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                                    <option value="">-- اختر الإجابة --</option>
+                                    <option value="no">غير خطية (المعدل ليس ثابتاً)</option>
+                                    <option value="yes">خطية (المعدل ثابت)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="ws3_q1_explain" class="block font-bold text-slate-800 text-sm mb-1">توضيح السبب / المعدل الثابت للتغير:</label>
+                                <textarea id="ws3_q1_explain" rows="3" placeholder="اكتب معدل التغير بين الساعات المختلفة والسبب (مثال: من ساعة 3 إلى 4 الزيادة 24 زبون بدلاً من 12)..." class="w-full bg-white border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                            </div>
+
+                            <div id="ws3_q1_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 (Parts A & B) -->
+                <div class="mb-8 bg-slate-50/70 rounded-2xl p-5 border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-teal-700 text-white font-bold w-8 h-8 rounded-lg flex items-center justify-center shrink-0">٢</span>
+                        <h3 class="text-lg font-extrabold text-slate-900">المعدل الثابت للتغير والتناسب</h3>
+                    </div>
+
+                    <!-- Part A -->
+                    <div class="bg-white p-4 rounded-xl border border-teal-200 space-y-3">
+                        <label class="font-bold text-slate-800 text-sm md:text-base block">
+                            أ ) أوجدي المعدل الثابت للتغير وفسري معناه .
+                        </label>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 mb-1 block">قيمة المعدل الثابت للتغير:</label>
+                                <input type="text" id="ws3_q2a_val" placeholder="مثال: 12 زبون/ساعة" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                            </div>
+                            <div>
+                                <label class="text-xs font-bold text-slate-600 mb-1 block">تفسير المعنى:</label>
+                                <input type="text" id="ws3_q2a_meaning" placeholder="أي أن عدد الزبائن يزداد بمعدل..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition">
+                            </div>
+                        </div>
+
+                        <div>
+                            <textarea id="ws3_q2a_explain" rows="2" placeholder="اكتب التوضيح وخطوات التفسير تفصيلياً..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Part B -->
+                    <div class="bg-white p-4 rounded-xl border border-teal-200 space-y-3">
+                        <label class="font-bold text-slate-800 text-sm md:text-base block">
+                            ب ) هل العلاقة بين الأرباح والزمن خطية متناسبة أم لا ووضحي إجابتك ؟
+                        </label>
+
+                        <div class="flex items-center gap-6 py-1">
+                            <label class="inline-flex items-center gap-2 cursor-pointer font-bold text-sm text-slate-700">
+                                <input type="radio" name="ws3_q2b_prop" value="yes" class="w-4 h-4 text-teal-600 focus:ring-teal-500">
+                                <span>متناسبة</span>
+                            </label>
+                            <label class="inline-flex items-center gap-2 cursor-pointer font-bold text-sm text-slate-700">
+                                <input type="radio" name="ws3_q2b_prop" value="no" class="w-4 h-4 text-teal-600 focus:ring-teal-500">
+                                <span>غير متناسبة</span>
+                            </label>
+                        </div>
+
+                        <div>
+                            <textarea id="ws3_q2b_explain" rows="3" placeholder="وضحي السبب وخطوات الحل المقترحة..." class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal-600 transition"></textarea>
+                        </div>
+
+                        <div id="ws3_q2_feedback" class="hidden p-3 rounded-lg text-sm font-semibold"></div>
+                    </div>
+                </div>
+
+                <!-- Worksheet 3 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS3()" class="w-full sm:w-auto bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-800 hover:to-emerald-800 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
+                    </button>
+
+                    <div id="score_card_ws3" class="hidden flex items-center gap-3 bg-teal-50 border border-teal-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws3" class="text-xl font-extrabold text-teal-800">0 / 3</span>
+                    </div>
+                </div>
+
+                <!-- Teacher Signature Footer -->
+                <div class="mt-8 pt-6 border-t-2 border-slate-200 flex justify-between items-center text-sm font-extrabold text-teal-950">
+                    <div class="flex items-center gap-1">
+                        <span>إعداد المعلم:</span>
+                        <span class="text-teal-800 border-b-2 border-dashed border-teal-400 px-3 py-0.5">عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-300">
+                        درجة الطالب: <span class="text-slate-400 font-normal">....... / ٣</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // State variables for Answers
+        let ws2Answers = {
+            tf1: null,
+            tf2: null,
+            q1: null,
+            q2: null
+        };
+
+        // Switch Tabs Logic
+        function switchTab(tabIndex) {
+            const ws1 = document.getElementById('worksheet-1');
+            const ws2 = document.getElementById('worksheet-2');
+            const ws3 = document.getElementById('worksheet-3');
+            const btn1 = document.getElementById('tab-btn-1');
+            const btn2 = document.getElementById('tab-btn-2');
+            const btn3 = document.getElementById('tab-btn-3');
+
+            // Reset visibility
+            [ws1, ws2, ws3].forEach(ws => {
+                ws.classList.add('hidden');
+                ws.classList.remove('block', 'active-print');
+            });
+
+            [btn1, btn2, btn3].forEach(btn => {
+                btn.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700";
+            });
+
+            if (tabIndex === 1) {
+                ws1.classList.remove('hidden');
+                ws1.classList.add('block', 'active-print');
+                btn1.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow";
+            } else if (tabIndex === 2) {
+                ws2.classList.remove('hidden');
+                ws2.classList.add('block', 'active-print');
+                btn2.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow";
+            } else if (tabIndex === 3) {
+                ws3.classList.remove('hidden');
+                ws3.classList.add('block', 'active-print');
+                btn3.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow";
+            }
+        }
+
+        // Initialize print setup
+        window.onload = function() {
+            switchTab(1);
+        }
+
+        // --- WORKSHEET 1 LOGIC ---
+        function checkAnswersWS1() {
+            let score = 0;
+            const total = 3;
+
+            const nameInput = document.getElementById('ws1-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
+
+            // Q1 Check
+            const q1Val = document.querySelector('input[name="q1_proportional"]:checked')?.value;
+            const q1Feedback = document.getElementById('q1_feedback');
+            q1Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            
+            if (q1Val === 'no') {
+                score++;
+                q1Feedback.classList.add('bg-green-100', 'text-green-800');
+                q1Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! العلاقة غير متناسبة وجود مدربين احتياطيين ثابت يمنع تساوي النسب.';
+            } else {
+                q1Feedback.classList.add('bg-red-100', 'text-red-800');
+                q1Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة غير متناسبة لأن الإضافة الثابتة تمنع تناسب العددين.';
+            }
+
+            // Q2 Check
+            const q2Val = document.getElementById('q2_answer').value;
+            const q2Feedback = document.getElementById('q2_feedback');
+            q2Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q2Val === 'yes') {
+                score++;
+                q2Feedback.classList.add('bg-green-100', 'text-green-800');
+                q2Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! نسبة الطول إلى العرض متساوية في كلا المستطيلين وتساوي 1.5.';
+            } else {
+                q2Feedback.classList.add('bg-red-100', 'text-red-800');
+                q2Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. القياسات متناسبة لأن النسب متساوية (6÷4 = 12÷8 = 1.5).';
+            }
+
+            // Q3 Check
+            const q3Val = document.querySelector('input[name="q3_proportional"]:checked')?.value;
+            const q3Feedback = document.getElementById('q3_feedback');
+            q3Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q3Val === 'yes') {
+                score++;
+                q3Feedback.classList.add('bg-green-100', 'text-green-800');
+                q3Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! معدل النمو ثابت (1.5 قدم/يوم)، بالتالي فالعلاقة متناسبة.';
+            } else {
+                q3Feedback.classList.add('bg-red-100', 'text-red-800');
+                q3Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة متناسبة ثبات معدل النمو.';
+            }
+
+            // Show Total Score
+            const scoreCard = document.getElementById('score_card_ws1');
+            const scoreText = document.getElementById('score_text_ws1');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+
+        // --- WORKSHEET 2 LOGIC ---
+        function toggleTF(btn, symbol, qKey) {
+            const container = btn.parentElement;
+            const buttons = container.querySelectorAll('.tf-btn');
+            
+            buttons.forEach(b => {
+                b.classList.remove('bg-green-600', 'bg-red-600', 'text-white', 'border-transparent');
+                b.classList.add('border-gray-300');
+            });
+
+            if (symbol === '✓') {
+                btn.classList.add('bg-green-600', 'text-white', 'border-transparent');
+            } else {
+                btn.classList.add('bg-red-600', 'text-white', 'border-transparent');
+            }
+
+            ws2Answers[qKey] = symbol;
+        }
+
+        function selectOption(element, groupClass, val) {
+            const group = document.querySelectorAll('.' + groupClass);
+            group.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            ws2Answers[groupClass] = val;
+        }
+
+        function checkAnswersWS2() {
+            const nameInput = document.getElementById('ws2-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب أولاً قبل التصحيح.');
+                return;
+            }
+
+            let score = 0;
+            const total = 4;
+
+            // tf1: 1) المحور الصادي هو الأفقي؟ -> ✗ (خاطئة، الصادي رأسي)
+            if (ws2Answers.tf1 === '✗') score++;
+
+            // tf2: 2) العدد الأول في الزوج المرتب هو الإحداثي السيني؟ -> ✓ (صحيحة)
+            if (ws2Answers.tf2 === '✓') score++;
+
+            // q1: الزوج المرتب للنقطة أ (-1, 2)
+            if (ws2Answers.q1 === '(-1, 2)') score++;
+
+            // q2: المسافة بين النقطتين أ(-1,2) و ب(3,1) -> جذر 17 وحدة
+            if (ws2Answers.q2 === 'sqrt17') score++;
+
+            const scoreCard = document.getElementById('score_card_ws2');
+            const scoreText = document.getElementById('score_text_ws2');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- WORKSHEET 3 LOGIC ---
+        function checkAnswersWS3() {
+            const nameInput = document.getElementById('ws3-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
+
+            let score = 0;
+            const total = 3;
+
+            // Q1 Check: Non-linear because from hr 3 to 4 delta is 24 customers instead of 12 (12, 24, 36, 60)
+            const q1Linear = document.getElementById('ws3_q1_linear').value;
+            const q1Feedback = document.getElementById('ws3_q1_feedback');
+            q1Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q1Linear === 'no') {
+                score++;
+                q1Feedback.classList.add('bg-green-100', 'text-green-800');
+                q1Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! العلاقة غير خطية لأن معدل التغير ليس ثابتاً (التغير في الساعة الرابعة كان 24 زبون بينما الساعات السابقة كان 12 زبون).';
+            } else {
+                q1Feedback.classList.add('bg-red-100', 'text-red-800');
+                q1Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة غير خطية لأن معدل التغير غير ثابت (60 - 36 = 24 وليس 12).';
+            }
+
+            // Q2a Check: Rate of change input or description present
+            const q2aVal = document.getElementById('ws3_q2a_val').value.trim();
+            if (q2aVal.length > 0) score++;
+
+            // Q2b Check: Proportional radio check
+            const q2bProp = document.querySelector('input[name="ws3_q2b_prop"]:checked')?.value;
+            const q2Feedback = document.getElementById('ws3_q2_feedback');
+            q2Feedback.classList.remove('hidden', 'bg-teal-100', 'text-teal-900');
+
+            if (q2bProp) score++;
+
+            q2Feedback.classList.add('bg-teal-100', 'text-teal-900');
+            q2Feedback.innerHTML = '<i class="fas fa-info-circle ml-1"></i> تم تقييم إجابات السؤال الثاني بنجاح!';
+
+            // Display result
+            const scoreCard = document.getElementById('score_card_ws3');
+            const scoreText = document.getElementById('score_text_ws3');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
