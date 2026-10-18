@@ -39,6 +39,68 @@
             background-size: 16px 16px;
         }
 
+        /* Styling Horizontal Fractions with Arabic numbers */
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            padding: 0 4px;
+            font-weight: bold;
+        }
+        .fraction .numerator {
+            border-bottom: 2px solid #374151;
+            padding-bottom: 2px;
+            display: block;
+        }
+        .fraction .denominator {
+            padding-top: 2px;
+            display: block;
+        }
+
+        /* Post-it / Cards design for Worksheet 4 */
+        .card-sticky {
+            position: relative;
+            background: #ffffff;
+            border: 1.5px solid #374151;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-tape {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 16px;
+            opacity: 0.85;
+        }
+
+        .opt-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.6rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            background-color: #ffffff;
+            font-size: 0.875rem;
+        }
+
+        .opt-btn:hover {
+            border-color: #059669;
+            background-color: #ecfdf5;
+        }
+
+        .opt-btn input[type="radio"] {
+            accent-color: #059669;
+            width: 1rem;
+            height: 1rem;
+        }
+
         /* Print Media CSS Rules */
         @media print {
             .no-print {
@@ -105,6 +167,10 @@
                     <i class="fas fa-sliders-h"></i>
                     <span>ورقة ٣: المعدل الثابت للتغير</span>
                 </button>
+                <button id="tab-btn-4" onclick="switchTab(4)" class="px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
+                    <i class="fas fa-divide"></i>
+                    <span>ورقة ٤: حل التناسب</span>
+                </button>
             </div>
 
             <!-- Global Tools -->
@@ -137,7 +203,7 @@
                             <div>
                                 <span class="bg-purple-100 text-purple-700 font-bold text-xs px-3 py-1 rounded-full uppercase tracking-wider">مادة الرياضيات</span>
                                 <h2 class="text-2xl font-extrabold text-slate-800 mt-1">ورقة عمل تفاعلية (١)</h2>
-                                <p class="text-sm font-semibold text-purple-600">درس: العلاقات المتناسبة وغير المتناسبة</p>
+                                <p class="text-sm font-semibold text-purple-600">درس: العلاقات المتناسبة وغیر المتناسبة</p>
                             </div>
                         </div>
                     </div>
@@ -679,6 +745,196 @@
             </div>
         </div>
 
+        <!-- ========================================== -->
+        <!-- WORKSHEET 4: حل التناسب -->
+        <!-- ========================================== -->
+        <div id="worksheet-4" class="tab-content hidden">
+            <div class="print-card bg-white rounded-2xl shadow-xl border-4 border-emerald-700 overflow-hidden p-6 md:p-8 relative">
+                
+                <!-- Header Title -->
+                <div class="text-center mb-6">
+                    <div class="bg-emerald-700 text-white border-2 border-emerald-900 rounded-xl py-3 px-8 inline-block shadow-md mb-2">
+                        <h2 class="text-2xl md:text-3xl font-black tracking-wide font-tajawal">حل التناسب</h2>
+                    </div>
+                </div>
+
+                <!-- Student Info Header Block -->
+                <div class="mb-6 bg-emerald-50/60 border-2 border-emerald-200 rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-slate-800 font-bold">
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-900 whitespace-nowrap text-sm md:text-base">الاسم /</span>
+                        <input type="text" id="ws4-student-name" class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition" placeholder="أدخل اسم الطالب...">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-emerald-900 whitespace-nowrap text-sm md:text-base">الفصل /</span>
+                        <input type="text" id="ws4-student-class" class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition" placeholder="الفصل">
+                    </div>
+                </div>
+
+                <!-- Section 1: Multiple Choice Questions (Cards Grid) -->
+                <div class="mb-3">
+                    <h3 class="text-base font-bold text-gray-900 border-r-4 border-emerald-600 pr-2 mb-3">السؤال الأول: اختر الإجابة الصحيحة لحل كل تناسب مما يلي :</h3>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="card-sticky bg-blue-50/40 p-3 pt-5" id="card_q1">
+                        <div class="card-tape bg-blue-400"></div>
+                        <!-- Math Equation: (ك / ٧) = (٣٢ / ٥٦) -->
+                        <div class="flex justify-center items-center gap-2 text-xl font-extrabold text-gray-900 mb-3 py-1 bg-white rounded border border-gray-200 shadow-sm">
+                            <div class="fraction">
+                                <span class="numerator">ك</span>
+                                <span class="denominator">٧</span>
+                            </div>
+                            <span>=</span>
+                            <div class="fraction">
+                                <span class="numerator">٣٢</span>
+                                <span class="denominator">٥٦</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-bold text-gray-700 mb-2">قيمة المتغير ك هي:</div>
+                        <div class="space-y-1.5">
+                            <label class="opt-btn"><input type="radio" name="ws4_q1" value="3"> ك = ٣</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q1" value="4"> ك = ٤</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q1" value="8"> ك = ٨</label>
+                        </div>
+                        <div id="ws4_q1_fb" class="mt-2 text-xs font-bold text-center h-4"></div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="card-sticky bg-amber-50/40 p-3 pt-5" id="card_q2">
+                        <div class="card-tape bg-amber-400"></div>
+                        <!-- Math Equation: (٢ / و) = (٠٫٤ / ٠٫٧) -->
+                        <div class="flex justify-center items-center gap-2 text-xl font-extrabold text-gray-900 mb-3 py-1 bg-white rounded border border-gray-200 shadow-sm">
+                            <div class="fraction">
+                                <span class="numerator">٢</span>
+                                <span class="denominator">و</span>
+                            </div>
+                            <span>=</span>
+                            <div class="fraction">
+                                <span class="numerator">٠٫٤</span>
+                                <span class="denominator">٠٫٧</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-bold text-gray-700 mb-2">قيمة المتغير و هي:</div>
+                        <div class="space-y-1.5">
+                            <label class="opt-btn"><input type="radio" name="ws4_q2" value="3.5"> و = ٣٫٥</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q2" value="2.8"> و = ٢٫٨</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q2" value="4.0"> و = ٤٫٠</label>
+                        </div>
+                        <div id="ws4_q2_fb" class="mt-2 text-xs font-bold text-center h-4"></div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="card-sticky bg-purple-50/40 p-3 pt-5" id="card_q3">
+                        <div class="card-tape bg-purple-400"></div>
+                        <!-- Math Equation: (٤٤ / ب) = (١١ / ٥) -->
+                        <div class="flex justify-center items-center gap-2 text-xl font-extrabold text-gray-900 mb-3 py-1 bg-white rounded border border-gray-200 shadow-sm">
+                            <div class="fraction">
+                                <span class="numerator">٤٤</span>
+                                <span class="denominator">ب</span>
+                            </div>
+                            <span>=</span>
+                            <div class="fraction">
+                                <span class="numerator">١١</span>
+                                <span class="denominator">٥</span>
+                            </div>
+                        </div>
+
+                        <div class="text-xs font-bold text-gray-700 mb-2">قيمة المتغير ب هي:</div>
+                        <div class="space-y-1.5">
+                            <label class="opt-btn"><input type="radio" name="ws4_q3" value="15"> ب = ١٥</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q3" value="20"> ب = ٢٠</label>
+                            <label class="opt-btn"><input type="radio" name="ws4_q3" value="22"> ب = ٢٢</label>
+                        </div>
+                        <div id="ws4_q3_fb" class="mt-2 text-xs font-bold text-center h-4"></div>
+                    </div>
+
+                </div>
+
+                <!-- Section 2: True / False Section -->
+                <div class="mb-3">
+                    <h3 class="text-base font-bold text-gray-900 border-r-4 border-emerald-600 pr-2 mb-2">السؤال الثاني: حدد صواب أم خطأ لكل عبارة مما يلي :</h3>
+                </div>
+
+                <div class="space-y-3 mb-6">
+                    
+                    <!-- Q4: Pens Problem -->
+                    <div class="card-sticky bg-purple-50/30 p-3 pt-4 border border-purple-200" id="card_q4">
+                        <div class="card-tape bg-purple-300"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <div class="text-sm font-bold text-gray-800 leading-snug">
+                                <span class="text-purple-700">أقلام:</span> دفع حازم ٠٫٩٥ ١٠ ريالات ثمناً لدرزن أقلام (الدرزن = ١٢). فإن ثمن ٤ أقلام هو <span class="text-purple-800 text-base font-extrabold">٣٫٦٥ ريال</span>.
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0 self-end md:self-center">
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q4" value="true"> <i class="fa-solid fa-check text-emerald-600"></i> صواب</label>
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q4" value="false"> <i class="fa-solid fa-xmark text-rose-600"></i> خطأ</label>
+                            </div>
+                        </div>
+                        <div id="ws4_q4_fb" class="text-xs font-bold mt-1 text-left h-4"></div>
+                    </div>
+
+                    <!-- Q5: Photos Problem Part 1 (Equation) -->
+                    <div class="card-sticky bg-yellow-50/30 p-3 pt-4 border border-amber-200" id="card_q5">
+                        <div class="card-tape bg-amber-300"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <div class="text-sm font-bold text-gray-800 leading-snug">
+                                <span class="text-amber-700">صور:</span> يحتاج لالتقاط ٣ صور إلى دقيقتين. المعادلة التي تمثل العلاقة بين عدد الصور (ص) وعدد الدقائق (د) هي: <span class="text-amber-800 text-base font-extrabold">ص = ١٫٥ د</span>.
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0 self-end md:self-center">
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q5" value="true"> <i class="fa-solid fa-check text-emerald-600"></i> صواب</label>
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q5" value="false"> <i class="fa-solid fa-xmark text-rose-600"></i> خطأ</label>
+                            </div>
+                        </div>
+                        <div id="ws4_q5_fb" class="text-xs font-bold mt-1 text-left h-4"></div>
+                    </div>
+
+                    <!-- Q6: Photos Problem Part 2 (Time for 10 photos) -->
+                    <div class="card-sticky bg-emerald-50/30 p-3 pt-4 border border-emerald-200" id="card_q6">
+                        <div class="card-tape bg-emerald-300"></div>
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <div class="text-sm font-bold text-gray-800 leading-snug">
+                                <span class="text-emerald-700">زمن التقاط الصور:</span> بناءً على المعدل السابق، يستغرق التقاط ١٠ صور حوالي <span class="text-emerald-800 text-base font-extrabold">٦٫٦٧ دقائق</span> (أي ٦ دقائق و ٤٠ ثانية).
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0 self-end md:self-center">
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q6" value="true"> <i class="fa-solid fa-check text-emerald-600"></i> صواب</label>
+                                <label class="opt-btn font-bold"><input type="radio" name="ws4_q6" value="false"> <i class="fa-solid fa-xmark text-rose-600"></i> خطأ</label>
+                            </div>
+                        </div>
+                        <div id="ws4_q6_fb" class="text-xs font-bold mt-1 text-left h-4"></div>
+                    </div>
+
+                </div>
+
+                <!-- Worksheet 4 Interactive Controls -->
+                <div class="no-print mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="checkAnswersWS4()" class="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition transform active:scale-95 flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        <span>تصحيح ورقة العمل</span>
+                    </button>
+
+                    <div id="score_card_ws4" class="hidden flex items-center gap-3 bg-emerald-50 border border-emerald-200 px-5 py-2.5 rounded-xl">
+                        <span class="text-sm font-bold text-slate-700">الدرجة المستحقة:</span>
+                        <span id="score_text_ws4" class="text-xl font-extrabold text-emerald-800">0 / 6</span>
+                    </div>
+                </div>
+
+                <!-- Teacher Signature Footer -->
+                <div class="mt-8 pt-6 border-t-2 border-slate-200 flex justify-between items-center text-sm font-extrabold text-emerald-950">
+                    <div class="flex items-center gap-1">
+                        <span>إعداد المعلم:</span>
+                        <span class="text-emerald-800 border-b-2 border-dashed border-emerald-400 px-3 py-0.5">عبدالمحيي السلمي</span>
+                    </div>
+                    <div class="bg-slate-100 px-4 py-1.5 rounded-lg border border-slate-300">
+                        درجة الطالب: <span class="text-slate-400 font-normal">....... / ٦</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -695,17 +951,19 @@
             const ws1 = document.getElementById('worksheet-1');
             const ws2 = document.getElementById('worksheet-2');
             const ws3 = document.getElementById('worksheet-3');
+            const ws4 = document.getElementById('worksheet-4');
             const btn1 = document.getElementById('tab-btn-1');
             const btn2 = document.getElementById('tab-btn-2');
             const btn3 = document.getElementById('tab-btn-3');
+            const btn4 = document.getElementById('tab-btn-4');
 
             // Reset visibility
-            [ws1, ws2, ws3].forEach(ws => {
+            [ws1, ws2, ws3, ws4].forEach(ws => {
                 ws.classList.add('hidden');
                 ws.classList.remove('block', 'active-print');
             });
 
-            [btn1, btn2, btn3].forEach(btn => {
+            [btn1, btn2, btn3, btn4].forEach(btn => {
                 btn.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700";
             });
 
@@ -721,6 +979,10 @@
                 ws3.classList.remove('hidden');
                 ws3.classList.add('block', 'active-print');
                 btn3.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow";
+            } else if (tabIndex === 4) {
+                ws4.classList.remove('hidden');
+                ws4.classList.add('block', 'active-print');
+                btn4.className = "px-3.5 py-2 rounded-lg font-bold text-xs md:text-sm transition flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow";
             }
         }
 
@@ -890,6 +1152,53 @@
             const scoreText = document.getElementById('score_text_ws3');
             scoreCard.classList.remove('hidden');
             scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- WORKSHEET 4 LOGIC ---
+        function checkAnswersWS4() {
+            const nameInput = document.getElementById('ws4-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
+
+            let correctCount = 0;
+            const totalQuestions = 6;
+
+            // Correct answers definitions
+            const answers = {
+                ws4_q1: "4",
+                ws4_q2: "3.5",
+                ws4_q3: "20",
+                ws4_q4: "true",
+                ws4_q5: "true",
+                ws4_q6: "true"
+            };
+
+            // Evaluate Questions
+            for (let i = 1; i <= totalQuestions; i++) {
+                let qName = 'ws4_q' + i;
+                let selected = document.querySelector(`input[name="${qName}"]:checked`);
+                let fb = document.getElementById(`${qName}_fb`);
+                
+                if (selected) {
+                    if (selected.value === answers[qName]) {
+                        correctCount++;
+                        fb.innerHTML = '<span class="text-emerald-600"><i class="fa-solid fa-circle-check"></i> إجابة صحيحة</span>';
+                    } else {
+                        fb.innerHTML = '<span class="text-rose-600"><i class="fa-solid fa-circle-xmark"></i> إجابة خاطئة</span>';
+                    }
+                } else {
+                    fb.innerHTML = '<span class="text-amber-600">لم يتم الاختيار</span>';
+                }
+            }
+
+            // Display result
+            const scoreCard = document.getElementById('score_card_ws4');
+            const scoreText = document.getElementById('score_text_ws4');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${correctCount} / ${totalQuestions}`;
             scoreCard.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
