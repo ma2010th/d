@@ -792,4 +792,106 @@
 
 
         // --- WORKSHEET 2 LOGIC ---
-        function toggleTF(btn, sy
+        function toggleTF(btn, symbol, qKey) {
+            const container = btn.parentElement;
+            const buttons = container.querySelectorAll('.tf-btn');
+            
+            buttons.forEach(b => {
+                b.classList.remove('bg-green-600', 'bg-red-600', 'text-white', 'border-transparent');
+                b.classList.add('border-gray-300');
+            });
+
+            if (symbol === '✓') {
+                btn.classList.add('bg-green-600', 'text-white', 'border-transparent');
+            } else {
+                btn.classList.add('bg-red-600', 'text-white', 'border-transparent');
+            }
+
+            ws2Answers[qKey] = symbol;
+        }
+
+        function selectOption(element, groupClass, val) {
+            const group = document.querySelectorAll('.' + groupClass);
+            group.forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            ws2Answers[groupClass] = val;
+        }
+
+        function checkAnswersWS2() {
+            const nameInput = document.getElementById('ws2-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب أولاً قبل التصحيح.');
+                return;
+            }
+
+            let score = 0;
+            const total = 4;
+
+            // tf1: 1) المحور الصادي هو الأفقي؟ -> ✗ (خاطئة، الصادي رأسي)
+            if (ws2Answers.tf1 === '✗') score++;
+
+            // tf2: 2) العدد الأول في الزوج المرتب هو الإحداثي السيني؟ -> ✓ (صحيحة)
+            if (ws2Answers.tf2 === '✓') score++;
+
+            // q1: الزوج المرتب للنقطة أ (-1, 2)
+            if (ws2Answers.q1 === '(-1, 2)') score++;
+
+            // q2: المسافة بين النقطتين أ(-1,2) و ب(3,1) -> جذر 17 وحدة
+            if (ws2Answers.q2 === 'sqrt17') score++;
+
+            const scoreCard = document.getElementById('score_card_ws2');
+            const scoreText = document.getElementById('score_text_ws2');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- WORKSHEET 3 LOGIC ---
+        function checkAnswersWS3() {
+            const nameInput = document.getElementById('ws3-student-name').value.trim();
+            if (!nameInput) {
+                alert('يرجى كتابة اسم الطالب/ـة أولاً قبل تصحيح ورقة العمل.');
+                return;
+            }
+
+            let score = 0;
+            const total = 3;
+
+            // Q1 Check: Non-linear because from hr 3 to 4 delta is 24 customers instead of 12 (12, 24, 36, 60)
+            const q1Linear = document.getElementById('ws3_q1_linear').value;
+            const q1Feedback = document.getElementById('ws3_q1_feedback');
+            q1Feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+
+            if (q1Linear === 'no') {
+                score++;
+                q1Feedback.classList.add('bg-green-100', 'text-green-800');
+                q1Feedback.innerHTML = '<i class="fas fa-check-circle ml-1"></i> إجابة صحيحة! العلاقة غير خطية لأن معدل التغير ليس ثابتاً (التغير في الساعة الرابعة كان 24 زبون بينما الساعات السابقة كان 12 زبون).';
+            } else {
+                q1Feedback.classList.add('bg-red-100', 'text-red-800');
+                q1Feedback.innerHTML = '<i class="fas fa-times-circle ml-1"></i> إجابة خاطئة. العلاقة غير خطية لأن معدل التغير غير ثابت (60 - 36 = 24 وليس 12).';
+            }
+
+            // Q2a Check: Rate of change input or description present
+            const q2aVal = document.getElementById('ws3_q2a_val').value.trim();
+            if (q2aVal.length > 0) score++;
+
+            // Q2b Check: Proportional radio check
+            const q2bProp = document.querySelector('input[name="ws3_q2b_prop"]:checked')?.value;
+            const q2Feedback = document.getElementById('ws3_q2_feedback');
+            q2Feedback.classList.remove('hidden', 'bg-teal-100', 'text-teal-900');
+
+            if (q2bProp) score++;
+
+            q2Feedback.classList.add('bg-teal-100', 'text-teal-900');
+            q2Feedback.innerHTML = '<i class="fas fa-info-circle ml-1"></i> تم تقييم إجابات السؤال الثاني بنجاح!';
+
+            // Display result
+            const scoreCard = document.getElementById('score_card_ws3');
+            const scoreText = document.getElementById('score_text_ws3');
+            scoreCard.classList.remove('hidden');
+            scoreText.innerText = `${score} / ${total}`;
+            scoreCard.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
